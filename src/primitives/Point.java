@@ -25,30 +25,42 @@ public class Point {
 	        xyz =(xyz1);
 	        
 	    }
+	    
 	    /**
 	     * Subtract operation between two points, returning a vector from the second point to the first
 	     * @param other The other point
 	     * @return Vector from 'other' to 'this' point
 	     */
-	    public Vector subtract(Point p) { return new Vector(xyz.subtract(p.xyz));}
+	    public Vector subtract(Point p) {
+	    	return new Vector(xyz.subtract(p.xyz));
+	    }
+	    
 	    /**
 	     * Add a vector to the point, returning a new point
 	     * @param p The vector to add
 	     * @return New point after adding the vector
 	     */
-	    public Point add(Vector vec) {return new Point(xyz.add(vec.getHead()));
+	    public Point add(Vector vec) {
+	    	return new Point(xyz.add(vec.xyz));
+	    }
+	    
 	    /**
 	     * Calculate the squared distance between two points
 	     * @param other The other point
 	     * @return The squared distance between the two points
 	     */
- }
-	    public double distanceSquared (Point p) {return((xyz.d1-p.xyz.d1)(xyz.d1-p.xyz.d1)+(xyz.d2-p.xyz.d2)(xyz.d2-p.xyz.d2)+(xyz.d3-p.xyz.d3)*(xyz.d3-p.xyz.d3));}
+	    
+	    public double distanceSquared (Point p) {
+	    	return((xyz.d1-p.xyz.d1)*(xyz.d1-p.xyz.d1)+(xyz.d2-p.xyz.d2)*(xyz.d2-p.xyz.d2)+(xyz.d3-p.xyz.d3)*(xyz.d3-p.xyz.d3));
+	    }
+	    
 	    /**
 	     * Calculate the distance between two points
 	     * @param other The other point
 	     * @return The distance between the two points
 	     */
-	    public double distance (Point p) {return(Math.sqrt(distanceSquared(p)));}
+	    public double distance (Point p) {
+	    	return(Math.sqrt(distanceSquared(p)));
+	    }
 
 }

@@ -31,7 +31,9 @@ public class Vector extends Point {
      * @return New vector after adding 'other' vector
      * @throws IllegalArgumentException In case of zero vector
      */
-public Vector add(Vector v) {return new Vector(this.xyz.d1+v.xyz.d1,this.xyz.d2+v.xyz.d2,this.xyz.d3+v.xyz.d3);}
+public Vector add(Vector v) {
+	return new Vector(this.xyz.d1+v.xyz.d1,this.xyz.d2+v.xyz.d2,this.xyz.d3+v.xyz.d3);
+}
 /**
  * Scale the vector by a scalar value, returning a new vector
  * @param scalar The scalar value to scale the vector by
