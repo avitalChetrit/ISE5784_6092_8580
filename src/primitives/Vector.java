@@ -40,7 +40,9 @@ public Vector add(Vector v) {
  * @return New scaled vector
  * @throws IllegalArgumentException In case of zero vector
  */
-public Vector scale(int num) {return new Vector (num*this.xyz.d1,num*this.xyz.d2,num*this.xyz.d3);}
+public Vector scale(int num) {
+	return new Vector (num*this.xyz.d1, num*this.xyz.d2, num*this.xyz.d3);
+}
 /**
  * Calculate the dot product between two vectors
  * @param other The other vector
@@ -91,5 +93,5 @@ public Vector normalize() {
         throw new IllegalArgumentException("Cannot normalize zero vector");
     }
     return new Vector(xyz.scale(1 / len));
-    }
+  }
 }
