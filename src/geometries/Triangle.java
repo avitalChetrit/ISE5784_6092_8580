@@ -13,6 +13,6 @@ public class Triangle extends Polygon {
      * @param point3 the third point of the triangle
      */
     public Triangle(Point point1, Point point2, Point point3) {
-        super(List.of(point1, point2, point3)); // Calls the constructor of the superclass Polygon
+        super(point1, point2, point3); // Calls the constructor of the superclass Polygon
     }
 }

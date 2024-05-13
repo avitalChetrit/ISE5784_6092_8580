@@ -1,4 +1,7 @@
 package primitives;
+
+import java.util.Objects;
+
 /**
  * Vector class represents a vector in 3D space
  */
@@ -22,7 +25,7 @@ public class Vector extends Point {
      */
 	public Vector(double x, double y, double z) {
 		super(x, y, z);
-		if (x==0&&y==0&&z==0) {
+		if (x==0 && y==0 && z==0) {
             throw new IllegalArgumentException("Zero vector is not allowed");
         }		}
 	/**
@@ -32,7 +35,7 @@ public class Vector extends Point {
      * @throws IllegalArgumentException In case of zero vector
      */
 public Vector add(Vector v) {
-	return new Vector(this.xyz.d1+v.xyz.d1,this.xyz.d2+v.xyz.d2,this.xyz.d3+v.xyz.d3);
+	return new Vector(this.xyz.add(v.xyz));
 }
 /**
  * Scale the vector by a scalar value, returning a new vector
@@ -49,8 +52,9 @@ public Vector scale(int num) {
  * @return The dot product between the two vectors
  */
 public double dotProduct(Vector other) {
-    return xyz.product(other.xyz);
+	return this.xyz.d1*other.xyz.d1 +this.xyz.d2*other.xyz.d2 + this.xyz.d3*other.xyz.d3;
 }
+
 /**
  * Calculate the cross product between two vectors, returning a new vector
  * @param other The other vector
@@ -60,7 +64,7 @@ public double dotProduct(Vector other) {
 public Vector crossProduct(Vector other) {
     Vector result = new Vector(
         xyz.d2 * other.xyz.d3 - xyz.d3 * other.xyz.d2,
-       - xyz.d3 * other.xyz.d1 - xyz.d1 * other.xyz.d3,
+        xyz.d3 * other.xyz.d1 - xyz.d1 * other.xyz.d3,
         xyz.d1 * other.xyz.d2 - xyz.d2 * other.xyz.d1
     );
     if (result.equals(xyz.ZERO)) {//?
@@ -72,9 +76,12 @@ public Vector crossProduct(Vector other) {
  * Calculate the squared length of the vector
  * @return Squared length of the vector
  */
+
 public double lengthSquared() {
-    return xyz.product(xyz);
+    return this.dotProduct(this);
 }
+
+
 /**
  * Calculate the length of the vector
  * @return Length of the vector
@@ -88,10 +95,31 @@ public double length() {
  * @throws IllegalArgumentException In case of zero vector
  */
 public Vector normalize() {
-    double len = length();
+    double len = this.length();
     if (len == 0) {
         throw new IllegalArgumentException("Cannot normalize zero vector");
     }
-    return new Vector(xyz.scale(1 / len));
+    return new Vector(xyz.reduce(len));
   }
+
+//Override equals method
+@Override
+public boolean equals(Object obj) {
+	return super.equals(obj);
+}
+
+
+// Override hashCode method
+@Override
+public int hashCode() {
+    return super.hashCode();
+}
+
+@Override
+public String toString() {
+    return "Vector: (" + xyz.d1 + ", " + xyz.d2 + ", " + xyz.d3 + ")";
+} 
+
+
+
 }

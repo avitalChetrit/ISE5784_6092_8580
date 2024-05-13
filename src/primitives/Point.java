@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.Objects;
+
 /**
  * Point class represents a point in 3D space
  */
@@ -7,6 +9,10 @@ public class Point {
     /** Coordinate values of the point */
 
 	    protected final Double3 xyz;
+	    
+	    /** Zero triad (0,0,0) */
+	    public static final Double3 ZERO = new Double3(0, 0, 0);
+	    
 	    /**
 	     * Constructor that accepts three double values representing the coordinates of the point
 	     * @param x X coordinate value
@@ -14,16 +20,15 @@ public class Point {
 	     * @param z Z coordinate value
 	     */
 	    public Point(double x, double y, double z) {
-	        xyz = new Double3(x, y, z);
-	     
+	       this.xyz=new Double3(x,y,z);
 	    }
+	    
 	    /**
 	     * Constructor that accepts a Double3 object representing the coordinates of the point
 	     * @param xyz Double3 object representing the coordinates
 	     */
 	    public Point(Double3 xyz1) {
-	        xyz =(xyz1);
-	        
+	        this.xyz = xyz1; 
 	    }
 	    
 	    /**
@@ -31,8 +36,9 @@ public class Point {
 	     * @param other The other point
 	     * @return Vector from 'other' to 'this' point
 	     */
-	    public Vector subtract(Point p) {
-	    	return new Vector(xyz.subtract(p.xyz));
+	    
+	    public Vector subtract(Point other) {
+	        return new Vector(xyz.subtract(other.xyz));
 	    }
 	    
 	    /**
@@ -62,5 +68,26 @@ public class Point {
 	    public double distance (Point p) {
 	    	return(Math.sqrt(distanceSquared(p)));
 	    }
+	    
+	 // Override equals method
+	    @Override
+	    public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    return (obj instanceof Point other)
+	    && this.xyz.equals(other.xyz);
+	    }
 
+
+	    // Override hashCode method
+	    @Override
+	    public int hashCode() {
+	        return Objects.hashCode(xyz);
+	    }
+	    
+	    @Override
+	    public String toString() {
+	        return "Point: (" + xyz.d1 + ", " + xyz.d2 + ", " + xyz.d3 + ")";
+	    } 
+	    
 }
+

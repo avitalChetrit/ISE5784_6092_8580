@@ -40,7 +40,15 @@ public class Plane implements Geometry {
         this.normal = normal1.normalize();
     }
 	
-	
+	/**
+	 * new getNormal
+	 */
+    public Vector getNormal() {
+	    // The normal vector to a plane is constant and can be pre-calculated
+	    return normal;
+	}
+    
+    
 	/**
 	 * Returns the normal vector to the plane at a given point.
 	 *

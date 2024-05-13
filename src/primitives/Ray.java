@@ -8,4 +8,17 @@ public class Ray {
         vector = vector.normalize(); // Ensure vector is normalized
     }	
 	
+	//Override equals method
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+
+	// Override hashCode method
+	@Override
+	public int hashCode() {
+	    return super.hashCode();
+	}
+	
 }
