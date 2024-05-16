@@ -15,7 +15,7 @@ public class Vector extends Point {
      */
 	public Vector(Double3 xyz1) {
 		super(xyz1);
-		if (xyz1.equals(xyz1.ZERO)) {//?
+		if (xyz1.equals(Double3.ZERO)) {
             throw new IllegalArgumentException("Zero vector is not allowed");
         }	}
 	/**
@@ -25,7 +25,7 @@ public class Vector extends Point {
      */
 	public Vector(double x, double y, double z) {
 		super(x, y, z);
-		if (x==0 && y==0 && z==0) {
+		if (xyz.equals(Double3.ZERO)) {
             throw new IllegalArgumentException("Zero vector is not allowed");
         }		}
 	/**
@@ -35,7 +35,7 @@ public class Vector extends Point {
      * @throws IllegalArgumentException In case of zero vector
      */
 public Vector add(Vector v) {
-	return new Vector(this.xyz.add(v.xyz));
+	return new Vector(xyz.add(v.xyz));
 }
 /**
  * Scale the vector by a scalar value, returning a new vector
@@ -44,7 +44,7 @@ public Vector add(Vector v) {
  * @throws IllegalArgumentException In case of zero vector
  */
 public Vector scale(int num) {
-	return new Vector (num*this.xyz.d1, num*this.xyz.d2, num*this.xyz.d3);
+	return new Vector (this.xyz.scale(num));
 }
 /**
  * Calculate the dot product between two vectors
@@ -67,7 +67,7 @@ public Vector crossProduct(Vector other) {
         xyz.d3 * other.xyz.d1 - xyz.d1 * other.xyz.d3,
         xyz.d1 * other.xyz.d2 - xyz.d2 * other.xyz.d1
     );
-    if (result.equals(xyz.ZERO)) {//?
+    if (result.equals(Double3.ZERO)) {
         throw new IllegalArgumentException("Resulting vector is zero vector");
     }
     return result;
@@ -105,14 +105,16 @@ public Vector normalize() {
 //Override equals method
 @Override
 public boolean equals(Object obj) {
-	return super.equals(obj);
-}
+    if (this == obj) return true;
+    return (obj instanceof Vector other)
+    		&& this.xyz.equals(other.xyz);
+    }
 
 
 // Override hashCode method
 @Override
 public int hashCode() {
-    return super.hashCode();
+    return Objects.hashCode(xyz);
 }
 
 @Override

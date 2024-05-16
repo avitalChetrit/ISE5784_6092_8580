@@ -11,7 +11,7 @@ public class Point {
 	    protected final Double3 xyz;
 	    
 	    /** Zero triad (0,0,0) */
-	    public static final Double3 ZERO = new Double3(0, 0, 0);
+	    public static final Point ZERO = new Point(0, 0, 0);
 	    
 	    /**
 	     * Constructor that accepts three double values representing the coordinates of the point
@@ -74,7 +74,7 @@ public class Point {
 	    public boolean equals(Object obj) {
 	    if (this == obj) return true;
 	    return (obj instanceof Point other)
-	    && this.xyz.equals(other.xyz);
+	    		&& this.xyz.equals(other.xyz);
 	    }
 
 
