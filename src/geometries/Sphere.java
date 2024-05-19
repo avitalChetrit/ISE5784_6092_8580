@@ -6,7 +6,8 @@ import primitives.Vector;
  * Class Sphere represents a three-dimensional sphere.
  */
 public class Sphere extends RadialGeometry {
-    private final Point center; // Center point of the sphere
+	/** Center point of the sphere*/
+    private final Point center; 
     
     /**
      * Constructs a Sphere object with the given center point and radius.

@@ -2,22 +2,27 @@ package primitives;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * TODO
+ * @author Avital and Tal
+ */
 public class Ray {
-	
+	/**point in ray*/
 	private final Point head;
+	/**vector direction*/
 	private final Vector direction;
 	
+	/**
+	 * ray constructor
+	 * @param point  in ray
+	 * @param vector in ray
+	 */
 	public Ray(Point point, Vector vector) {
 		head=point;
 		direction = vector.normalize(); // Ensure vector is normalized
     }	
 	
 	
-	/**
-	* Class ClassName is the basic class representing a … of Euclidean geometry in Cartesian
-	* 3-Dimensional coordinate system.
-	* @author Student1 and Student2
-	*/
 	 @Override
 	 public boolean equals(Object obj) {
 		 if (this == obj) return true;

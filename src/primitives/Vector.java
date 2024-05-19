@@ -8,9 +8,7 @@ import java.util.Objects;
 public class Vector extends Point {
 	/**
      * Constructor that accepts three double values representing the components of the vector
-     * @param x X component value
-     * @param y Y component value
-     * @param z Z component value
+     * @param xyz1 component value
      * @throws IllegalArgumentException In case of zero vector
      */
 	public Vector(Double3 xyz1) {
@@ -20,7 +18,9 @@ public class Vector extends Point {
         }	}
 	/**
      * Constructor that accepts a Double3 object representing the components of the vector
-     * @param coords Double3 object representing the components
+     * @param x Double3 object representing the components
+     * @param y Double3 object representing the components
+     * @param z Double3 object representing the components
      * @throws IllegalArgumentException In case of zero vector
      */
 	public Vector(double x, double y, double z) {
@@ -30,7 +30,7 @@ public class Vector extends Point {
         }		}
 	/**
      * Add operation between two vectors, returning a new vector
-     * @param other The other vector to add
+     * @param v The other vector to add
      * @return New vector after adding 'other' vector
      * @throws IllegalArgumentException In case of zero vector
      */
@@ -39,7 +39,7 @@ public Vector add(Vector v) {
 }
 /**
  * Scale the vector by a scalar value, returning a new vector
- * @param scalar The scalar value to scale the vector by
+ * @param num The scalar value to scale the vector by
  * @return New scaled vector
  * @throws IllegalArgumentException In case of zero vector
  */

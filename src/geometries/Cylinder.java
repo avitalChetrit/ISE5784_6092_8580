@@ -7,7 +7,9 @@ import primitives.Vector;
  * Class Cylinder represents a three-dimensional cylinder.
  */
 public class Cylinder extends RadialGeometry {
-    private final double height; // Height of the cylinder
+	
+	/** Height of the cylinder*/
+    private final double height; 
     
     /**
      * Constructs a Cylinder object with the given radius and height.

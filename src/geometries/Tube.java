@@ -8,8 +8,10 @@ import primitives.Ray;
  * Class Tube represents a three-dimensional tube.
  */
 public class Tube extends RadialGeometry {
-    private final double radius; // Radius of the tube
-    private final Ray axisRay; // Axis ray of the tube
+	/** Radius of the tube */
+    private final double radius;
+    /**  Axis ray of the tube */
+    private final Ray axisRay;
     
     /**
      * Constructs a Tube object with the given radius and axis ray.

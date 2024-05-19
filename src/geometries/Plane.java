@@ -8,7 +8,9 @@ import primitives.Vector;
  */
 public class Plane implements Geometry {
 
+	/**point in plane */
 	private final Point point;
+	/**vector in plane*/
 	private final Vector normal;
 	
 	/**
@@ -31,8 +33,8 @@ public class Plane implements Geometry {
     /**
      * Constructs a Plane object using a point and a normal vector.
      *
-     * @param point  a point on the plane
-     * @param normal the normal vector to the plane
+     * @param point1  a point on the plane
+     * @param normal1 the normal vector to the plane
      */
     public Plane(Point point1, Vector normal1) {
         this.point = point1;
@@ -42,6 +44,7 @@ public class Plane implements Geometry {
 	
 	/**
 	 * new getNormal
+	 * @return vector normal
 	 */
     public Vector getNormal() {
 	    // The normal vector to a plane is constant and can be pre-calculated

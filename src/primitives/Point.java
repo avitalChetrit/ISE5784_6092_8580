@@ -25,7 +25,7 @@ public class Point {
 	    
 	    /**
 	     * Constructor that accepts a Double3 object representing the coordinates of the point
-	     * @param xyz Double3 object representing the coordinates
+	     * @param xyz1 Double3 object representing the coordinates
 	     */
 	    public Point(Double3 xyz1) {
 	        this.xyz = xyz1; 
@@ -43,7 +43,7 @@ public class Point {
 	    
 	    /**
 	     * Add a vector to the point, returning a new point
-	     * @param p The vector to add
+	     * @param vec The vector to add
 	     * @return New point after adding the vector
 	     */
 	    public Point add(Vector vec) {
@@ -52,7 +52,7 @@ public class Point {
 	    
 	    /**
 	     * Calculate the squared distance between two points
-	     * @param other The other point
+	     * @param p The other point
 	     * @return The squared distance between the two points
 	     */
 	    
@@ -62,7 +62,7 @@ public class Point {
 	    
 	    /**
 	     * Calculate the distance between two points
-	     * @param other The other point
+	     * @param p the other point
 	     * @return The distance between the two points
 	     */
 	    public double distance (Point p) {

@@ -14,7 +14,7 @@ public abstract class RadialGeometry implements Geometry {
 	/**
      * Constructs a RadialGeometry object with the given radius.
      *
-     * @param radius the radius of the geometric body
+     * @param radius1 the radius1 of the geometric body
      */
 	public RadialGeometry(double radius1) {
 		radius=radius1;
