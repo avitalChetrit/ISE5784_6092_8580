@@ -2,7 +2,8 @@
  * 
  */
 package unittests;
-
+import primitives.Point;
+import primitives.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -19,31 +20,47 @@ class PointTests {
 	 */
 	@Test
 	void testSubtract() {
-		// ============ Partitions Tests ==============
+		// ============Equivalence Partitions Tests ==============
+		Point p1 = new Point(1, 2, 3);
+        Point p2 = new Point(2, 4, 6);
+        Vector expected = new Vector(1, 2, 3);
+     // TC01: Test that checks the property of result of the subtraction operation between two points.
+        assertEquals(expected, p2.subtract(p1), "wrong subtract result");
 	}
-
 	/**
 	 * Test method for {@link primitives.Point#add(primitives.Vector)}.
 	 */
 	@Test
 	void testAdd() {
-		// ============ Partitions Tests ==============
-	}
-
+		// ============Equivalence Partitions Tests ==============
+		 
+		        Point p1 = new Point(1, 2, 3);
+		        Vector v1 = new Vector(2, 3, 4);
+		        Point expected = new Point(3, 5, 7);
+		        // TC01: Test that checks the property of result of the add operation.
+		        assertEquals(expected, p1.add(v1));
+		    }
 	/**
 	 * Test method for {@link primitives.Point#distanceSquared(primitives.Point)}.
 	 */
 	@Test
 	void testDistanceSquared() {
-		// ============ Partitions Tests ==============
-	}
+		// ============Equivalence Partitions Tests ==============
+		Point p1 = new Point(1, 2, 3);
+        Point p2 = new Point(4, 5, 6);
+        double expected = 27;
+     // TC01: Test that checks the property of result of the calculating the squared distance between two points.
+        assertEquals(expected, p1.distanceSquared(p2), 0);
+    }
 
 	/**
 	 * Test method for {@link primitives.Point#distance(primitives.Point)}.
 	 */
 	@Test
 	void testDistance() {
-		// ============ Partitions Tests ==============
+//לבדוק תקינות פונקציה
+		Point p1 = new Point(1, 2, 3);
+		    p1.subtract(p1);
 	}
 
 }

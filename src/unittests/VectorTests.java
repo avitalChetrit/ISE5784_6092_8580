@@ -26,7 +26,16 @@ class VectorTests {
 	 */
 	@Test
 	void testAddVector() {
-		// ============ Partitions Tests ==============
+		// ============Equivalence Partitions Tests ==============
+		Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(2, 4, 6);
+        Vector expected = new Vector(3, 6, 9);
+		 // TC01: Test that add vector to vector and check that the result is proper.
+
+        assertEquals(expected, v1.add(v2),"wrong add vector");
+	
+	
+	
 	}
 
 	/**
@@ -34,15 +43,25 @@ class VectorTests {
 	 */
 	@Test
 	void testScale() {
-		// ============ Partitions Tests ==============
-	}
+		// ============Equivalence Partitions Tests ==============
+				Vector v = new Vector(1, 2, 3);
+		        int scalar = 2;
+		        Vector expected = new Vector(2, 4, 6);
+				 // TC01: Test that multiply a vector by a scalar and check that the result is correct.
+		        assertEquals(expected, v.scale(scalar), "wrong scaled vector");
+			}
 
 	/**
 	 * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
 	 */
 	@Test
 	void testDotProduct() {
-		// ============ Partitions Tests ==============
+		// ============Equivalence Partitions Tests ==============
+		Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(2, 4, 6);
+        double expected = 28;
+        //TC01: Checks the correctness and result of the inner multiplication operation (dot product) between two vectors
+        assertEquals(expected, v1.dotProduct(v2), "wrong dot product value");
 	}
 
 	/**
@@ -78,7 +97,11 @@ class VectorTests {
 	 */
 	@Test
 	void testLength() {
-		// ============ Partitions Tests ==============
+		// ============Equivalence Partitions Tests ==============
+		Vector v = new Vector(1, 2, 3);
+        double expected = Math.sqrt(14);
+      //TC01: Checks the correctness and the result step length vector.
+        assertEquals(expected, v.length(), "wrong length value");
 	}
 
 	/**
@@ -86,7 +109,14 @@ class VectorTests {
 	 */
 	@Test
 	void testNormalize() {
-		// ============ Partitions Tests ==============
+		Vector v=new Vector(0,3,4);
+		Vector n=v.normalize();
+		// ============Equivalence Partitions Tests ==============
+	//TC01: Simple test
+		assertEquals(1d,n.lengthSquared(),0.00001,"wrong normalized vector length");
+		assertThrows(IllegalArgumentException.class,()->v.crossProduct(n),"normalized vector is not in the same direction");
+		assertEquals(new Vector (0,0.,0.8),n,"wrong normalized vector");
+	
 	}
 
 }
