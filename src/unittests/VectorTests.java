@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import primitives.Point;
 import primitives.Vector;
+import primitives.Double3;
 
 
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,44 @@ import org.junit.jupiter.api.Test;
  * 
  */
 class VectorTests {
-	 Vector v1         = new Vector(1, 2, 3);
-     Vector v1Opposite = new Vector(-1, -2, -3);
-     Vector v2         = new Vector(-2, -4, -6);
-     Vector v3         = new Vector(0, 3, -2);
-     Vector v4         = new Vector(1, 2, 2);
+	
+	   @Test
+	    void testVectorConstructorWithDouble3() {
+			// ============Equivalence Partitions Tests ==============
+
+	        // Test case setup
+	        Double3 double3 = new Double3(1.0, 2.0, 3.0);
+
+	        // Create the vector
+	        Vector vector = new Vector(double3);
+
+	        // Verify that the vector was created correctly
+	        assertEquals(double3, vector,"wrong constructor vector");
+	        // =============== Boundary Values Tests ==================
+			 // TC11: test zero vector from constructor 
+			 assertThrows(IllegalArgumentException.class, () -> vector.equals(Double3.ZERO), //
+			 "crossProduct() for parallel vectors does not throw an exception");
+	    }
+
+	    @Test
+	    void testVectorConstructorWithComponents() {
+			// ============Equivalence Partitions Tests ==============
+
+	        // Test case setup
+	        double x = 1.0;
+	        double y = 2.0;
+	        double z = 3.0;
+
+	        // Create the vector
+	        Vector vector = new Vector(x, y, z);
+
+	        // Verify that the vector was created correctly
+	        assertEquals(new Double3(x, y, z), vector,"wrong constructor vector");
+	     // =============== Boundary Values Tests ==================
+			 // TC11: test zero vector from constructor 
+			 assertThrows(IllegalArgumentException.class, () -> vector.equals(Double3.ZERO), //
+			 "crossProduct() for parallel vectors does not throw an exception");
+	    }
 
 	/**
 	 * Test method for {@link primitives.Vector#add(primitives.Vector)}.
@@ -29,11 +63,19 @@ class VectorTests {
 		// ============Equivalence Partitions Tests ==============
 		Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(2, 4, 6);
+        Vector v3 = new Vector(-1,-2,-3);
+        
+        Vector expected1 = new Vector(0,0,0);
         Vector expected = new Vector(3, 6, 9);
 		 // TC01: Test that add vector to vector and check that the result is proper.
 
         assertEquals(expected, v1.add(v2),"wrong add vector");
-	
+        assertEquals(expected, v3.add(v2),"wrong add vector");
+
+     // =============== Boundary Values Tests ==================
+		 // TC11: test zero result from add  opposite and equals vectors 
+		 assertThrows(IllegalArgumentException.class, () ->v1.add(v3).equals(expected1), //
+		 "crossProduct() for parallel vectors does not throw an exception");
 	
 	
 	}
@@ -69,6 +111,9 @@ class VectorTests {
 	 */
 	@Test
 	void testCrossProduct() {
+		 Vector v1         = new Vector(1, 2, 3);
+	     Vector v2         = new Vector(-2, -4, -6);
+	     Vector v3         = new Vector(0, 3, -2);
 		
 		 // ============ Equivalence Partitions Tests ==============
 		 Vector vr = v1.crossProduct(v3);

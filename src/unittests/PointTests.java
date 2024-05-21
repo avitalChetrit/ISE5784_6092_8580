@@ -38,7 +38,7 @@ class PointTests {
 		        Vector v1 = new Vector(2, 3, 4);
 		        Point expected = new Point(3, 5, 7);
 		        // TC01: Test that checks the property of result of the add operation.
-		        assertEquals(expected, p1.add(v1));
+		        assertEquals(expected, p1.add(v1), "wrong subtract result");
 		    }
 	/**
 	 * Test method for {@link primitives.Point#distanceSquared(primitives.Point)}.
@@ -50,7 +50,7 @@ class PointTests {
         Point p2 = new Point(4, 5, 6);
         double expected = 27;
      // TC01: Test that checks the property of result of the calculating the squared distance between two points.
-        assertEquals(expected, p1.distanceSquared(p2), 0);
+        assertEquals(expected, p1.distanceSquared(p2), 0);//לתקן אולי
     }
 
 	/**

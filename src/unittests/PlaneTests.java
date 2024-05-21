@@ -2,7 +2,10 @@
  * 
  */
 package unittests;
-
+import org.junit.Test;
+import primitives.Point;
+import primitives.Vector;
+import geometries.Plane;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -17,18 +20,16 @@ class PlaneTests {
 	 * Test method for {@link geometries.Plane#getNormal(primitives.Point)}.
 	 */
 	@Test
-	void testGetNormalPoint() {
-		// ============ Partitions Tests ==============
-		 Point p1 = new Point(1, 1, 1);
-		    Point p2 = new Point(2, 2, 2);
-		    Point p3 = new Point(3, 3, 3);
-		    
-		    // When
-		    Plane plane = new Plane(p1, p2, p3);
-		    Vector normal = plane.getNormal(p1);
-		    
-		    // Then
-		    assertTrue(normal.length() <= 1, "The length of the normal vector is greater than 1");
-	}
+	public void testPlaneConstructorWithPointAndNormal() {
+        // Test case setup
+        Point point = new Point(1, 2, 3);
+        Vector normal = new Vector(1, 1, 1);
+
+        // Create the plane
+        Plane plane = new Plane(point, normal);
+
+        // Verify that the normal vector is normalized
+        assertEquals(1.0, plane.getNormal().length(), 1e-10);
+    }
 
 }
