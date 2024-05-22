@@ -88,9 +88,18 @@ class VectorTests {
 		// ============Equivalence Partitions Tests ==============
 				Vector v = new Vector(1, 2, 3);
 		        int scalar = 2;
+		        int scalar1 = -2;
 		        Vector expected = new Vector(2, 4, 6);
+		        Vector expected1 = new Vector(-2, -4,- 6);
+		        Vector v2 = new Vector(0, 0, 0);
+				Vector zeroScaledVector = v2.scale(scalar);
 				 // TC01: Test that multiply a vector by a scalar and check that the result is correct.
 		        assertEquals(expected, v.scale(scalar), "wrong scaled vector");
+		        // TC10: Test that multiply a vector by a scalar and check that the result is correct.
+		        assertEquals(expected1, v.scale(scalar1), "wrong scaled vector");
+		     // =============== Boundary Values Tests ==================
+				// TC11: Test for scaling a zero vector
+				assertEquals(v2, zeroScaledVector, "scaling a zero vector should result in a zero vector");
 			}
 
 	/**
