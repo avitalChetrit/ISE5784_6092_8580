@@ -101,9 +101,20 @@ class VectorTests {
 		// ============Equivalence Partitions Tests ==============
 		Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(2, 4, 6);
+        Vector v3 = new Vector(-2,- 4, -6);
+		Vector v4 = new Vector(1, 1, 1);
+
         double expected = 28;
+        double expected1 = 0;
+        double expected2 = 6;
+
         //TC01: Checks the correctness and result of the inner multiplication operation (dot product) between two vectors
         assertEquals(expected, v1.dotProduct(v2), "wrong dot product value");
+      //TC10: Checks the correctness and result of the vertical multiplication operation (dot product) between two vectors
+        assertEquals(expected1, v2.dotProduct(v3), "wrong dot product value");
+      //TC11: Checks the correctness and result of the A unit vector with a different vector multiplication operation (dot product) between two vectors
+        assertEquals(expected2, v1.dotProduct(v4), "wrong dot product value");
+	
 	}
 
 	/**
@@ -133,8 +144,19 @@ class VectorTests {
 	 * Test method for {@link primitives.Vector#lengthSquared()}.
 	 */
 	@Test
+	
 	void testLengthSquared() {
-		// ============ Partitions Tests ==============
+		// ============Equivalence Partitions Tests ==============
+		Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(-2, -4, -6);
+        
+        double expected1 = 14;
+        double expected2 = 56;
+        
+        // TC01: Test for a vector with positive components
+        assertEquals(expected1, v1.lengthSquared(), "wrong squared length value for positive components");
+        // TC02: Test for a vector with negative components
+        assertEquals(expected2, v2.lengthSquared(), "wrong squared length value for negative components");
 	}
 
 	/**
@@ -161,6 +183,11 @@ class VectorTests {
 		assertEquals(1d,n.lengthSquared(),0.00001,"wrong normalized vector length");
 		assertThrows(IllegalArgumentException.class,()->v.crossProduct(n),"normalized vector is not in the same direction");
 		assertEquals(new Vector (0,0.,0.8),n,"wrong normalized vector");
+		// =============== Boundary Values Tests ==================
+				// TC02: Test for a vector which is already a unit vector
+				Vector unitVector = new Vector(1 / Math.sqrt(14), Math.sqrt(2 / 7), 2 / Math.sqrt(14));
+				Vector nUnitVector = unitVector.normalize();
+				assertEquals(unitVector, nUnitVector, "normalized vector is not the same as the original unit vector");
 	
 	}
 
