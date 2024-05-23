@@ -59,7 +59,10 @@ class PointTests {
 	@Test
 	void testDistance() {
 		Point p1 = new Point(1, 2, 3);
-		    p1.subtract(p1);
+		Point p2 = new Point(4, 5, 6);
+        	double expected = Math.sqrt(27);
+     		// TC01: Test that checks the property of result of the calculating the squared distance between two points.
+      		assertEquals(expected, p1.distance(p2), "wrong distance result");
 	}
 
 }
