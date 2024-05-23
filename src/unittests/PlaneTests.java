@@ -14,6 +14,27 @@ import static org.junit.jupiter.api.Assertions.*;
 */
 class PlaneTests {
 
+
+	/**
+     * Test method for Plane constructor with three points.
+     */
+    @Test
+    void testPlaneConstructor() {
+        // ============ Boundary Value Tests ==============
+        // TC01: First and second points are the same
+        Point point1 = new Point(0, 0, 0);
+        Point point2 = new Point(0, 0, 0); // same as point1
+        Point point3 = new Point(1, 0, 0);
+        assertThrows(IllegalArgumentException.class, () -> new Plane(point1, point2, point3),
+                "Constructing a plane with two identical points should throw an exception");
+
+        // TC02: All three points are collinear
+        point2 = new Point(1, 1, 1);
+        point3 = new Point(2, 2, 2); // collinear with point1 and point2
+        assertThrows(IllegalArgumentException.class, () -> new Plane(point1, point2, point3),
+                "Constructing a plane with three collinear points should throw an exception");
+    }
+
 	/**
 	 * Test method for {@link geometries.Plane#getNormal()}.
 	 */
