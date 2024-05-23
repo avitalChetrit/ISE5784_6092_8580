@@ -28,6 +28,7 @@ public class Ray {
 		return direction;
 	}
 	
+	
 	 @Override
 	 public boolean equals(Object obj) {
 		 if (this == obj) return true;

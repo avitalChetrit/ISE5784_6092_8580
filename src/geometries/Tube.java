@@ -25,20 +25,41 @@ public class Tube extends RadialGeometry {
         this.axisRay = axisRay;
     }
     
-
-/**
- * Computes the normal vector to the surface of the tube at a given point.
- * Since a tube is a perfectly symmetrical shape, the normal vector at any point on its surface is the unit vector pointing along its axis.
- *
- * @param point The point on the surface of the tube
- * @return The normal vector to the surface at the given point
- */
-@Override
-public Vector getNormal(Point point) {
-    // Calculate the direction vector of the tube's axis
-    Vector direction = this.getDirection().dotProduct(this);
+    /**
+     * Returns the direction vector of the tube's axis.
+     *
+     * @return The direction vector of the tube's axis
+     */
+    public Vector getDirection() {
+        return axisRay.getDirection();
+    }
+    /**
+     * Returns the ray representing the axis of the tube.
+     *
+     * @return The ray representing the axis of the tube
+     */
+    public Ray getRay() {
+        return axisRay;
+    }
     
-    // Return the normalized direction vector as the normal vector
-    return direction.normalize();
-}
+    /**
+     * Returns the normal vector to the surface of the tube at a given point.
+     *
+     * @param point The point on the surface of the tube
+     * @return The normal vector to the surface at the given point
+     */
+    @Override
+    public Vector getNormal(Point point) {
+        // Calculate the direction vector of the tube's axis
+        Vector direction = this.getDirection();
+        
+        // Calculate the point on the axis that corresponds to the given point on the tube's surface
+        Point center = this.getRay().getPoint().add(direction.scale(direction.dotProduct(point.subtract(this.getRay().getPoint()))));
+        
+        // Calculate the vector from the calculated center point to the given point on the tube's surface
+        Vector normal = point.subtract(center);
+        
+        // Return the normalized normal vector
+        return normal.normalize();
+    }
 }
