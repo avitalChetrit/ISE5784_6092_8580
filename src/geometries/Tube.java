@@ -25,12 +25,20 @@ public class Tube extends RadialGeometry {
         this.axisRay = axisRay;
     }
     
-    /**
-     * Override that returns null
-     */
-    @Override
-	public Vector getNormal(Point point) {
-	    // The normal vector to a plane is constant and can be pre-calculated
-	    return null;
-	}
+
+/**
+ * Computes the normal vector to the surface of the tube at a given point.
+ * Since a tube is a perfectly symmetrical shape, the normal vector at any point on its surface is the unit vector pointing along its axis.
+ *
+ * @param point The point on the surface of the tube
+ * @return The normal vector to the surface at the given point
+ */
+@Override
+public Vector getNormal(Point point) {
+    // Calculate the direction vector of the tube's axis
+    Vector direction = this.getDirection().dotProduct(this);
+    
+    // Return the normalized direction vector as the normal vector
+    return direction.normalize();
+}
 }

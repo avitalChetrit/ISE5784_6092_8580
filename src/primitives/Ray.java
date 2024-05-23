@@ -21,7 +21,12 @@ public class Ray {
 		head=point;
 		direction = vector.normalize(); // Ensure vector is normalized
     }	
-	
+	public Point getHead() {
+		return head;
+	}
+	public Vector getDirection() {
+		return direction;
+	}
 	
 	 @Override
 	 public boolean equals(Object obj) {

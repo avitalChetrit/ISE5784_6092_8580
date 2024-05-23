@@ -21,13 +21,40 @@ public class Cylinder extends RadialGeometry {
         super(radius);
         this.height = height;
     }
-    
+
     /**
-     * Override that returns null
+     * Computes the normal vector to the surface of the cylinder at a given point.
+     * If the point lies on the bottom cap of the cylinder, returns a downward-pointing normal vector.
+     * If the point lies on the top cap of the cylinder, returns an upward-pointing normal vector.
+     * Otherwise, returns a normal vector pointing in the direction of the radius of the cylinder at the given point.
+     *
+     * @param point The point on the surface of the cylinder
+     * @return The normal vector to the surface at the given point
      */
     @Override
-	public Vector getNormal(Point point) {
-	    // The normal vector to a plane is constant and can be pre-calculated
-	    return null;
-	}
+    public Vector getNormal(Point point) {
+        // Calculate the vector from the center of the cylinder to the test point
+        Vector vectorToPoint = point.subtract(new Point(0, 0, 0)); // Assuming the center of the cylinder is at (0, 0, 0)
+        
+        // Calculate the height of the point from the center of the cylinder
+        double pointHeight = vectorToPoint.dotProduct(new Vector(0, 1, 0)); // Assuming the cylinder is aligned with the y-axis
+        
+        // Check if the point is on the bottom cap of the cylinder
+        if (pointHeight <= 0) {
+            return new Vector(0, -1, 0); // Normal vector pointing downwards
+        }
+        
+        // Check if the point is on the top cap of the cylinder
+        if (pointHeight >= height) {
+            return new Vector(0, 1, 0); // Normal vector pointing upwards
+        }
+        
+        // Calculate the projection of the vector from the center to the point onto the xy-plane
+        Vector projectionXY = vectorToPoint.subtract(new Vector(0, pointHeight, 0));
+        
+        // Normalize the projection vector
+        Vector normalizedProjectionXY = projectionXY.normalize();
+        
+        return normalizedProjectionXY; // Return the normalized projection vector as the normal vector
+    }
 }
