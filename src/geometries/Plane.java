@@ -45,23 +45,28 @@ import primitives.Vector;
     }
 	
 
-/**
- * Returns the normal vector to the plane at a given point.
- *
- * @param point The point on the surface of the plane
- * @return The normal vector to the plane at the given point
- */
-@Override
-public Vector getNormal(Point point) {
-    // Calculate the vectors from the first point of the plane to the other two points
-    Vector vector1 = point2.subtract(point1);
-    Vector vector2 = point3.subtract(point1);
+    /**
+	 * new getNormal
+	 * @return vector normal
+	 */
+    public Vector getNormal() {
+	    // The normal vector to a plane is constant and can be pre-calculated
+	    return normal;
+	}
     
-    // Calculate the cross product of the two vectors to get the normal vector
-    Vector normal = vector1.crossProduct(vector2);
     
-    // Ensure the normal vector is normalized
-    return normal.normalize();
-}
+	/**
+	 * Returns the normal vector to the plane at a given point.
+	 *
+	 * @param point the point on the surface of the plane
+	 * @return the normal vector to the plane at the given point
+	 */
+	@Override
+	public Vector getNormal(Point point) {
+	    // The normal vector to a plane is constant and can be pre-calculated
+	    return normal;
+	}
+	
+
 
 }
