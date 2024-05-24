@@ -28,10 +28,10 @@ class PlaneTests {
 	    assertEquals("Constructing a plane with two identical points should throw an exception", exception.getMessage());
 
 	    // TC02: All three points are collinear
-	    point2 = new Point(1, 1, 1);
-	    point3 = new Point(2, 2, 2); // collinear with point1 and point2
+	   Point point4 = new Point(1, 1, 1);
+	   Point point5 = new Point(2, 2, 2); // collinear with point1 and point2
 	    // Ensure an IllegalArgumentException is thrown when constructing a plane with three collinear points
-	    exception = assertThrows(IllegalArgumentException.class, () -> new Plane(point1, point2, point3));
+	    exception = assertThrows(IllegalArgumentException.class, () -> new Plane(point1, point4, point5));
 	    // Check if the exception message is correct
 	    assertEquals("Constructing a plane with three collinear points should throw an exception", exception.getMessage());
 	}

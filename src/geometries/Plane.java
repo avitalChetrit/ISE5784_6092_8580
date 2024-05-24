@@ -2,6 +2,9 @@ package geometries;
 
 import primitives.Point;
 import primitives.Vector;
+import primitives.Ray;
+
+import geometries.Tube;
 
 /**
  * Class Plane represents a flat geometric surface in three-dimensional space.
@@ -54,32 +57,17 @@ import primitives.Vector;
 	    return normal;
 	}
     
-    
-	/**
-	 * Returns the normal vector to the plane at a given point.
-	 *
-	 * @param point the point on the surface of the plane
-	 * @return the normal vector to the plane at the given point
-	 */
-	@Override
-	public Vector getNormal(Point point) {
-	    // get the vector from the head of the axis to the given point 
-		vector v= point.subtract(axis.getHead());
-	    //calculate the parameter t along the axis direction
-		double t= alignZero(axis.getDirection.dotProduct(v);
-	   //check if the point is on the axis of the cylinder
-	   if(isZero(t)){
-		   //if the point is on the axis of the cylinder' return the normalized טובבבב
-		   return v. normlize();
-	    // calculate the closest point '0' on the axis to the given point
-	    Point 0=axis.getPoint(t);
-
-	//return thr normalized vector from the closest point on the axis to the given point
-	    retun point.substract(0).normalize;   
-
+    /**
+     * Returns the normal vector to the surface of the tube at a given point.
+     *
+     * @param point The point on the surface of the tube
+     * @return The normal vector to the surface at the given point
+     */
+    @Override
+    public Vector getNormal(Point point) {
+        return normal;
+    }
 	
-		
-	}
 	
 
 
