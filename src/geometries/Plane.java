@@ -63,8 +63,22 @@ import primitives.Vector;
 	 */
 	@Override
 	public Vector getNormal(Point point) {
-	    // The normal vector to a plane is constant and can be pre-calculated
-	    return normal;
+	    // get the vector from the head of the axis to the given point 
+		vector v= point.subtract(axis.getHead());
+	    //calculate the parameter t along the axis direction
+		double t= alignZero(axis.getDirection.dotProduct(v);
+	   //check if the point is on the axis of the cylinder
+	   if(isZero(t)){
+		   //if the point is on the axis of the cylinder' return the normalized טובבבב
+		   return v. normlize();
+	    // calculate the closest point '0' on the axis to the given point
+	    Point 0=axis.getPoint(t);
+
+	//return thr normalized vector from the closest point on the axis to the given point
+	    retun point.substract(0).normalize;   
+
+	
+		
 	}
 	
 
