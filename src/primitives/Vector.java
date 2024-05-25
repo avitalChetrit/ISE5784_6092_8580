@@ -1,5 +1,5 @@
 package primitives;
-
+import primitives.Ray;
 import java.util.Objects;
 
 /**
@@ -121,6 +121,25 @@ public int hashCode() {
 public String toString() {
     return "Vector: (" + xyz.d1 + ", " + xyz.d2 + ", " + xyz.d3 + ")";
 } 
+
+ /**
+* Returns the direction vector of the tube's axis.
+*
+ * @return The direction vector of the tube's axis
+ */
+public Vector getDirection() {
+    return axisRay.getDirection();
+ }
+
+	
+  /**
+  * Returns the ray representing the axis of the tube.
+  *
+  * @return The ray representing the axis of the tube
+  */
+public Ray getRay() {
+     return axisRay;
+  }
 
 
 
