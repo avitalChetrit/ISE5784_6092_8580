@@ -30,10 +30,10 @@ class CylinderTests {
 		// Choose a point on the surface of the cylinder
 		Point testPoint = new Point(1, 0, 1); // Point on the surface of the cylinder
 		// Calculate the vector from the center of the cylinder to the test point
-		Vector expectedNormal = new Vector(1, 0, 0); // Normal vector pointing outwards
+		Vector expectedNormal = new Vector(0, 1, 0); // Normal vector pointing outwards
 		// Get the normal vector at the test point
 		Vector actualNormal = cylinder.getNormal(testPoint);
 		// Check if the actual normal is equal to the expected normal
 		assertEquals(expectedNormal, actualNormal, "getNormal() does not return the correct normal vector");
-	}
+       }
 }

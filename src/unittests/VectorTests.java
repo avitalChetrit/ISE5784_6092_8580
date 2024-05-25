@@ -26,14 +26,14 @@ class VectorTests {
 
 	        // Create the vector
 	        Vector vector = new Vector(double3);
+	        Vector vector1 = new Vector(1.0,2.0,3.0);
 
 	        // Verify that the vector was created correctly
-	        assertEquals(double3, vector,"wrong constructor vector");
+	        assertEquals(vector1, vector,"wrong constructor vector");
 	        // =============== Boundary Values Tests ==================
 			 // TC11: test zero vector from constructor 
-			 assertThrows(IllegalArgumentException.class, () -> vector.equals(Double3.ZERO), //
-			 "ConstructorWithDouble3()  vector does not throw an exception");
-	    }
+	        assertThrows(IllegalArgumentException.class, () -> new Vector(Double3.ZERO), //
+	                "ConstructorWithDouble3() should throw an exception for zero vector");}
 
 	    @Test
 	    void testVectorConstructorWithComponents() {
@@ -46,14 +46,18 @@ class VectorTests {
 
 	        // Create the vector
 	        Vector vector = new Vector(x, y, z);
+	        Double3 d=new Double3(x,y,z);
+	        Vector vector1 = new Vector(d);
+
 
 	        // Verify that the vector was created correctly
-	        assertEquals(new Double3(x, y, z), vector,"wrong constructor vector");
+
+	        assertEquals(vector1, vector,"wrong constructor vector");
 	     // =============== Boundary Values Tests ==================
 			 // TC11: test zero vector from constructor 
-			 assertThrows(IllegalArgumentException.class, () -> vector.equals(Double3.ZERO), //
-			 "ConstructorWithComponents()  vector does not throw an exception");
-	    }
+	        assertThrows(IllegalArgumentException.class, () -> new Vector(Double3.ZERO), //
+	                "ConstructorWithComponents() should throw an exception for zero vector");}
+
 
 	/**
 	 * Test method for {@link primitives.Vector#add(primitives.Vector)}.

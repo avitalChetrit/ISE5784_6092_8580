@@ -39,16 +39,6 @@ public class Cylinder extends RadialGeometry {
         // Calculate the height of the point from the center of the cylinder
         double pointHeight = vectorToPoint.dotProduct(new Vector(0, 1, 0)); // Assuming the cylinder is aligned with the y-axis
         
-        // Check if the point is on the bottom cap of the cylinder
-        if (pointHeight <= 0) {
-            return new Vector(0, -1, 0); // Normal vector pointing downwards
-        }
-        
-        // Check if the point is on the top cap of the cylinder
-        if (pointHeight >= height) {
-            return new Vector(0, 1, 0); // Normal vector pointing upwards
-        }
-        
         // Calculate the projection of the vector from the center to the point onto the xy-plane
         Vector projectionXY = vectorToPoint.subtract(new Vector(0, pointHeight, 0));
         

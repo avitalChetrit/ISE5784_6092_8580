@@ -45,7 +45,7 @@ public Vector add(Vector v) {
  * @throws IllegalArgumentException In case of zero vector
  */
 public Vector scale(double num) {
-	return new Vector (this.xyz.scale(num));
+    return new Vector (this.xyz.scale(num));
 }
 /**
  * Calculate the dot product between two vectors

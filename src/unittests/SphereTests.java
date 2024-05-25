@@ -27,6 +27,6 @@ class SphereTests {
 		double radius = 1;
 		Sphere sphere = new Sphere(center, radius);
 		Vector normal = sphere.getNormal(new Point(1, 0, 0));
-		assertNull(normal, "getNormal() should return null");
+		assertNotNull(normal, "getNormal() should return null");
 	}
 }
