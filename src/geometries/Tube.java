@@ -26,6 +26,17 @@ public class Tube extends RadialGeometry {
         this.radius = radius;
         this.axisRay = axisRay;
     }
+
+	
+  /**
+  * Returns the ray representing the axis of the tube.
+  *
+  * @return The ray representing the axis of the tube
+  */
+public Ray getRay() {
+     return axisRay;
+  }
+
     
     /**
      * Returns the normal vector to the surface of the tube at a given point.
