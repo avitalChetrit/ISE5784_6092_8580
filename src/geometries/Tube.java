@@ -13,7 +13,7 @@ public class Tube extends RadialGeometry {
 	/** Radius of the tube */
     private final double radius;
     /**  Axis ray of the tube */
-    private final Ray axisRay;
+    public final Ray axisRay;
     
     /**
      * Constructs a Tube object with the given radius and axis ray.
@@ -28,14 +28,14 @@ public class Tube extends RadialGeometry {
     }
 
 	
-  /**
-  * Returns the ray representing the axis of the tube.
-  *
-  * @return The ray representing the axis of the tube
-  */
-public Ray getRay() {
-     return axisRay;
-  }
+	 /**
+	  * Returns the ray representing the axis of the tube.
+	  *
+	  * @return The ray representing the axis of the tube
+	  */
+	public Ray getRay() {
+	     return axisRay;
+	  }
 
     
     /**

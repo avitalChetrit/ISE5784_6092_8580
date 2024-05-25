@@ -27,7 +27,7 @@ public class Ray {
 	public Vector getDirection() {
 		return direction;
 	}
-	
+
 	
 	 @Override
 	 public boolean equals(Object obj) {

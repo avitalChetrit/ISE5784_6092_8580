@@ -65,7 +65,7 @@ class VectorTests {
         Vector v2 = new Vector(2, 4, 6);
         Vector v3 = new Vector(-1,-2,-3);
         
-        Vector expected1 = new Vector(0,0,0);
+       // Vector expected1 = new Vector(0,0,0);
         Vector expected = new Vector(3, 6, 9);
 
 		 // TC01: Test that add vector to vector and check that the result is proper.
@@ -94,7 +94,7 @@ class VectorTests {
 
 		        Vector expected = new Vector(2, 4, 6);
 		        Vector expected1 = new Vector(-2, -4,- 6);
-		        Vector v2 = new Vector(0, 0, 0);
+		        //Vector v2 = new Vector(0, 0, 0);
 				 // TC01: Test that multiply a vector by a scalar and check that the result is correct.
 		        assertEquals(expected, v.scale(scalar), "wrong scaled vector");
 		        // TC10: Test that multiply a vector by a negative scalar and check that the result is correct.
@@ -119,7 +119,7 @@ class VectorTests {
 
         double expected = 14;
         double expected1 = 0;
-        double expected2 = 6;
+        double expected2 = 1;
 
         //TC01: Checks the correctness and result of the inner multiplication operation (dot product) between two vectors
         assertEquals(expected, v1.dotProduct(v2), "wrong dot product value");

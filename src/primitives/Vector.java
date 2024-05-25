@@ -1,6 +1,7 @@
 package primitives;
-import primitives.Ray;
+import geometries.Tube;
 import java.util.Objects;
+import primitives.Ray;
 
 /**
  * Vector class represents a vector in 3D space
@@ -43,7 +44,7 @@ public Vector add(Vector v) {
  * @return New scaled vector
  * @throws IllegalArgumentException In case of zero vector
  */
-public Vector scale(int num) {
+public Vector scale(double num) {
 	return new Vector (this.xyz.scale(num));
 }
 /**
@@ -124,14 +125,6 @@ public String toString() {
 
 
 	
- /**
-* Returns the direction vector of the tube's axis.
-*
- * @return The direction vector of the tube's axis
- */
-public Vector getDirection() {
-    return axisRay.getDirection();
- }
-
+ 
 
 }
