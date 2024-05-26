@@ -22,7 +22,7 @@ public class Ray {
 		direction = vector.normalize(); // Ensure vector is normalized
     }	
 	public Point getHead() {
-		return head;
+	  return head;
 	}
 	public Vector getDirection() {
 		return direction;
