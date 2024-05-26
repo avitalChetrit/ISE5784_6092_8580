@@ -14,12 +14,12 @@ public class Cylinder extends RadialGeometry {
 	/**
 	 * Constructs a Cylinder object with the given radius and height.
 	 *
-	 * @param radius the radius of the cylinder
-	 * @param height the height of the cylinder
+	 * @param radius  the radius of the cylinder
+	 * @param height1 the height of the cylinder
 	 */
-	public Cylinder(double radius, double height) {
+	public Cylinder(double radius, double height1) {
 		super(radius);
-		this.height = height;
+		height = height1;
 	}
 
 	/**

@@ -5,17 +5,25 @@ package unittests.primitives;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import primitives.Point;
 import primitives.Vector;
 import primitives.Double3;
 
 import org.junit.jupiter.api.Test;
 
 /**
+ * Unit tests for primitives.Vector class. This class tests the constructors and
+ * methods of the Vector class. It includes equivalence partitions and boundary
+ * value tests.
  * 
+ * @author tal and avital
  */
 class VectorTests {
 
+	/**
+	 * Test method for {@link primitives.Vector#Vector(primitives.Double3)}. This
+	 * test checks the constructor that accepts a Double3 object. It verifies
+	 * correct vector creation and ensures that zero vectors throw an exception.
+	 */
 	@Test
 	void testVectorConstructorWithDouble3() {
 		// ============Equivalence Partitions Tests ==============
@@ -35,6 +43,12 @@ class VectorTests {
 				"ConstructorWithDouble3() should throw an exception for zero vector");
 	}
 
+	/**
+	 * Test method for {@link primitives.Vector#Vector(double, double, double)}.
+	 * This test checks the constructor that accepts individual x, y, and z
+	 * components. It verifies correct vector creation and ensures that zero vectors
+	 * throw an exception.
+	 */
 	@Test
 	void testVectorConstructorWithComponents() {
 		// ============Equivalence Partitions Tests ==============

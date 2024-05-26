@@ -2,14 +2,10 @@ package geometries;
 
 import primitives.Point;
 import primitives.Vector;
-import primitives.Ray;
-
-import geometries.Tube;
 
 /**
  * Class Plane represents a flat geometric surface in three-dimensional space.
  */
-
 public class Plane implements Geometry {
 
 	/** point in plane */
@@ -31,8 +27,9 @@ public class Plane implements Geometry {
 	public Plane(Point point1, Point point2, Point point3) {
 		// Calculate the normal vector based on the given points
 		// Implementation pending
-		this.point = point1; // Store one of the points as the reference point
-		this.normal = null; // TODO Normal vector calculation pending
+		point = point1; // Store one of the points as the reference point
+		normal = (point2.subtract(point1)).crossProduct(point3.subtract(point1)).normalize(); // Normal vector
+																								// calculation pending
 	}
 
 	/**
@@ -42,10 +39,10 @@ public class Plane implements Geometry {
 	 * @param normal1 the normal vector to the plane
 	 */
 	public Plane(Point point1, Vector normal1) {
-		this.point = point1;
+		point = point1;
 
 		// Ensure the normal vector is normalized
-		this.normal = normal1.normalize();
+		normal = normal1.normalize();
 	}
 
 	/**

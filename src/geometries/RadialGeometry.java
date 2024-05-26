@@ -10,7 +10,7 @@ public abstract class RadialGeometry implements Geometry {
 	 * Radius of the geometric body
 	 */
 	protected final double radius;
-	
+
 	/**
 	 * Radius squared of the geometric body
 	 */
@@ -23,6 +23,6 @@ public abstract class RadialGeometry implements Geometry {
 	 */
 	public RadialGeometry(double radius1) {
 		radius = radius1;
-		radiusSquared=radius1*radius1;
+		radiusSquared = radius1 * radius1;
 	}
 }

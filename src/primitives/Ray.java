@@ -1,7 +1,7 @@
 package primitives;
 
 /**
- *  Ray class represents a point and a direction vector in 3D space
+ * Ray class represents a point and a direction vector in 3D space
  * 
  * @author Avital and Tal
  */
@@ -22,10 +22,20 @@ public class Ray {
 		direction = vector.normalize(); // Ensure vector is normalized
 	}
 
+	/**
+	 * Returns the head point of the vector.
+	 * 
+	 * @return the head point of the vector
+	 */
 	public Point getHead() {
 		return head;
 	}
 
+	/**
+	 * Returns the direction vector.
+	 * 
+	 * @return the direction vector
+	 */
 	public Vector getDirection() {
 		return direction;
 	}
