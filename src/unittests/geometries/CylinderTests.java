@@ -1,7 +1,7 @@
 /**
  * 
  */
-package unittests;
+package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,9 +12,10 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
-* Unit tests for geometries.Cylinder class
-* @author Tal and Avital
-*/
+ * Unit tests for geometries.Cylinder class
+ * 
+ * @author Tal and Avital
+ */
 class CylinderTests {
 
 	/**
@@ -35,5 +36,5 @@ class CylinderTests {
 		Vector actualNormal = cylinder.getNormal(testPoint);
 		// Check if the actual normal is equal to the expected normal
 		assertEquals(expectedNormal, actualNormal, "getNormal() does not return the correct normal vector");
-       }
+	}
 }
