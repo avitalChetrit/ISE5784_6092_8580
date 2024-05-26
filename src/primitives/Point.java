@@ -14,9 +14,9 @@ public class Point {
 	 * Constructor that accepts three double values representing the coordinates of
 	 * the point
 	 * 
-	 * @param x X coordinate value
-	 * @param y Y coordinate value
-	 * @param z Z coordinate value
+	 * @param x  coordinate value
+	 * @param y  coordinate value
+	 * @param z  coordinate value
 	 */
 	public Point(double x, double y, double z) {
 		this.xyz = new Double3(x, y, z);
@@ -26,7 +26,7 @@ public class Point {
 	 * Constructor that accepts a Double3 object representing the coordinates of the
 	 * point
 	 * 
-	 * @param xyz1 Double3 object representing the coordinates
+	 * @param xyz1 representing the coordinates
 	 */
 	public Point(Double3 xyz1) {
 		this.xyz = xyz1;
@@ -61,8 +61,10 @@ public class Point {
 	 * @return The squared distance between the two points
 	 */
 	public double distanceSquared(Point p) {
-		return ((xyz.d1 - p.xyz.d1) * (xyz.d1 - p.xyz.d1) + (xyz.d2 - p.xyz.d2) * (xyz.d2 - p.xyz.d2)
-				+ (xyz.d3 - p.xyz.d3) * (xyz.d3 - p.xyz.d3));
+		double deltaX=(xyz.d1 - p.xyz.d1);
+		double deltaY=(xyz.d2 - p.xyz.d2);
+		double deltaZ=(xyz.d3 - p.xyz.d3);
+		return (deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 	}
 
 	/**

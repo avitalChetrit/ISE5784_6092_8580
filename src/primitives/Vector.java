@@ -22,9 +22,9 @@ public class Vector extends Point {
 	 * Constructor that accepts a Double3 object representing the components of the
 	 * vector
 	 * 
-	 * @param x Double3 object representing the components
-	 * @param y Double3 object representing the components
-	 * @param z Double3 object representing the components
+	 * @param x representing the components
+	 * @param y representing the components
+	 * @param z representing the components
 	 * @throws IllegalArgumentException In case of zero vector
 	 */
 	public Vector(double x, double y, double z) {

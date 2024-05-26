@@ -1,7 +1,7 @@
 package primitives;
 
 /**
- * TODO
+ *  Ray class represents a point and a direction vector in 3D space
  * 
  * @author Avital and Tal
  */
