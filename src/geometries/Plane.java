@@ -1,7 +1,11 @@
 package geometries;
 
+
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class Plane represents a flat geometric surface in three-dimensional space.
@@ -65,5 +69,13 @@ public class Plane implements Geometry {
 	public Vector getNormal(Point point) {
 		return normal;
 	}
+    
 
+	@Override
+	public List<Point> findIntsersections(Ray ray) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+  
+   
 }
