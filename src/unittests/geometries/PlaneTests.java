@@ -5,6 +5,7 @@ package unittests.geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 import geometries.Plane;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +52,16 @@ class PlaneTests {
 		assertTrue(dotProduct == 0, "Normal vector is not perpendicular to the plane");
 		dotProduct = normal.dotProduct(vector2);
 		assertTrue(dotProduct == 0, "Normal vector is not perpendicular to the plane");
+	}
+	
+	/**
+	 * TO-DO
+	 * @param ray
+	 */
+	@Test
+	void findIntsersections(Ray ray)
+	{
+		
 	}
 
 }

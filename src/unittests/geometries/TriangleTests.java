@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import geometries.Triangle;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -31,5 +32,13 @@ class TriangleTests {
 
 		// =============== Boundary Values Tests ==================
 		// No boundary values tests for this function
+	}
+	
+	/**
+	 * TO-DO
+	 * @param ray
+	 */
+	@Test
+	void findIntsersections(Ray ray){
 	}
 }

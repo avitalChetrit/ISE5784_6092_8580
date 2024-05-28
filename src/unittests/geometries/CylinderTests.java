@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import geometries.Cylinder;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -36,5 +37,13 @@ class CylinderTests {
 		Vector actualNormal = cylinder.getNormal(testPoint);
 		// Check if the actual normal is equal to the expected normal
 		assertEquals(expectedNormal, actualNormal, "getNormal() does not return the correct normal vector");
+	}
+	
+	/**
+	 * TO-DO
+	 * @param ray
+	 */
+	@Test
+	void findIntsersections(Ray ray){
 	}
 }
