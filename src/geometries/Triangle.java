@@ -3,6 +3,8 @@ import primitives.Ray;
 import java.util.List;
 import primitives.Point;
 import java.util.ArrayList;
+import static primitives.Util.*;
+
 
 /**
  * Class Triangle represents a triangle in three-dimensional space.

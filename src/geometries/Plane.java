@@ -4,8 +4,10 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
+import static primitives.Util.*;
+
 
 /**
  * Class Plane represents a flat geometric surface in three-dimensional space.
