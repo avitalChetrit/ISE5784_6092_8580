@@ -9,7 +9,8 @@ public class Point {
 
 	/** Zero triad (0,0,0) */
 	public static final Point ZERO = new Point(0, 0, 0);
-
+	/** getPoint */
+	
 	/**
 	 * Constructor that accepts three double values representing the coordinates of
 	 * the point

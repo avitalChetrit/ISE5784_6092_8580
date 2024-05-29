@@ -1,5 +1,7 @@
 package geometries;
 
+import primitives.Point;
+
 /**
  * Abstract class RadialGeometry implements the Geometry interface and
  * represents a geometric body with a radius.  
@@ -25,4 +27,11 @@ public abstract class RadialGeometry implements Geometry {
 		radius = radius1;
 		radiusSquared = radius1 * radius1;
 	}
+	/**
+	 * getRadius
+	 */
+	public double getRadius() {
+		
+		return radius;
+		}
 }
