@@ -27,11 +27,4 @@ public abstract class RadialGeometry implements Geometry {
 		radius = radius1;
 		radiusSquared = radius1 * radius1;
 	}
-	/**
-	 * getRadius
-	 */
-	public double getRadius() {
-		
-		return radius;
-		}
 }

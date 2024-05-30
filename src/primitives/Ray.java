@@ -1,4 +1,5 @@
 package primitives;
+
 import primitives.Util;
 
 /**
@@ -40,18 +41,18 @@ public class Ray {
 	public Vector getDirection() {
 		return direction;
 	}
+
 	/**
 	 * Computes a point on the ray at a given distance from the ray's origin.
 	 *
 	 * @param t The distance from the ray's origin to the computed point.
-	 * @return The computed point on the ray at the specified distance from its origin.
-	 *         If t is zero, the method returns the ray's origin point.
+	 * @return The computed point on the ray at the specified distance from its
+	 *         origin. If t is zero, the method returns the ray's origin point.
 	 */
 	public Point getPoint(double t) {
-		if (Util.isZero(t))
-			return head;
-		return (head.add(direction.scale(t)));
+		return Util.isZero(t) ? head : head.add(direction.scale(t));
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -63,6 +64,5 @@ public class Ray {
 	public String toString() {
 		return "Ray:" + head + "->" + direction;
 	}
-	
 
 }

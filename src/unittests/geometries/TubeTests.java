@@ -5,9 +5,7 @@ package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import geometries.Tube;
 import primitives.Point;
 import primitives.Vector;
@@ -25,7 +23,7 @@ class TubeTests {
 	 */
 	@Test
 	void testGetNormal() {
-		// ============ Partitions Tests ==============
+		// ============ Equivalence Partitions Tests ==============
 		// TC01: Test for a general case
 		double radius = 1;
 		Ray axisRay = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)); // Tube along the Z-axis
@@ -36,18 +34,19 @@ class TubeTests {
 		Vector expectedNormal = new Vector(1, 0, 0); // Normal vector pointing outwards
 		// Get the normal vector at the test point
 		Vector actualNormal = tube.getNormal(testPoint);
-		// TC10 Check if the actual normal is equal to the expected normal
 		assertEquals(expectedNormal, actualNormal, "getNormal() does not return the correct normal vector");
 	}
-	
-	
+
 	/**
 	 * TO-DO
+	 * 
 	 * @param ray
 	 */
 	@Test
-	List<Point> findIntsersections(Ray ray){
-		return null;
-	} 
+	@Disabled
+	void testFindIntersections() {
+		// TODO
+		fail("not yet implemented");
+	}
 
 }

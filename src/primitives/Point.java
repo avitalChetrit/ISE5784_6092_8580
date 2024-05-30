@@ -9,8 +9,9 @@ public class Point {
 
 	/** Zero triad (0,0,0) */
 	public static final Point ZERO = new Point(0, 0, 0);
+
 	/** getPoint */
-	
+
 	/**
 	 * Constructor that accepts three double values representing the coordinates of
 	 * the point
@@ -40,7 +41,6 @@ public class Point {
 	 * @param other The other point
 	 * @return Vector from 'other' to 'this' point
 	 */
-
 	public Vector subtract(Point other) {
 		return new Vector(xyz.subtract(other.xyz));
 	}

@@ -5,10 +5,10 @@ package primitives;
  */
 public class Vector extends Point {
 	/**
-	 * Constructor that accepts three double values representing the components of
+	 * Constructor that accepts three double values representing the coordinate values of
 	 * the vector
 	 * 
-	 * @param xyz1 component value
+	 * @param xyz1 triad of coordinate values
 	 * @throws IllegalArgumentException In case of zero vector
 	 */
 	public Vector(Double3 xyz1) {
@@ -19,12 +19,11 @@ public class Vector extends Point {
 	}
 
 	/**
-	 * Constructor that accepts a Double3 object representing the components of the
-	 * vector
+	 * Constructor that accepts three coordinate values
 	 * 
-	 * @param x representing the components
-	 * @param y representing the components
-	 * @param z representing the components
+	 * @param x coordinate value
+	 * @param y coordinate value
+	 * @param z coordinate value
 	 * @throws IllegalArgumentException In case of zero vector
 	 */
 	public Vector(double x, double y, double z) {

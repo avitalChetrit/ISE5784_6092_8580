@@ -14,52 +14,50 @@ import primitives.Ray;
  */
 public class Geometries implements Intersectable {
 
-    /** List to hold the geometric shapes */
-    private final List<Intersectable> geometries = new LinkedList<>();
+	/** List to hold the geometric shapes */
+	private final List<Intersectable> geometries = new LinkedList<>();
 
-    /**
-     * Default constructor for creating an empty Geometries object.
-     */
-    public Geometries() {
-    }
+	/**
+	 * Default constructor for creating an empty Geometries object.
+	 */
+	public Geometries() {
+	}
 
-    /**
-     * Constructor for creating a Geometries object with specified geometries.
-     *
-     * @param geometries The intersectable geometries to add to this collection.
-     */
-    public Geometries(Intersectable... geometries) {
-        add(geometries);
-    }
+	/**
+	 * Constructor for creating a Geometries object with specified geometries.
+	 *
+	 * @param geometries The intersectable geometries to add to this collection.
+	 */
+	public Geometries(Intersectable... geometries) {
+		add(geometries);
+	}
 
-    /**
-     * Adds one or more intersectable geometries to the collection.
-     *
-     * @param geometries The intersectable geometries to add.
-     */
-    public void add(Intersectable... geometries) {
-        for (Intersectable geometry : geometries) {
-            this.geometries.add(geometry);
-        }
-    }
+	/**
+	 * Adds one or more intersectable geometries to the collection.
+	 *
+	 * @param geometries The intersectable geometries to add.
+	 */
+	public void add(Intersectable... geometries) {
+		for (Intersectable geometry : geometries) {
+			this.geometries.add(geometry);
+		}
+	}
 
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		List<Point> intersections = null;
 
-    @Override
-    public List<Point> findIntsersections(Ray ray) {
-        List<Point> intersections = null;
+		for (Intersectable geometry : geometries) {
+			List<Point> geometryIntersections = geometry.findIntersections(ray);
+			if (geometryIntersections != null) {
+				if (intersections == null) {
+					intersections = new LinkedList<>();
+				}
+				intersections.addAll(geometryIntersections);
+			}
+		}
 
-        for (Intersectable geometry : geometries) {
-            List<Point> geometryIntersections = geometry.findIntsersections(ray);
-            if (geometryIntersections != null) {
-                if (intersections == null) {
-                    intersections = new LinkedList<>();
-                }
-                intersections.addAll(geometryIntersections);
-            }
-        }
-
-        return intersections;
-    }
+		return intersections;
+	}
 
 }
-
