@@ -9,25 +9,40 @@ import primitives.Ray;
  * Geometries class to represent a collection of geometric shapes
  * Implements the Composite design pattern
  */
+/**
+ * Class representing a collection of geometric shapes that are intersectable.
+ */
 public class Geometries implements Intersectable {
-    // List to hold the geometric shapes
+
+    /** List to hold the geometric shapes */
     private final List<Intersectable> geometries = new LinkedList<>();
 
-    // Default constructor
+    /**
+     * Default constructor for creating an empty Geometries object.
+     */
     public Geometries() {
     }
 
-    // Constructor with geometries
+    /**
+     * Constructor for creating a Geometries object with specified geometries.
+     *
+     * @param geometries The intersectable geometries to add to this collection.
+     */
     public Geometries(Intersectable... geometries) {
         add(geometries);
     }
 
-    // Method to add geometries to the list
+    /**
+     * Adds one or more intersectable geometries to the collection.
+     *
+     * @param geometries The intersectable geometries to add.
+     */
     public void add(Intersectable... geometries) {
         for (Intersectable geometry : geometries) {
             this.geometries.add(geometry);
         }
     }
+
 
     @Override
     public List<Point> findIntsersections(Ray ray) {

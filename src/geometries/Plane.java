@@ -3,11 +3,11 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
-//import java.util.ArrayList;
-import java.util.List;
-import static primitives.Util.*;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -90,7 +90,7 @@ public class Plane implements Geometry {
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
 	    // Initialize an empty list to store the intersection points
-	    List<Point> intersections = new ArrayList<>();
+        List<Point> intersections = null;
 
 	    // Calculate the direction vector of the plane
 	    Vector planeNormal = getNormal();
@@ -117,6 +117,7 @@ public class Plane implements Geometry {
 
 	    // Calculate the intersection point
 	    Point intersectionPoint = ray.getPoint(t);
+	    intersections = new ArrayList<>();
 
 	    // Add the intersection point to the list
 	    intersections.add(intersectionPoint);

@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.*;
 
 /**
@@ -33,11 +35,17 @@ public class Tube extends RadialGeometry {
 		double t = axisRay.getDirection().dotProduct(point.subtract(axisRay.getHead()));
 
 		// Calculate the closest point 'O' on the axis to the given point
-		Point o = axisRay.getHead().add(axisRay.getDirection().scale(t));
+		Point o = axisRay.getPoint(t);
 
 		// Return the normalized vector from the closest point on the axis to the given
 		// point
 		return point.subtract(o).normalize();
+	}
+
+	@Override
+	public List<Point> findIntsersections(Ray ray) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

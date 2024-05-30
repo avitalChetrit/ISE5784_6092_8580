@@ -5,6 +5,8 @@ package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import geometries.Tube;
 import primitives.Point;
@@ -44,7 +46,8 @@ class TubeTests {
 	 * @param ray
 	 */
 	@Test
-	void findIntsersections(Ray ray){
-	}
+	List<Point> findIntsersections(Ray ray){
+		return null;
+	} 
 
 }
