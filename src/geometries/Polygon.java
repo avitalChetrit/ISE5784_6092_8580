@@ -87,8 +87,9 @@ public class Polygon implements Geometry {
 		return plane.getNormal();
 	}
 
+
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<Point> findIntsersections(Ray ray) {
 		// TODO Auto-generated method stub
 		return null;
 	}

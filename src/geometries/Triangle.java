@@ -28,8 +28,8 @@ public class Triangle extends Polygon {
 	 * @return a list containing the intersection point(s) if exists, null otherwise
 	 */
 	@Override
-	public List<Point> findIntersections(Ray ray) {
-		List<Point> intersections = plane.findIntersections(ray);
+	public List<Point> findIntsersections(Ray ray) {
+		List<Point> intersections = plane.findIntsersections(ray);
 		// No intersection with the plane, return empty list
 		if (intersections == null)
 			return null;

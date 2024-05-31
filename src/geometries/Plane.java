@@ -86,7 +86,7 @@ public class Plane implements Geometry {
 	 *         null
 	 */
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<Point> findIntsersections(Ray ray) {
 		// Initialize an empty list to store the intersection points
 		List<Point> intersections = null;
 
