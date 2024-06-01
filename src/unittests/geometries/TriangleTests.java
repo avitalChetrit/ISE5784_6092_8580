@@ -43,46 +43,34 @@ class TriangleTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// TC01: Ray intersects the triangle at a point inside the triangle
-		Triangle triangle = new Triangle(new Point(1, 1, 1), new Point(2, 1, 1), new Point(1, 2, 1)); // Triangle with
+		Triangle triangle = new Triangle(new Point(2,0,0), new Point(0,2,0), new Point(0,-2,0)); // Triangle with
 																										// vertices at
-																										// (1,1,1),
-																										// (2,1,1), and
-																										// (1,2,1)
-		Ray rayInside = new Ray(new Point(1.5, 1.5, 0), new Vector(0, 0, 1)); // Ray from inside the triangle
+																										// (2,0,0),
+																										// (0,2,0), and
+																										// (0,-2,0)
+		Ray rayInside = new Ray(new Point(0,0,-2), new Vector(1,0,2)); // Ray from inside the triangle
 		List<Point> resultInside = triangle.findIntsersections(rayInside);
 		assertEquals(1, resultInside.size(), "Wrong number of intersection points");
-		assertTrue(resultInside.contains(new Point(1.5, 1.5, 1)), "Ray intersects triangle at wrong point");
+		assertEquals(new Point(1,0,0), resultInside.getFirst(), "Ray intersects triangle at wrong point");
 
-		// TC02: Ray intersects the triangle at a point on the edge of the triangle
-		Ray rayEdge = new Ray(new Point(1, 1, 0), new Vector(0, 0, 1)); // Ray along the edge of the triangle
-		List<Point> resultEdge = triangle.findIntsersections(rayEdge);
-		assertEquals(1, resultEdge.size(), "Wrong number of intersection points");
-		assertTrue(resultEdge.contains(new Point(1, 1, 1)), "Ray intersects triangle edge at wrong point");
+		// TC02: Ray outside the triangle against edge (0) 
+		assertNull(triangle.findIntsersections(new Ray(new Point(-1, 0, -1), new Vector(0, 0, 1))), "Wrong number of intersection points");
 
-		// TC03: Ray intersects the triangle at a point on the vertex of the triangle
-		Ray rayVertex = new Ray(new Point(1, 2, 0), new Vector(0, 0, 1)); // Ray through one of the triangle's vertices
-		List<Point> resultVertex = triangle.findIntsersections(rayVertex);
-		assertEquals(1, resultVertex.size(), "Wrong number of intersection points");
-		assertTrue(resultVertex.contains(new Point(1, 2, 1)), "Ray intersects triangle vertex at wrong point");
-
+		// TC03:  Ray outside the triangle against vertex (0)
+		assertNull(triangle.findIntsersections(new Ray(new Point(3, 0, -1), new Vector(0, 0, 1))), "Wrong number of intersection points");
+		
+		
 		// =============== Boundary Values Tests ==================
 
-		// TC04: Ray intersects the triangle at a point outside the triangle
-		Ray rayOutside = new Ray(new Point(1, 3, 0), new Vector(0, 0, 1)); // Ray outside the triangle
-		List<Point> resultOutside = triangle.findIntsersections(rayOutside);
-		assertEquals(0, resultOutside.size(), "Intersection with triangle when ray is outside");
+		// TC04: Ray start on a edge of triangle(0)
+		assertNull(triangle.findIntsersections(new Ray(new Point(0,0,-1), new Vector(0,0,1))), "Ray start on a edge of triangle");
 
-		// TC05: Ray is parallel to the triangle's plane
-		Ray rayParallel = new Ray(new Point(1, 1, 0), new Vector(1, 1, 0)); // Ray parallel to triangle's plane
-		List<Point> resultParallel = triangle.findIntsersections(rayParallel);
-		assertEquals(0, resultParallel.size(), "Intersection with triangle when ray is parallel");
+		// TC05: Ray start on the extension of an edge of triangle(0)
+		assertNull(triangle.findIntsersections(new Ray(new Point(2,0,-1), new Vector(0,0,1))), "Ray start on the extension of an edge of triangle");
 
-		// TC06: Ray is orthogonal to the triangle's plane
-		Ray rayOrthogonal = new Ray(new Point(1, 1, 0), new Vector(0, 0, 1)); // Ray orthogonal to triangle's plane
-		List<Point> resultOrthogonal = triangle.findIntsersections(rayOrthogonal);
-		assertEquals(1, resultOrthogonal.size(), "No intersection with triangle when ray is orthogonal");
-		assertTrue(resultOrthogonal.contains(new Point(1, 1, 1)),
-				"Ray orthogonal to triangle's plane intersects at wrong point");
+		// TC06: Ray start on a vertex of triangle
+		assertNull(triangle.findIntsersections(new Ray(new Point(0,3,-1), new Vector(0,0,1))), "Ray start on a vertex of triangle");
+
 	}
 
 }
