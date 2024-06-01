@@ -2,7 +2,7 @@ package geometries;
 
 import primitives.Ray;
 import primitives.Vector;
-
+import primitives.Util;
 import java.util.List;
 import primitives.Point;
 
@@ -21,33 +21,38 @@ public class Triangle extends Polygon {
 		super(point1, point2, point3); // Calls the constructor of the superclass Polygon
 	}
 
-	/**
-	 * Finds the intersection points between a ray and the triangle.
-	 * 
-	 * @param ray the ray to intersect with the triangle
-	 * @return a list containing the intersection point(s) if exists, null otherwise
-	 */
-	@Override
-	public List<Point> findIntsersections(Ray ray) {
-		List<Point> intersections = plane.findIntsersections(ray);
-		// No intersection with the plane, return empty list
-		if (intersections == null)
-			return null;
+	
+	 @Override
+	    public List<Point> findIntsersections(Ray ray) {
+		 
+         // we take three vectors from the same starting point and connect them to the triangle's vertices
+         // we get a pyramid
 
-		// Check if the intersection points are inside the triangle
-		Vector v0 = intersections.getFirst().subtract(vertices.get(0));
-		Vector v1 = vertices.get(1).subtract(vertices.get(0));
-		Vector v2 = vertices.get(2).subtract(vertices.get(0));
+		  //Check if the ray intersect the plane.
+         if (plane.findIntsersections(ray) == null) {
+             return null;
+         }
+         // the three vectors from the same starting point
+         Vector v1 = vertices.get(0).subtract(ray.getHead());
+         Vector v2 = vertices.get(1).subtract(ray.getHead());
+         Vector v3 = vertices.get(2).subtract(ray.getHead());
 
-		// Calculate normalized cross products
-		Vector n1 = v0.crossProduct(v1).normalize();
-		Vector n2 = v1.crossProduct(v2).normalize();
-		Vector n3 = v2.crossProduct(v0).normalize();
 
-//	        // Check if all dot products have the same sign
-//	        if (Util.isZero(n1.dotProduct(n2)) && Util.isZero(n1.dotProduct(n3)) && Util.isZero(n2.dotProduct(n3)))
-//	            intersections.add(intersection);
+         //we want to get a normal for each pyramid's face so we do the crossProduct
+         Vector n1 = v1.crossProduct(v2).normalize();
+         Vector n2 = v2.crossProduct(v3).normalize();
+         Vector n3 = v3.crossProduct(v1).normalize();
 
-		return intersections.isEmpty() ? null : intersections;
-	}
+         // the ray's vector  - it has the same starting point as the three vectors from above
+         Vector v = ray.getDirection();
+
+         // check if the vector's direction (from Subtraction between the ray's vector to each vector from above) are equal
+         // if not - there is no intersection point between the ray and the triangle
+         if ((Util.alignZero(v.dotProduct(n1)) > 0 && Util.alignZero(v.dotProduct(n2)) > 0 && Util.alignZero(v.dotProduct(n3)) > 0) ||
+                 (Util.alignZero(v.dotProduct(n1)) < 0 && Util.alignZero(v.dotProduct(n2)) < 0 && Util.alignZero(v.dotProduct(n3)) < 0)){
+
+             return plane.findIntsersections(ray);
+         }
+         return null;
+	 }
 }
