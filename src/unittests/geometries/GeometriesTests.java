@@ -6,8 +6,16 @@ import geometries.*;
 import primitives.*;
 import java.util.List;
 
+/**
+ * A class to test the {@link Geometries} class.
+ */
 class GeometriesTests {
 
+    /**
+     * Test case for {@link Geometries#findIntsersections(Ray)}.
+     * <p>
+     * Tests the intersection of a ray with a collection of geometries.
+     */
 	@Test
 	void testfindIntsersections() {
 		Sphere sphere2 = new Sphere(new Point(4, 0, 0), 4);
@@ -23,6 +31,7 @@ class GeometriesTests {
 		//assertNotNull(intersections, "EP: Some shapes intersect");
 		assertEquals(3, intersections.size(), "EP: Some shapes intersect");
 
+		
 				
 		// =============== Boundary Values Tests ==================
 

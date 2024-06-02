@@ -38,14 +38,15 @@ class TubeTests {
 	}
 
 	/**
-	 * TO-DO
+	 * Tests the {@link geometries.Tube#findIntersections()} method.
 	 * 
-	 * @param ray
+	 * <p>This test is currently disabled and will fail with the message "not yet implemented".
+	 * It serves as a placeholder for future implementation.
 	 */
 	@Test
 	@Disabled
-	void testFindIntersections() {
-		// TODO
+	void testfindIntersections() {
+		
 		fail("not yet implemented");
 	}
 

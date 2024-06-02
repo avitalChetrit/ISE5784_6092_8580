@@ -36,8 +36,19 @@ class SphereTests {
 		assertNotNull(normal, "getNormal() should return null");
 	}
 
+	/**
+	 * Represents a point (0, 0, 1) in 3D space.
+	 */
 	private final Point p001 = new Point(0, 0, 1);
+
+	/**
+	 * Represents a point (1, 0, 0) in 3D space.
+	 */
 	private final Point p100 = new Point(1, 0, 0);
+
+	/**
+	 * Represents a vector (0, 0, 1) in 3D space.
+	 */
 	private final Vector v001 = new Vector(0, 0, 1);
 
 	/**

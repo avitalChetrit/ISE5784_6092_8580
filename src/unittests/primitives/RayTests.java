@@ -8,18 +8,24 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+/**
+ * A test class for the {@link Ray} class.
+ */
 class RayTests {
 	@Test
 
 	/**
-	 * Tests the {@link Ray#getPoint(double)} method. Tests include:
-	 * <ul>
-	 * <li>Testing for negative distance</li>
-	 * <li>Testing for positive distance</li>
-	 * <li>Testing for zero distance</li>
-	 * </ul>
-	 */
-	void testGetPoint() {
+     * Tests the {@link Ray#getPoint(double)} method.
+     * <p>
+     * This method tests the {@link Ray#getPoint(double)} method of the {@link Ray} class.
+     * It includes equivalence partitions tests and boundary values tests for:
+     * <ul>
+     * <li>Negative distance</li>
+     * <li>Positive distance</li>
+     * <li>Zero distance</li>
+     * </ul>
+     */
+	void testgetPoint() {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Test 01 for negative distance

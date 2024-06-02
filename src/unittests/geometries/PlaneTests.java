@@ -17,7 +17,7 @@ import java.util.List;
  * @author Tal and Avital
  */
 class PlaneTests {
-
+	/** A small constant for floating-point comparison precision. */
 	private static final double DELTA = 0.00001;
 
 	/**
@@ -72,7 +72,7 @@ class PlaneTests {
 		Ray ray1 = new Ray(new Point(0,0,0), new Vector(1,1,0));
 		List<Point> result1 = plane.findIntsersections(ray1);
 		assertNotNull(result1, "Ray intersects the plane");
-		assertEquals(1, result1.size(), "Wrong number of points");
+		assertEquals(1, result1.size(),DELTA, "Wrong number of points");
 		assertEquals(new Point(1,1,0), result1.get(0), "Ray intersects plane at (1,1,0)");
 				
 		// =============== Boundary Values Tests ==================
@@ -90,10 +90,8 @@ class PlaneTests {
 		Ray ray4 = new Ray(new Point(0,0, 0), new Vector(1, 0, 0));
 		List<Point> result4 = plane.findIntsersections(ray4);
 		assertNotNull(result4, "Ray is orthogonal to the plane and starts before the plane");
-		assertEquals(1, result4.size(), "Wrong number of points");
+		assertEquals(1, result4.size(), DELTA,"Wrong number of points");
 		assertEquals(new Point(1,0,0), result4.get(0), "Ray intersects plane at (2, 2, 1)");
-
-		
 
 		// BVA: Ray is orthogonal to the plane and starts after the plane
 		Ray ray6 = new Ray(new Point(2, 0, 0), new Vector(2,0,0));
@@ -102,15 +100,19 @@ class PlaneTests {
 		// BVA: Ray is neither orthogonal nor parallel to and begins at the plane
 		Ray ray7 = new Ray(new Point(0,1,0), new Vector(0,0,2));
 		assertNull(plane.findIntsersections(ray7), "Ray is neither orthogonal nor parallel to and begins at the plane");
-
+		
 		// BVA: Ray is neither orthogonal nor parallel to the plane and begins in the
 		// same point which appears as reference point in the plane
-		Ray ray8 = new Ray(new Point(1, 1, 0), new Vector(2,0,0));
+		Ray ray8 = new Ray(new Point(1, 1, 0), new Vector(0,1,0));
 		assertNull(plane.findIntsersections(ray8),"Ray is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane");
 		
+		
 		// BVA: Ray is orthogonal to the plane and starts at the plane(0)
-		Ray ray5 = new Ray(new Point(1,0,0), new Vector(2,0,0));
+		Ray ray5 = new Ray(new Point(1,0,0), new Vector(0,0,1));
 		assertNull(plane.findIntsersections(ray5), "Ray is orthogonal to the plane and starts at the plane");
+
+	
+	
 		
 		
 	}
