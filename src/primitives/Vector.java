@@ -5,8 +5,8 @@ package primitives;
  */
 public class Vector extends Point {
 	/**
-	 * Constructor that accepts three double values representing the coordinate values of
-	 * the vector
+	 * Constructor that accepts three double values representing the coordinate
+	 * values of the vector
 	 * 
 	 * @param xyz1 triad of coordinate values
 	 * @throws IllegalArgumentException In case of zero vector
@@ -58,7 +58,7 @@ public class Vector extends Point {
 	/**
 	 * Calculate the dot product between two vectors
 	 * 
-	 * @param other The other vector
+	 * @param other vector
 	 * @return The dot product between the two vectors
 	 */
 	public double dotProduct(Vector other) {

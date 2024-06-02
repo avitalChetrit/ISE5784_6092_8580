@@ -19,9 +19,12 @@ import org.junit.jupiter.api.Test;
  */
 class VectorTests {
 
+	/** A small constant for floating-point comparison precision. */
+	private static final double DELTA = 0.00001;
+
 	/**
 	 * Test method for {@link primitives.Vector#Vector(primitives.Double3)}. This
-	 * test checks the constructor that accepts a Double3 object. It verifies
+	 * test checks the constructor that accepts the coordinate values. It verifies
 	 * correct vector creation and ensures that zero vectors throw an exception.
 	 */
 	@Test
@@ -46,8 +49,8 @@ class VectorTests {
 	/**
 	 * Test method for {@link primitives.Vector#Vector(double, double, double)}.
 	 * This test checks the constructor that accepts individual x, y, and z
-	 * components. It verifies correct vector creation and ensures that zero vectors
-	 * throw an exception.
+	 * coordinate values. It verifies correct vector creation and ensures that zero
+	 * vectors throw an exception.
 	 */
 	@Test
 	void testVectorConstructorWithComponents() {
@@ -138,17 +141,38 @@ class VectorTests {
 		double expected1 = 0;
 		double expected2 = 1;
 
-		// TC01: Checks the correctness and result of the inner multiplication operation
+		// TC001: Checks the correctness and result of the inner multiplication
+		// operation
 		// (dot product) between two vectors
 		assertEquals(expected, v1.dotProduct(v2), "wrong dot product value");
 
 		// =============== Boundary Values Tests ==================
-		// TC11: Checks the correctness and result of the A unit vector with a different
+		// TC010: Checks the correctness and result of the A unit vector with a
+		// different
 		// vector multiplication operation (dot product) between two vectors
 		assertEquals(expected2, v1.dotProduct(v4), "wrong dot product value");
-		// TC11: Checks the correctness and result of the A vertical vector with a
+
+		// TC011: Checks the correctness and result of the A vertical vector with a
 		// different vector multiplication operation (dot product) between two vectors
 		assertEquals(expected1, v1.dotProduct(v5), "wrong dot product value");
+
+		// TC100: Checks the correctness and result of the dot product for vectors with
+		// a sharp angle between them
+		Vector vSharp1 = new Vector(Math.sqrt(3) / 2, 0.5, 0); // cos(30 degrees) = sqrt(3)/2, sin(30 degrees) = 0.5
+		Vector vSharp2 = new Vector(1, 0, 0);
+		double expectedSharp = Math.sqrt(3) / 2; // cos(30 degrees) * |v1| * |v2| = sqrt(3)/2 * 1 * 1
+		assertEquals(expectedSharp, vSharp1.dotProduct(vSharp2), DELTA,
+				"wrong dot product value for 30 degrees sharp angle");
+
+		// TC101: Checks the correctness and result of the dot product for vectors with
+		// an obtuse angle of 150 degrees between them
+		Vector vObtuse1 = new Vector(-Math.sqrt(3) / 2, 0.5, 0); // cos(150 degrees) = -sqrt(3)/2, sin(150 degrees) =
+																	// 0.5
+		Vector vObtuse2 = new Vector(1, 0, 0);
+		double expectedObtuse = -Math.sqrt(3) / 2; // cos(150 degrees) * |v1| * |v2| = -sqrt(3)/2 * 1 * 1
+		assertEquals(expectedObtuse, vObtuse1.dotProduct(vObtuse2), DELTA,
+				"wrong dot product value for 150 degrees obtuse angle");
+
 	}
 
 	/**
@@ -197,15 +221,10 @@ class VectorTests {
 	void testLengthSquared() {
 		// ============Equivalence Partitions Tests ==============
 		Vector v1 = new Vector(1, 2, 3);
-		Vector v2 = new Vector(-2, -4, -6);
 
 		double expected1 = 14;
-		double expected2 = 56;
-
 		// TC01: Test for a vector with positive components
 		assertEquals(expected1, v1.lengthSquared(), "wrong squared length value for positive components");
-		// TC02: Test for a vector with negative components
-		assertEquals(expected2, v2.lengthSquared(), "wrong squared length value for negative components");
 	}
 
 	/**

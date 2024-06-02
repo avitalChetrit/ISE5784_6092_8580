@@ -30,11 +30,10 @@ public class Sphere extends RadialGeometry {
 		return point.subtract(center).normalize();
 	}
 
-	
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
 		// Initialize an empty list to store the intersection points
-		//List<Point> intersections = new ArrayList<>();
+		// List<Point> intersections = new ArrayList<>();
 		if (ray.getHead().equals(this.center)) {
 			return List.of(ray.getPoint(this.radius));
 		}
@@ -51,7 +50,7 @@ public class Sphere extends RadialGeometry {
 
 		// If the distance is greater than the sphere's radius, there are no
 		// intersections
-		if (d >=this.radius) {
+		if (d >= this.radius) {
 			return null; // Return an empty list
 		}
 
@@ -62,21 +61,19 @@ public class Sphere extends RadialGeometry {
 		// Calculate the intersection points
 		double t1 = tm - th;
 		double t2 = tm + th;
-		
-		boolean t1Valid=Util.alignZero(t1)>0;
-		boolean t2Valid=Util.alignZero(t2)>0;
-		if(t1Valid && t2Valid) {
-			Point p1=ray.getPoint(t1);
-			Point p2=ray.getPoint(t2);
-			return List.of(p1,p2);
 
-		}
-		else if(t2Valid) {
-			Point p2=ray.getPoint(t2);
+		boolean t1Valid = Util.alignZero(t1) > 0;
+		boolean t2Valid = Util.alignZero(t2) > 0;
+		if (t1Valid && t2Valid) {
+			Point p1 = ray.getPoint(t1);
+			Point p2 = ray.getPoint(t2);
+			return List.of(p1, p2);
+
+		} else if (t2Valid) {
+			Point p2 = ray.getPoint(t2);
 			return List.of(p2);
 
-		}
-		else
+		} else
 			return null;
 	}
 }

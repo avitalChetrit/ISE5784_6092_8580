@@ -71,7 +71,6 @@ public class Plane implements Geometry {
 		return normal;
 	}
 
-	
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
 		// Initialize an empty list to store the intersection points
@@ -111,5 +110,3 @@ public class Plane implements Geometry {
 	}
 
 }
-
-

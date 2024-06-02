@@ -29,11 +29,23 @@ class SphereTests {
 	void testGetNormal() {
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Test for a general case
-		Point center = new Point(0, 0, 0);
-		double radius = 1;
+		Point center = new Point(1, 1, 1);
+		double radius = 2;
 		Sphere sphere = new Sphere(center, radius);
-		Vector normal = sphere.getNormal(new Point(1, 0, 0));
-		assertNotNull(normal, "getNormal() should return null");
+
+		Point testPoint = new Point(3, 1, 1); // A point on the surface of the sphere
+		Vector normal = sphere.getNormal(testPoint);
+
+		assertNotNull(normal, "getNormal() should not return null");
+
+		// Expected normal vector
+		Vector expectedNormal = new Vector(1, 0, 0);
+
+		// Check if the returned normal vector is as expected
+		assertEquals(expectedNormal, normal, "getNormal() did not return the correct normal vector");
+
+		// Ensure the normal vector is normalized
+		assertEquals(1, normal.length(), "Normal vector is not normalized");
 	}
 
 	/**
@@ -128,16 +140,15 @@ class SphereTests {
 				"Ray's line out of sphere");
 		// **** Group: Ray's line is tangent to the sphere (all tests 0 points)
 		// TC19: Ray starts before the tangent point
-		Point p06 = new Point(1,2,0);
-		assertNull(sphere.findIntsersections(new Ray(p06, new Vector(2,0,0))),
+		Point p06 = new Point(1, 2, 0);
+		assertNull(sphere.findIntsersections(new Ray(p06, new Vector(2, 0, 0))),
 				"Ray tangential to sphere before tangent point should not intersect");
 
-		
 		// TC20: Ray starts at the tangent point
-		Point p07 = new Point(2,2,0);
-		assertNull(sphere.findIntsersections(new Ray(p07, new Vector(2, 0,0))),
+		Point p07 = new Point(2, 2, 0);
+		assertNull(sphere.findIntsersections(new Ray(p07, new Vector(2, 0, 0))),
 				"Ray tangential to sphere at tangent point should not intersect");
-	
+
 		// TC21: Ray starts after the tangent point
 		Point p08 = new Point(1, 1, 0);
 		assertNull(sphere.findIntsersections(new Ray(p08, new Vector(0, 1, 0))),
@@ -149,7 +160,6 @@ class SphereTests {
 		Point p09 = new Point(-1, 1, 0);
 		assertNull(sphere.findIntsersections(new Ray(p09, new Vector(1, 0, 0))),
 				"Ray orthogonal to center line should not intersect");
-		
-		
+
 	}
 }

@@ -3,6 +3,7 @@
  */
 package unittests.primitives;
 
+import primitives.Double3;
 import primitives.Point;
 import primitives.Vector;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +30,11 @@ class PointTests {
 		// TC01: Test that checks the property of result of the subtraction operation
 		// between two points.
 		assertEquals(expected, p2.subtract(p1), "wrong subtract result");
+		// TC10: Test that checks the property of result of the subtraction operation
+		// between a point and itself.
+		assertThrows(IllegalArgumentException.class, () -> p1.subtract(p1), //
+				"subtraction operation between a point and itself should throw an exception for zero vector");
+
 	}
 
 	/**
