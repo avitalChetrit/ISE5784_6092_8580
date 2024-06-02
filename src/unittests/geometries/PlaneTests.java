@@ -54,6 +54,7 @@ class PlaneTests {
 		dotProduct = normal.dotProduct(vector2);
 		assertEquals(0, dotProduct, DELTA, "Normal vector is not perpendicular to the plane");
 	}
+	
 
 	/**
 	 * Test method for {@link geometries.Plane#findIntsersections(primitives.Ray)}.
