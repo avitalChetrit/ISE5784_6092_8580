@@ -1,6 +1,5 @@
 package geometries;
 
-import primitives.Point;
 
 /**
  * Abstract class RadialGeometry implements the Geometry interface and

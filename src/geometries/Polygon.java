@@ -89,7 +89,7 @@ public class Polygon implements Geometry {
 
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 		return null;
 	}
 

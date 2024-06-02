@@ -1,7 +1,5 @@
 package primitives;
 
-import primitives.Util;
-
 /**
  * Ray class represents a point and a direction vector in 3D space
  * 
