@@ -71,20 +71,7 @@ public class Plane implements Geometry {
 		return normal;
 	}
 
-	/**
-	 * Finds the intersection points between a given ray and the plane.
-	 *
-	 * <p>
-	 * This method calculates the intersection point between the provided ray and
-	 * the plane. If the ray does not intersect the plane, null is returned. If the
-	 * ray is parallel to the plane, an empty list is returned. The intersection
-	 * point is added to the list of intersections and returned.
-	 * </p>
-	 *
-	 * @param ray The ray to intersect with the plane
-	 * @return A list containing the intersection point if one exists, otherwise
-	 *         null
-	 */
+	
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
 		// Initialize an empty list to store the intersection points
@@ -124,3 +111,5 @@ public class Plane implements Geometry {
 	}
 
 }
+
+
