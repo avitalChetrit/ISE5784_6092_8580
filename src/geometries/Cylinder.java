@@ -24,6 +24,6 @@ public class Cylinder extends Tube {
 
 	@Override
 	public Vector getNormal(Point point) {
-		return null; //  if we want to use cylinder in our pictures
+		return null; // if we want to use cylinder in our pictures
 	}
 }

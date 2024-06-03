@@ -44,7 +44,7 @@ public class Tube extends RadialGeometry {
 
 	@Override
 	public List<Point> findIntsersections(Ray ray) {
-		//  Auto-generated method stub
+		// Auto-generated method stub
 		return null;
 	}
 

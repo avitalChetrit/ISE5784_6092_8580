@@ -47,7 +47,6 @@ class SphereTests {
 		assertEquals(1, normal.length(), "Normal vector is not normalized");
 	}
 
-
 	/**
 	 * Represents a point (1, 0, 0) in 3D space.
 	 */
