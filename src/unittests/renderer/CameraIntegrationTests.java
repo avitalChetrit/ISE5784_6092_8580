@@ -63,7 +63,7 @@ public class CameraIntegrationTests {
 		for (int i = 0; i < nY; i++) {
 			for (int j = 0; j < nX; j++) {
 				Ray ray = camera.constructRay(nX, nY, j, i);
-				count += geometry.findIntsersections(ray).size();
+				count += geometry.findIntersections(ray).size();
 			}
 		}
 

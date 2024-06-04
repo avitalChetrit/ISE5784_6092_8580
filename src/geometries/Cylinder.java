@@ -8,6 +8,7 @@ import primitives.*;
 public class Cylinder extends Tube {
 
 	/** Height of the cylinder */
+	@SuppressWarnings("unused")
 	private final double height;
 
 	/**

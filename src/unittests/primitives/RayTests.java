@@ -12,7 +12,6 @@ import primitives.Vector;
  * A test class for the {@link Ray} class.
  */
 class RayTests {
-	@Test
 
 	/**
 	 * Tests the {@link Ray#getPoint(double)} method.
@@ -26,7 +25,8 @@ class RayTests {
 	 * <li>Zero distance</li>
 	 * </ul>
 	 */
-	void testgetPoint() {
+	@Test
+	void testGetPoint() {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Test 01 for negative distance

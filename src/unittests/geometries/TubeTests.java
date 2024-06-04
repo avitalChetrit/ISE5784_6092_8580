@@ -35,13 +35,17 @@ class TubeTests {
 		// Get the normal vector at the test point
 		Vector actualNormal = tube.getNormal(testPoint);
 		assertEquals(expectedNormal, actualNormal, "getNormal() does not return the correct normal vector");
-
-		// Ensure the normal vector is normalized
-		assertEquals(1, actualNormal.length(), "Normal vector is not normalized");
+		
+		 // =============== Boundary Values Tests ==================
+        //TC02: When connecting the point to the top of the beam
+        //of the axis of the cylinder makes a right angle with the axis -
+        // the point "is in front of the head of the horn" when (P-P0) is orthogonal to v
+        assertEquals(new Vector(0, 1, 0), tube.getNormal(new Point(0, 10, 0)),
+                "ERROR: (P-P0) is orthogonal to v");
 	}
-
+	
 	/**
-	 * Tests the {@link geometries.Tube#findIntersections()} method.
+	 * Tests the {@link geometries.Tube#findIntersections(primitives.Ray)} method.
 	 * 
 	 * <p>
 	 * This test is currently disabled and will fail with the message "not yet

@@ -98,6 +98,11 @@ public class Camera implements Cloneable {
 	 * Builder class for Camera, implementing the Builder Pattern.
 	 */
 	public static class Builder {
+		/**
+		 * Represents a builder for constructing Camera objects.
+		 * This builder class allows for the creation of Camera objects with a fluent interface.
+		 */
+
 		private final Camera camera;
 
 		/**

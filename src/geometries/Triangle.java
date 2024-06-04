@@ -22,14 +22,14 @@ public class Triangle extends Polygon {
 	}
 
 	@Override
-	public List<Point> findIntsersections(Ray ray) {
+	public List<Point> findIntersections(Ray ray) {
 
 		// we take three vectors from the same starting point and connect them to the
 		// triangle's vertices
 		// we get a pyramid
 
 		// Check if the ray intersect the plane.
-		if (plane.findIntsersections(ray) == null) {
+		if (plane.findIntersections(ray) == null) {
 			return null;
 		}
 		// the three vectors from the same starting point
@@ -54,7 +54,7 @@ public class Triangle extends Polygon {
 				|| (Util.alignZero(v.dotProduct(n1)) < 0 && Util.alignZero(v.dotProduct(n2)) < 0
 						&& Util.alignZero(v.dotProduct(n3)) < 0)) {
 
-			return plane.findIntsersections(ray);
+			return plane.findIntersections(ray);
 		}
 		return null;
 	}
