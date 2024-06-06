@@ -295,5 +295,17 @@ public class Camera implements Cloneable {
 	public double getViewPlaneDistance() {
 		return viewPlaneDistance;
 	}
+	
+	//stage5
+	/**
+	 * The image writer used by this camera to write the rendered image.
+	 */
+	private ImageWriter imageWriter;
+
+	/**
+	 * The ray tracer base used by this camera to trace rays and render the scene.
+	 */
+	private RayTracerBase rayTracer;
+
 
 }
