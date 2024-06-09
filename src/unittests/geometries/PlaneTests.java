@@ -101,7 +101,7 @@ class PlaneTests {
 
 		// BVA: Ray is neither orthogonal nor parallel to the plane and begins in the
 		// same point which appears as reference point in the plane
-		Ray ray8 = new Ray(new Point(1, 1, 0), new Vector(0, 1, 0));
+		Ray ray8 = new Ray(new Point(1, 0, 0), new Vector(0, 1, 0));
 		assertNull(plane.findIntersections(ray8),
 				"Ray is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane");
 

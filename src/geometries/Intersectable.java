@@ -5,7 +5,7 @@ import primitives.Ray;
 import java.util.List;
 
 /**
- * The Intersectable interface represents a geometrical object that can be
+ * The Intersectable interface represents a geometry object that can be
  * intersected by a ray. Implementing classes should provide a method to find
  * intersections of the object with a given ray.
  */

@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.awt.Color;
 import java.util.MissingResourceException;
 
 /**
@@ -99,8 +100,8 @@ public class Camera implements Cloneable {
 	 */
 	public static class Builder {
 		/**
-		 * Represents a builder for constructing Camera objects.
-		 * This builder class allows for the creation of Camera objects with a fluent interface.
+		 * Represents a builder for constructing Camera objects. This builder class
+		 * allows for the creation of Camera objects with a fluent interface.
 		 */
 
 		private final Camera camera;
@@ -191,6 +192,37 @@ public class Camera implements Cloneable {
 		}
 
 		/**
+		 * Sets the image writer used by the camera to write the rendered image.
+		 *
+		 * @param imageWriter the image writer to set
+		 * @return the current Builder object
+		 * @throws IllegalArgumentException if the provided image writer is null
+		 */
+		public Builder setImageWriter(ImageWriter imageWriter) {// stage5
+			if (imageWriter == null) {
+				throw new IllegalArgumentException("Image writer cannot be null");
+			}
+			camera.imageWriter = imageWriter;
+			return this;
+		}
+
+		/**
+		 * Sets the ray tracer base used by the camera to trace rays and render the
+		 * scene.
+		 *
+		 * @param rayTracer the ray tracer base to set
+		 * @return the current Builder object
+		 * @throws IllegalArgumentException if the provided ray tracer base is null
+		 */
+		public Builder setRayTracer(RayTracerBase rayTracer) {// stage5
+			if (rayTracer == null) {
+				throw new IllegalArgumentException("Ray tracer base cannot be null");
+			}
+			camera.rayTracer = rayTracer;
+			return this;
+		}
+
+		/**
 		 * Builds the Camera object.
 		 *
 		 * @return the built Camera object
@@ -215,6 +247,12 @@ public class Camera implements Cloneable {
 			}
 			if (camera.viewPlaneDistance == 0) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneDistance");
+			}
+			if (camera.imageWriter == null) {// stage5
+				throw new MissingResourceException(missingData, Camera.class.getName(), "imageWriter");
+			}
+			if (camera.rayTracer == null) {// stage5
+				throw new MissingResourceException(missingData, Camera.class.getName(), "rayTracer");
 			}
 
 			// Calculate the right vector
@@ -295,17 +333,109 @@ public class Camera implements Cloneable {
 	public double getViewPlaneDistance() {
 		return viewPlaneDistance;
 	}
-	
-	//stage5
+
+	// stage5
 	/**
 	 * The image writer used by this camera to write the rendered image.
 	 */
 	private ImageWriter imageWriter;
-
+	//stage5
 	/**
 	 * The ray tracer base used by this camera to trace rays and render the scene.
 	 */
 	private RayTracerBase rayTracer;
+	//stage5
+//	/**
+//	 * Renders the image using the camera's image writer and ray tracer.
+//	 *
+//	 * @throws UnsupportedOperationException if called
+//	 */
+//	public void renderImage() {
+//	    throw new UnsupportedOperationException("Rendering image is not supported at this stage");
+//	}
+	//stage5
+	/**
+	 * Prints a grid on the image.
+	 *
+	 * @param color    The color of the grid lines.
+	 * @param interval The interval between grid lines.
+	 * @throws IllegalArgumentException if the interval is less than or equal to 0
+	 */
+	public void printGrid(primitives.Color color, int interval) {
+	    if (interval <= 0) {
+	        throw new IllegalArgumentException("Interval must be greater than 0");
+	    }
+
+	    // Loop through the image and draw the grid lines
+	    for (int i = 0; i < imageWriter.getviewPlaneHeight(); i++) {
+	        for (int j = 0; j < imageWriter.getViewPlaneWidth(); j++) {
+	            // Check if the current pixel is on a grid line
+	            if (i % interval == 0 || j % interval == 0) {
+	                imageWriter.writePixel(j, i, color); // Set the color of the grid line
+	            }
+	        }
+	    }
+	}
+	//stage5
+	/**
+	 * Writes the image to a file using the appropriate method of the image writer.
+	 */
+	public void writeToImage() {
+	    // Check if image writer is initialized
+	    if (imageWriter == null) {
+	        throw new IllegalStateException("Image writer is not initialized");
+	    }
+
+	    // Call the appropriate method of the image writer to write the image
+	    imageWriter.writeToImage();
+	}
+	//stage5
+	/**
+	 * Renders the image by casting rays through each pixel of the view plane.
+	 */
+	public void renderImage() {
+	    // Check if image writer and ray tracer are initialized
+	    if (imageWriter == null || rayTracer == null) {
+	        throw new IllegalStateException("Image writer or ray tracer is not initialized");
+	    }
+
+	    // Get image dimensions
+	    int width = imageWriter.getWidth();
+	    int height = imageWriter.getHeight();
+
+	    // Loop through each pixel of the view plane
+	    for (int i = 0; i < height; i++) {
+	        for (int j = 0; j < width; j++) {
+	            // Cast a ray through the pixel and get the color
+	            Color pixelColor = rayTracer.castRay(constructRay(width, height, j, i));
+
+	            // Write the color to the corresponding pixel in the image
+	            imageWriter.writePixel(j, i, pixelColor);
+	        }
+	    }
+	}
+	//stage5
+	/**
+	 * Casts a ray through the center of the pixel, traces the ray, and writes the resulting color to the pixel.
+	 *
+	 * @param width  The width of the view plane.
+	 * @param height The height of the view plane.
+	 * @param pixelX The x-coordinate of the pixel.
+	 * @param pixelY The y-coordinate of the pixel.
+	 */
+	private void castRay(int width, int height, int pixelX, int pixelY) {
+	    // Construct ray through the center of the pixel
+	    Ray ray = constructRay(width, height, pixelX, pixelY);
+
+	    // Trace the ray to get the color
+	    Color pixelColor = rayTracer.traceRay(ray);
+
+	    // Write the color to the pixel
+	    imageWriter.writePixel(pixelX, pixelY, pixelColor);
+	}
+
+
+
 
 
 }

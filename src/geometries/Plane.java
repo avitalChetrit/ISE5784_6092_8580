@@ -5,7 +5,6 @@ import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,40 +72,28 @@ public class Plane implements Geometry {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-		// Initialize an empty list to store the intersection points
-		List<Point> intersections = null;
-
-		// Calculate the direction vector of the plane
-		Vector planeNormal = getNormal();
-
 		// Calculate the denominator of the division for finding the parameter t
-		double denominator = planeNormal.dotProduct(ray.getDirection());
-
+		double denominator = this.normal.dotProduct(ray.getDirection());
 		// If the denominator is close to zero, the ray is parallel to the plane
-		if (Util.isZero(denominator)) {
+		if (Util.isZero(denominator))
 			return null; // Ray is parallel to the plane
-		}
 
 		// Calculate the numerator of the division for finding the parameter t
-		Vector p0MinusQ0 = point.subtract(ray.getHead());
-		double numerator = planeNormal.dotProduct(p0MinusQ0);
+		Vector p0MinusQ0;
+		try {
+			p0MinusQ0 = point.subtract(ray.getHead());
+		} catch (IllegalArgumentException ignore) {
+			return null;
+		}
 
+		double numerator = this.normal.dotProduct(p0MinusQ0);
 		// Calculate the parameter t
 		double t = Util.alignZero(numerator / denominator);
 
 		// If t is negative, the intersection point is behind the ray's start point
-		if (t < 0) {
-			return null; // Ray doesn't intersect the plane
-		}
-
 		// Calculate the intersection point
-		Point intersectionPoint = ray.getPoint(t);
-		intersections = new ArrayList<>();
-
 		// Add the intersection point to the list
-		intersections.add(intersectionPoint);
-
-		return intersections;
+		return t < 0 ? null : List.of(ray.getPoint(t));
 	}
 
 }
