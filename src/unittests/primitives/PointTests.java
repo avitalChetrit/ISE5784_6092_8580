@@ -65,9 +65,14 @@ class PointTests {
 		Point p1 = new Point(1, 2, 3);
 		Point p2 = new Point(4, 5, 6);
 		double expected = 27;
+		double expected2 = 0;
 		// TC01: Test that checks the property of result of the calculating the squared
 		// distance between two points.
 		assertEquals(expected, p1.distanceSquared(p2), DELTA, "wrong distanceSquared result");
+		// =============== Boundary Values Tests ==================
+	    // TC02: Test that checks the property of result of the calculating the squared
+	    // distance between point to same point.
+		assertEquals(expected2, p1.distanceSquared(p1), DELTA, "wrong distanceSquared result");
 	}
 
 	/**
