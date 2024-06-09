@@ -19,6 +19,12 @@ public class Color {
    /** The color white */
 
    public static final Color WHITE = new Color(255, 255, 255);
+   /**
+    * A constant representing the color red in the RGB color model.
+    * The color red is defined with maximum intensity of red (255), and no green (0) and no blue (0).
+    */
+   public static final Color RED = new Color(255, 0, 0);
+
 
    /** Default constructor - to generate Black Color (privately) */
    private Color() { rgb = Double3.ZERO; }

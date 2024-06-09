@@ -23,7 +23,7 @@ class ImageWriterTest {
         ImageWriter imageWriter = new ImageWriter(imageName, imageWidth, imageHeight);
 
         // Define colors for background and grid
-        Color backgroundColor = Color.BLACK; // Background color (in this example, black)
+        Color backgroundColor = Color.RED; // Background color (in this example, black)
         Color gridColor = Color.WHITE; // Grid color (in this example, white)
 
         // Calculate grid size
