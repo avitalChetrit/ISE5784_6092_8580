@@ -81,16 +81,16 @@ public class Camera implements Cloneable {
 	 * @return The constructed ray.
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		Point Pc = position.add(vTo.normalize().scale(viewPlaneDistance));
+		Point Pc = position.add(vTo.scale(viewPlaneDistance));
 		double Ry = viewPlaneHeight / nY;
 		double Rx = viewPlaneWidth / nX;
-		double Yi = -(i - (nY - 1) / 2) * Ry;
-		double Xj = (j - (nX - 1) / 2) * Rx;
+		double Yi = -(i - (nY - 1) / 2.0) * Ry;
+		double Xj = (j - (nX - 1) / 2.0) * Rx;
 		Point Pij = Pc;
 		if (Xj != 0)
-			Pij = Pij.add(vRight.normalize().scale(Xj));
+			Pij = Pij.add(vRight.scale(Xj));
 		if (Yi != 0)
-			Pij = Pij.add(vUp.normalize().scale(Yi));
+			Pij = Pij.add(vUp.scale(Yi));
 		Vector Vij = Pij.subtract(position);
 		return new Ray(position, Vij.normalize());
 	}
@@ -150,12 +150,16 @@ public class Camera implements Cloneable {
 			if (vTo == null || vUp == null) {
 				throw new IllegalArgumentException("Direction vectors cannot be null");
 			}
+			if (vTo.equals(vUp)) {
+				throw new IllegalArgumentException("Direction vectors cannot be the same");
+			}
 			if (!(vTo.dotProduct(vUp) == 0)) {
 				throw new IllegalArgumentException("Direction vectors must be orthogonal");
 			}
 
 			camera.vTo = vTo.normalize();
 			camera.vUp = vUp.normalize();
+			camera.vRight = vTo.crossProduct(vUp).normalize();
 			return this;
 		}
 
@@ -239,24 +243,41 @@ public class Camera implements Cloneable {
 			if (camera.vUp == null) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vUp");
 			}
-			if (camera.viewPlaneWidth == 0) {
+			if (camera.viewPlaneWidth == 0.0) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneWidth");
 			}
-			if (camera.viewPlaneHeight == 0) {
+			if (camera.viewPlaneHeight == 0.0) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneHeight");
 			}
 			if (camera.viewPlaneDistance == 0) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneDistance");
 			}
-			if (camera.imageWriter == null) {// stage5
-				throw new MissingResourceException(missingData, Camera.class.getName(), "imageWriter");
-			}
-			if (camera.rayTracer == null) {// stage5
-				throw new MissingResourceException(missingData, Camera.class.getName(), "rayTracer");
-			}
+			//if (camera.imageWriter == null) {// stage5
+			//	throw new MissingResourceException(missingData, Camera.class.getName(), "imageWriter");
+			//}
+			//if (camera.rayTracer == null) {// stage5
+			//	throw new MissingResourceException(missingData, Camera.class.getName(), "rayTracer");
+			//}
+			
+			 // Validate the values of the fields
+            if (camera.viewPlaneWidth <= 0) 
+                throw new IllegalStateException("Width must be positive");
+  
+            if (camera.viewPlaneHeight <= 0) 
+                throw new IllegalStateException("Height must be positive");
+            
+            if (camera.viewPlaneDistance <= 0) 
+                throw new IllegalStateException("Distance must be positive");
+            
+            if (camera.vTo.equals(camera.vUp)) 
+                throw new IllegalArgumentException("Direction vectors cannot be the same");
+            
+            if (camera.vTo.dotProduct(camera.vUp) != 0)
+                throw new IllegalArgumentException("Direction vectors must be perpendicular");
 
 			// Calculate the right vector
-			camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+			if (camera.vRight == null)
+				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
 			return (Camera) camera.clone();
 		}
 	}
@@ -339,12 +360,13 @@ public class Camera implements Cloneable {
 	 * The image writer used by this camera to write the rendered image.
 	 */
 	private ImageWriter imageWriter;
-	//stage5
+	// stage5
 	/**
 	 * The ray tracer base used by this camera to trace rays and render the scene.
 	 */
 	private RayTracerBase rayTracer;
-	//stage5
+
+	// stage5
 //	/**
 //	 * Renders the image using the camera's image writer and ray tracer.
 //	 *
@@ -353,7 +375,7 @@ public class Camera implements Cloneable {
 //	public void renderImage() {
 //	    throw new UnsupportedOperationException("Rendering image is not supported at this stage");
 //	}
-	//stage5
+	// stage5
 	/**
 	 * Prints a grid on the image.
 	 *
@@ -362,80 +384,63 @@ public class Camera implements Cloneable {
 	 * @throws IllegalArgumentException if the interval is less than or equal to 0
 	 */
 	public void printGrid(primitives.Color color, int interval) {
-	    if (interval <= 0) {
-	        throw new IllegalArgumentException("Interval must be greater than 0");
-	    }
+		if (interval <= 0) {
+			throw new IllegalArgumentException("Interval must be greater than 0");
+		}
 
-	    // Loop through the image and draw the grid lines
-	    for (int i = 0; i < imageWriter.getviewPlaneHeight(); i++) {
-	        for (int j = 0; j < imageWriter.getViewPlaneWidth(); j++) {
-	            // Check if the current pixel is on a grid line
-	            if (i % interval == 0 || j % interval == 0) {
-	                imageWriter.writePixel(j, i, color); // Set the color of the grid line
-	            }
-	        }
-	    }
+		// Loop through the image and draw the grid lines
+		for (int i = 0; i < viewPlaneHeight; i++) {
+			for (int j = 0; j < viewPlaneWidth; j++) {
+				// Check if the current pixel is on a grid line
+				if (i % interval == 0 || j % interval == 0) {
+					imageWriter.writePixel(j, i, color); // Set the color of the grid line
+				}
+			}
+		}
 	}
-	//stage5
+
+	// stage5
 	/**
 	 * Writes the image to a file using the appropriate method of the image writer.
 	 */
 	public void writeToImage() {
-	    // Check if image writer is initialized
-	    if (imageWriter == null) {
-	        throw new IllegalStateException("Image writer is not initialized");
-	    }
+		// Check if image writer is initialized
+		if (imageWriter == null) {
+			throw new IllegalStateException("Image writer is not initialized");
+		}
 
-	    // Call the appropriate method of the image writer to write the image
-	    imageWriter.writeToImage();
+		// Call the appropriate method of the image writer to write the image
+		imageWriter.writeToImage();
 	}
-	//stage5
+
+	// stage5
 	/**
 	 * Renders the image by casting rays through each pixel of the view plane.
 	 */
 	public void renderImage() {
-	    // Check if image writer and ray tracer are initialized
-	    if (imageWriter == null || rayTracer == null) {
-	        throw new IllegalStateException("Image writer or ray tracer is not initialized");
-	    }
+		// Check if image writer and ray tracer are initialized
+		if (imageWriter == null || rayTracer == null) {
+			throw new IllegalStateException("Image writer or ray tracer is not initialized");
+		}
 
-	    // Get image dimensions
-	    int width = imageWriter.getWidth();
-	    int height = imageWriter.getHeight();
+		// Get image dimensions
+		int width = imageWriter.viewPlaneWidth;
+		int height = imageWriter.getViewPlaneHeight();
 
-	    // Loop through each pixel of the view plane
-	    for (int i = 0; i < height; i++) {
-	        for (int j = 0; j < width; j++) {
-	            // Cast a ray through the pixel and get the color
-	            Color pixelColor = rayTracer.castRay(constructRay(width, height, j, i));
+		// Loop through each pixel of the view plane
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				// Cast a ray through the pixel and get the color
+				Color pixelColor = rayTracer.castRay(constructRay(width, height, j, i));
 
-	            // Write the color to the corresponding pixel in the image
-	            imageWriter.writePixel(j, i, pixelColor);
-	        }
-	    }
-	}
-	//stage5
-	/**
-	 * Casts a ray through the center of the pixel, traces the ray, and writes the resulting color to the pixel.
-	 *
-	 * @param width  The width of the view plane.
-	 * @param height The height of the view plane.
-	 * @param pixelX The x-coordinate of the pixel.
-	 * @param pixelY The y-coordinate of the pixel.
-	 */
-	private void castRay(int width, int height, int pixelX, int pixelY) {
-	    // Construct ray through the center of the pixel
-	    Ray ray = constructRay(width, height, pixelX, pixelY);
-
-	    // Trace the ray to get the color
-	    Color pixelColor = rayTracer.traceRay(ray);
-
-	    // Write the color to the pixel
-	    imageWriter.writePixel(pixelX, pixelY, pixelColor);
+				// Write the color to the corresponding pixel in the image
+				imageWriter.writePixel(j, i, pixelColor);;
+			}
+		}
 	}
 
-
-
-
+	// stage5
+	
+	
 
 }

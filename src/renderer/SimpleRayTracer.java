@@ -5,7 +5,6 @@ import java.awt.Point;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
-
 /**
  * A simple ray tracer implementation.
  * <p>
@@ -44,6 +43,7 @@ public class SimpleRayTracer extends RayTracerBase {
         // Calculate the color of the closest intersection point
         return calcColor(closestPoint);
     }
+    
     //stage5
     /**
      * Calculates the color of a given point in the scene.
