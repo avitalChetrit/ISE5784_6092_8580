@@ -3,8 +3,7 @@ package renderer;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
-import java.awt.Color;
+import primitives.Color;
 import java.util.MissingResourceException;
 
 /**
@@ -417,7 +416,7 @@ public class Camera implements Cloneable {
 	/**
 	 * Renders the image by casting rays through each pixel of the view plane.
 	 */
-	public void renderImage() {
+	public Camera renderImage() {
 		int nX = imageWriter.getNx();
 		int nY=imageWriter.getNy();
 		for(int i=0; i < nX; ++i)

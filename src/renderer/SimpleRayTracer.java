@@ -1,9 +1,11 @@
 package renderer;
 
 import java.awt.Point;
+import java.util.List;
 
 import primitives.Color;
 import primitives.Ray;
+
 import scene.Scene;
 /**
  * A simple ray tracer implementation.
@@ -30,7 +32,7 @@ public class SimpleRayTracer extends RayTracerBase {
      */
     public Color traceRay(Ray ray) {
         // Find intersections between the ray and the scene
-        List<Point> intersections = this.scene.geometries.findIntersections(ray);
+        List<primitives.Point> intersections = this.scene.geometries.findIntersections(ray);
 
         // If no intersections are found, return the background color of the scene
         if (intersections.isEmpty()) {
