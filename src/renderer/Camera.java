@@ -418,29 +418,21 @@ public class Camera implements Cloneable {
 	 * Renders the image by casting rays through each pixel of the view plane.
 	 */
 	public void renderImage() {
-		// Check if image writer and ray tracer are initialized
-		if (imageWriter == null || rayTracer == null) {
-			throw new IllegalStateException("Image writer or ray tracer is not initialized");
-		}
-
-		// Get image dimensions
-		int width = imageWriter.viewPlaneWidth;
-		int height = imageWriter.getViewPlaneHeight();
-
-		// Loop through each pixel of the view plane
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				// Cast a ray through the pixel and get the color
-				Color pixelColor = rayTracer.castRay(constructRay(width, height, j, i));
-
-				// Write the color to the corresponding pixel in the image
-				imageWriter.writePixel(j, i, pixelColor);;
-			}
-		}
+		int nX = imageWriter.getNx();
+		int nY=imageWriter.getNy();
+		for(int i=0; i < nX; ++i)
+			for(int j=0; j < nY; ++j)
+				castRay(nX, nY,j, i);
+		
+		return this;		
+	
 	}
-
-	// stage5
 	
+	private void castRay(int nX, int nY, int column,int row) {
+		Ray ray= constructRay(nX, nY, column, row);
+		Color color=rayTracer.traceRay(ray);
+		imageWriter.writePixel(column, row, color);
 	
+	}
 
 }

@@ -25,27 +25,31 @@ public class RenderTests {
 
 	/** Produce a scene with basic 3D model and render it into a png image with a
     * grid */
-   @Test
-   public void renderTwoColorTest() {
-      scene.geometries.add(new Sphere(new Point(0, 0, -100), 50d),
-                           new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)), // up
-                           // left
-                           new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100),
-                                        new Point(-100, -100, -100)), // down
-                           // left
-                           new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))); // down
-      scene.setAmbientLight(new AmbientLight(new Color(255, 191, 191), Double3.ONE))
-         .setBackground(new Color(75, 127, 90));
-
-      // right
-      camera
-         .setImageWriter(new ImageWriter("base render test", 1000, 1000))
-         .build()
-         .renderImage()
-         .printGrid(100, new Color(YELLOW))
-         .writeToImage();
-   }
-
+	@Test
+	public void renderTuoColorTest() {
+		scene.geometries. add(new Sphere(50d, new Point(e, 0, -100)),
+					new Triangle(new Point(-100, 0, -100),
+							new Point(0, 160, -100),
+							new Point(-100, 100, -100)), // up
+					//1eft
+					new Triangle(new Point(-100, 0, -100),
+							new Point(0, -100, -100),
+							new Point(-100, -100, -108)), // down
+					// 1eft
+					new Triangle(new Point(100, 0 , -100),
+							new Point(0, -100, -100),
+							new Point(100, -100, -100))); // down
+		scene. setAmbientLight(new AmbientLight(new Color(255, 191, 191), Double3.ONE))
+				.setBackground(new Color(75, 127, 90));
+		// right
+		camera
+				.setInageliriter(new InageWriter("base render test”, 1000, 1000))
+				.build()
+				.renderInage()
+				.printGrid(100, new Color(YELLOW))
+				.writeToImage();
+	}
+}
 /** Test for XML based scene - for bonus */
  //  @Test
  //  @Disabled

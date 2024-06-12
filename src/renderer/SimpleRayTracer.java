@@ -30,13 +30,13 @@ public class SimpleRayTracer extends RayTracerBase {
      */
     public Color traceRay(Ray ray) {
         // Find intersections between the ray and the scene
-        List<Point> intersections = scene.findIntersections(ray);
+        List<Point> intersections = this.scene.geometries.findIntersections(ray);
 
         // If no intersections are found, return the background color of the scene
         if (intersections.isEmpty()) {
-            return scene.getBackgroundColor();
+            return this.scene.background();
         }
-
+        
         // Find the closest intersection point to the start of the ray
         Point closestPoint = ray.findClosestPoint(intersections);
 
@@ -53,7 +53,7 @@ public class SimpleRayTracer extends RayTracerBase {
      */
     private Color calcColor(Point point) {
         // At this stage of the mini-project, return the color of the ambient light in the scene
-        return scene.getAmbientLight();
+        return this.scene.ambientLight.getIntensity();
     }
 
 }
