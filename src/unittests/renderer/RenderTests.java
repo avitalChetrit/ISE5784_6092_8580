@@ -4,7 +4,7 @@ import static java.awt.Color.*;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
+//import primitives.Color;
 import geometries.*;
 import lighting.AmbientLight;
 import primitives.*;
@@ -22,7 +22,7 @@ public class RenderTests {
 	/** Camera builder of the tests */
 	private final Camera.Builder camera = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene))
 			.setLocation(Point.ZERO).setDirection(new Vector(0, 0, -1),new Vector (0,1,0)).setVpDistance(100).setVpSize(500, 500);
-
+	
 	/** Produce a scene with basic 3D model and render it into a png image with a
     * grid */
 	@Test
@@ -34,7 +34,7 @@ public class RenderTests {
 					//1eft
 					new Triangle(new Point(-100, 0, -100),
 							new Point(0, -100, -100),
-							new Point(-100, -100, -108)), // down
+							new Point(-100, -100, -100)), // down
 					// 1eft
 					new Triangle(new Point(100, 0 , -100),
 							new Point(0, -100, -100),
@@ -46,8 +46,8 @@ public class RenderTests {
 				.setImageWriter(new ImageWriter("base render test", 1000, 1000))
 				.build()
 				.renderImage()
-				.printGrid( new Color(YELLOW),100);
-				//.writeToImage();
+				.printGrid(100,new Color(YELLOW))
+				.writeToImage();
 	}
 }
 /** Test for XML based scene - for bonus */

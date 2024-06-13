@@ -8,23 +8,23 @@ import scene.Scene;
  * Abstract base class for ray tracing algorithms.
  */
 public abstract class RayTracerBase {
-    /** The scene being traced. */
-    protected Scene scene;
+	/** The scene being traced. */
+	protected Scene scene;
 
-    /**
-     * Constructs a new RayTracerBase with the specified scene.
-     * 
-     * @param scene The scene to be traced.
-     */
-    public RayTracerBase(Scene scene) {
-        this.scene = scene;
-    }
+	/**
+	 * Constructs a new RayTracerBase with the specified scene.
+	 * 
+	 * @param scene The scene to be traced.
+	 */
+	public RayTracerBase(Scene scene) {
+		this.scene = scene;
+	}
 
-    /**
-     * Abstract method to trace a ray and compute its color.
-     * 
-     * @param ray The ray to be traced.
-     * @return The color computed for the traced ray.
-     */
-    public abstract Color traceRay(Ray ray);
+	/**
+	 * Abstract method to trace a ray and compute its color.
+	 * 
+	 * @param ray The ray to be traced.
+	 * @return The color computed for the traced ray.
+	 */
+	public abstract Color traceRay(Ray ray);
 }

@@ -18,8 +18,9 @@ import org.junit.jupiter.api.Test;
 class PointTests {
 	/**
 	 * A small constant representing the precision for floating-point comparison.
-	 * This constant is used in unit tests to specify the maximum allowable difference
-	 * between expected and actual values when comparing floating-point numbers.
+	 * This constant is used in unit tests to specify the maximum allowable
+	 * difference between expected and actual values when comparing floating-point
+	 * numbers.
 	 */
 	private static final double DELTA = 0.000001;
 
@@ -70,8 +71,8 @@ class PointTests {
 		// distance between two points.
 		assertEquals(expected, p1.distanceSquared(p2), DELTA, "wrong distanceSquared result");
 		// =============== Boundary Values Tests ==================
-	    // TC02: Test that checks the property of result of the calculating the squared
-	    // distance between point to same point.
+		// TC02: Test that checks the property of result of the calculating the squared
+		// distance between point to same point.
 		assertEquals(expected2, p1.distanceSquared(p1), DELTA, "wrong distanceSquared result");
 	}
 
@@ -89,9 +90,9 @@ class PointTests {
 		// TC01: Test that checks the property of result of the calculating the squared
 		// distance between two points.
 		assertEquals(expected, p1.distance(p2), DELTA, "wrong distance result");
-	    // =============== Boundary Values Tests ==================
-	    // TC02: Test that checks the property of result of the calculating the squared
-	    // distance between point to same point.
+		// =============== Boundary Values Tests ==================
+		// TC02: Test that checks the property of result of the calculating the squared
+		// distance between point to same point.
 		assertEquals(expected2, p1.distance(p1), DELTA, "wrong distance result");
 	}
 

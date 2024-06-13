@@ -251,28 +251,30 @@ public class Camera implements Cloneable {
 			if (camera.viewPlaneDistance == 0) {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneDistance");
 			}
-			//if (camera.imageWriter == null) {// stage5
-			//	throw new MissingResourceException(missingData, Camera.class.getName(), "imageWriter");
-			//}
-			//if (camera.rayTracer == null) {// stage5
-			//	throw new MissingResourceException(missingData, Camera.class.getName(), "rayTracer");
-			//}
-			
-			 // Validate the values of the fields
-            if (camera.viewPlaneWidth <= 0) 
-                throw new IllegalStateException("Width must be positive");
-  
-            if (camera.viewPlaneHeight <= 0) 
-                throw new IllegalStateException("Height must be positive");
-            
-            if (camera.viewPlaneDistance <= 0) 
-                throw new IllegalStateException("Distance must be positive");
-            
-            if (camera.vTo.equals(camera.vUp)) 
-                throw new IllegalArgumentException("Direction vectors cannot be the same");
-            
-            if (camera.vTo.dotProduct(camera.vUp) != 0)
-                throw new IllegalArgumentException("Direction vectors must be perpendicular");
+			// if (camera.imageWriter == null) {// stage5
+			// throw new MissingResourceException(missingData, Camera.class.getName(),
+			// "imageWriter");
+			// }
+			// if (camera.rayTracer == null) {// stage5
+			// throw new MissingResourceException(missingData, Camera.class.getName(),
+			// "rayTracer");
+			// }
+
+			// Validate the values of the fields
+			if (camera.viewPlaneWidth <= 0)
+				throw new IllegalStateException("Width must be positive");
+
+			if (camera.viewPlaneHeight <= 0)
+				throw new IllegalStateException("Height must be positive");
+
+			if (camera.viewPlaneDistance <= 0)
+				throw new IllegalStateException("Distance must be positive");
+
+			if (camera.vTo.equals(camera.vUp))
+				throw new IllegalArgumentException("Direction vectors cannot be the same");
+
+			if (camera.vTo.dotProduct(camera.vUp) != 0)
+				throw new IllegalArgumentException("Direction vectors must be perpendicular");
 
 			// Calculate the right vector
 			if (camera.vRight == null)
@@ -376,26 +378,33 @@ public class Camera implements Cloneable {
 //	}
 	// stage5
 	/**
-	 * Prints a grid on the image.
+	 * This method prints a grid pattern onto the image, with specified intervals
+	 * between grid lines and color for the grid lines.
 	 *
+	 * @param interval The interval between grid lines. Must be greater than 0.
 	 * @param color    The color of the grid lines.
-	 * @param interval The interval between grid lines.
-	 * @throws IllegalArgumentException if the interval is less than or equal to 0
+	 * @return The current state of the camera, for further use within this class or
+	 *         in closely related classes.
+	 * @throws IllegalArgumentException if the interval is not greater than 0.
 	 */
-	public void printGrid(primitives.Color color, int interval) {
+	public Camera printGrid(int interval, Color color) {
 		if (interval <= 0) {
 			throw new IllegalArgumentException("Interval must be greater than 0");
 		}
 
 		// Loop through the image and draw the grid lines
-		for (int i = 0; i < viewPlaneHeight; i++) {
-			for (int j = 0; j < viewPlaneWidth; j++) {
-				// Check if the current pixel is on a grid line
-				if (i % interval == 0 || j % interval == 0) {
-					imageWriter.writePixel(j, i, color); // Set the color of the grid line
-				}
+		for (int i = 0; i < imageWriter.getNx(); i += interval) {
+			for (int j = 0; j < imageWriter.getNy(); j++) {
+				imageWriter.writePixel(i, j, color); // Set the color of the grid line
 			}
 		}
+		for (int j = 0; j < imageWriter.getNy(); j += interval) {
+			for (int i = 0; i < imageWriter.getNx(); i++) {
+				imageWriter.writePixel(i, j, color); // Set the color of the grid line
+			}
+
+		}
+		return this;
 	}
 
 	// stage5
@@ -414,24 +423,39 @@ public class Camera implements Cloneable {
 
 	// stage5
 	/**
-	 * Renders the image by casting rays through each pixel of the view plane.
+	 * This method performs image rendering by casting rays of light for each pixel
+	 * in the image and computing their color. It utilizes the image dimensions
+	 * provided by the imageWriter object to determine the appropriate number of
+	 * rays for each pixel, then invokes the castRay method for each pixel.
+	 * 
+	 * @return The current state of the camera, for further use within this class or
+	 *         in closely related classes.
 	 */
 	public Camera renderImage() {
 		int nX = imageWriter.getNx();
-		int nY=imageWriter.getNy();
-		for(int i=0; i < nX; ++i)
-			for(int j=0; j < nY; ++j)
-				castRay(nX, nY,j, i);
-		
-		return this;		
-	
+		int nY = imageWriter.getNy();
+		for (int i = 0; i < nX; ++i)
+			for (int j = 0; j < nY; ++j)
+				castRay(nX, nY, j, i);
+		return this;
+
 	}
-	
-	private void castRay(int nX, int nY, int column,int row) {
-		Ray ray= constructRay(nX, nY, column, row);
-		Color color=rayTracer.traceRay(ray);
+
+	/**
+	 * Casts a ray through a specific pixel in the image, computes the color of the
+	 * pixel based on the ray-tracing algorithm, and writes the color to the
+	 * corresponding pixel in the image.
+	 *
+	 * @param nX     The width of the image.
+	 * @param nY     The height of the image.
+	 * @param column The column index of the pixel.
+	 * @param row    The row index of the pixel.
+	 */
+	private void castRay(int nX, int nY, int column, int row) {
+		Ray ray = constructRay(nX, nY, column, row);
+		Color color = rayTracer.traceRay(ray);
 		imageWriter.writePixel(column, row, color);
-	
+
 	}
 
 }
