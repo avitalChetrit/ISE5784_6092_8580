@@ -62,15 +62,15 @@ class PointTests {
 	 */
 	@Test
 	void testDistanceSquared() {
-		// ============Equivalence Partitions Tests ==============
 		Point p1 = new Point(1, 2, 3);
 		Point p2 = new Point(4, 5, 6);
+		// ============Equivalence Partitions Tests ==============
 		double expected = 27;
-		double expected2 = 0;
 		// TC01: Test that checks the property of result of the calculating the squared
 		// distance between two points.
 		assertEquals(expected, p1.distanceSquared(p2), DELTA, "wrong distanceSquared result");
 		// =============== Boundary Values Tests ==================
+		double expected2 = 0;
 		// TC02: Test that checks the property of result of the calculating the squared
 		// distance between point to same point.
 		assertEquals(expected2, p1.distanceSquared(p1), DELTA, "wrong distanceSquared result");
@@ -81,18 +81,18 @@ class PointTests {
 	 */
 	@Test
 	void testDistance() {
-		// ============Equivalence Partitions Tests ==============
-
 		Point p1 = new Point(1, 2, 3);
 		Point p2 = new Point(4, 5, 6);
+
+		// ============Equivalence Partitions Tests ==============
 		double expected = Math.sqrt(27);
-		double expected2 = 0.0;
 		// TC01: Test that checks the property of result of the calculating the squared
 		// distance between two points.
 		assertEquals(expected, p1.distance(p2), DELTA, "wrong distance result");
 		// =============== Boundary Values Tests ==================
 		// TC02: Test that checks the property of result of the calculating the squared
 		// distance between point to same point.
+		double expected2 = 0.0;
 		assertEquals(expected2, p1.distance(p1), DELTA, "wrong distance result");
 	}
 

@@ -144,17 +144,17 @@ class VectorTests {
 		// TC001: Checks the correctness and result of the inner multiplication
 		// operation
 		// (dot product) between two vectors
-		assertEquals(expected, v1.dotProduct(v2),DELTA, "wrong dot product value");
+		assertEquals(expected, v1.dotProduct(v2), DELTA, "wrong dot product value");
 
 		// =============== Boundary Values Tests ==================
 		// TC010: Checks the correctness and result of the A unit vector with a
 		// different
 		// vector multiplication operation (dot product) between two vectors
-		assertEquals(expected2, v1.dotProduct(v4),DELTA, "wrong dot product value");
+		assertEquals(expected2, v1.dotProduct(v4), DELTA, "wrong dot product value");
 
 		// TC011: Checks the correctness and result of the A vertical vector with a
 		// different vector multiplication operation (dot product) between two vectors
-		assertEquals(expected1, v1.dotProduct(v5),DELTA, "wrong dot product value");
+		assertEquals(expected1, v1.dotProduct(v5), DELTA, "wrong dot product value");
 
 		// TC100: Checks the correctness and result of the dot product for vectors with
 		// a sharp angle between them
@@ -224,7 +224,7 @@ class VectorTests {
 
 		double expected1 = 14;
 		// TC01: Test for a vector with positive components
-		assertEquals(expected1, v1.lengthSquared(),DELTA, "wrong squared length value for positive components");
+		assertEquals(expected1, v1.lengthSquared(), DELTA, "wrong squared length value for positive components");
 	}
 
 	/**
@@ -236,7 +236,7 @@ class VectorTests {
 		Vector v = new Vector(1, 2, 3);
 		double expected = Math.sqrt(14);
 		// TC01: Checks the correctness and the result step length vector.
-		assertEquals(expected, v.length(),DELTA, "wrong length value");
+		assertEquals(expected, v.length(), DELTA, "wrong length value");
 	}
 
 	/**
@@ -259,28 +259,29 @@ class VectorTests {
 		assertEquals(unitVector, nUnitVector, "normalized vector is not the same as the original unit vector");
 
 	}
+
 	/**
 	 * Test method for {@link primitives.Vector#subtract(primitives.Vector)}.
 	 */
 	@Test
 	void testSubtractVector() {
-	    // ============Equivalence Partitions Tests ==============
-	    Vector v1 = new Vector(1, 2, 3);
-	    Vector v2 = new Vector(2, 4, 6);
-	    
-	    Vector expected1 = new Vector(-1, -2, -3);
-	    Vector expected2 = new Vector(1,2,3);
-	   // Vector expected3 = new Vector(0,0,0);
+		// ============Equivalence Partitions Tests ==============
+		Vector v1 = new Vector(1, 2, 3);
+		Vector v2 = new Vector(2, 4, 6);
 
-	    // TC01: Test subtracting a vector from another vector and check that the result is proper.
-	    assertEquals(expected1, v1.subtract(v2), "wrong subtracted vector");
-	    assertEquals(expected2, v2.subtract(v1), "wrong subtracted vector");
+		Vector expected1 = new Vector(-1, -2, -3);
+		Vector expected2 = new Vector(1, 2, 3);
+		// Vector expected3 = new Vector(0,0,0);
 
-	    // =============== Boundary Values Tests ==================
-	    // TC11: Test subtracting the same vector (result should be a zero vector)
-	    assertThrows(IllegalArgumentException.class, () -> v1.subtract(v1), //
+		// TC01: Test subtracting a vector from another vector and check that the result
+		// is proper.
+		assertEquals(expected1, v1.subtract(v2), "wrong subtracted vector");
+		assertEquals(expected2, v2.subtract(v1), "wrong subtracted vector");
+
+		// =============== Boundary Values Tests ==================
+		// TC11: Test subtracting the same vector (result should be a zero vector)
+		assertThrows(IllegalArgumentException.class, () -> v1.subtract(v1), //
 				"subtract() with the same vector  does not throw an exception");
 	}
-
 
 }

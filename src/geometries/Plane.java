@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Class Plane represents a flat geometric surface in three-dimensional space.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
 	/** point in plane */
 	private final Point point;

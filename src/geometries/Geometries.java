@@ -13,7 +13,7 @@ import primitives.Ray;
 /**
  * Class representing a collection of geometric shapes that are intersectable.
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 
 	/** List to hold the geometric shapes */
 	private final List<Intersectable> geometries = new LinkedList<>();

@@ -33,15 +33,19 @@ public class CameraIntegrationTests {
 		// Plane tests
 		testRayIntersections(camera, new Plane(new Point(0, 0, -5), new Vector(0, 0, 1)), 9, 9);
 
-		//testRayIntersections(camera, new Plane(new Point(0, 0, -4), new Vector(0, 1, 1)), 9, 9);
+		// testRayIntersections(camera, new Plane(new Point(0, 0, -4), new Vector(0, 1,
+		// 1)), 9, 9);
 
-	//	testRayIntersections(camera, new Plane(new Point(0, 0, -4), new Vector(0, -1, 1)), 9, 6);
+		// testRayIntersections(camera, new Plane(new Point(0, 0, -4), new Vector(0, -1,
+		// 1)), 9, 6);
 
 		// Triangle tests
-		testRayIntersections(camera, new Triangle(new Point(0, 1, -2), new Point(1, -1, -2), new Point(-1, -1, -2)), 9,1);
+		testRayIntersections(camera, new Triangle(new Point(0, 1, -2), new Point(1, -1, -2), new Point(-1, -1, -2)), 9,
+				1);
 
-		//testRayIntersections(camera, new Triangle(new Point(0, 20, -2), new Point(1, -1, -2), new Point(-1, -1, -2)), 9,
-			//	2);
+		// testRayIntersections(camera, new Triangle(new Point(0, 20, -2), new Point(1,
+		// -1, -2), new Point(-1, -1, -2)), 9,
+		// 2);
 
 	}
 

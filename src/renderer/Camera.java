@@ -1,10 +1,8 @@
 package renderer;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
-import primitives.Color;
+import primitives.*;
 import java.util.MissingResourceException;
+import static primitives.Util.*;
 
 /**
  * Camera class represents a camera in 3D space using the Builder Pattern. The
@@ -55,7 +53,7 @@ public class Camera implements Cloneable {
 	// Rest of the class implementation...
 
 	/**
-	 * Private constractor
+	 * Private constructor
 	 *
 	 */
 	private Camera() {
@@ -80,17 +78,17 @@ public class Camera implements Cloneable {
 	 * @return The constructed ray.
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		Point Pc = position.add(vTo.scale(viewPlaneDistance));
-		double Ry = viewPlaneHeight / nY;
-		double Rx = viewPlaneWidth / nX;
-		double Yi = -(i - (nY - 1) / 2.0) * Ry;
-		double Xj = (j - (nX - 1) / 2.0) * Rx;
-		Point Pij = Pc;
-		if (Xj != 0)
-			Pij = Pij.add(vRight.scale(Xj));
-		if (Yi != 0)
-			Pij = Pij.add(vUp.scale(Yi));
-		Vector Vij = Pij.subtract(position);
+		Point pc = position.add(vTo.scale(viewPlaneDistance));
+		double ry = viewPlaneHeight / nY;
+		double rx = viewPlaneWidth / nX;
+		double yi = -(i - (nY - 1) / 2.0) * ry;
+		double xj = (j - (nX - 1) / 2.0) * rx;
+		Point pij = pc;
+		if (xj != 0)
+			pij = pij.add(vRight.scale(xj));
+		if (yi != 0)
+			pij = pij.add(vUp.scale(yi));
+		Vector Vij = pij.subtract(position);
 		return new Ray(position, Vij.normalize());
 	}
 
@@ -146,15 +144,10 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the vectors are null or not orthogonal
 		 */
 		public Builder setDirection(Vector vTo, Vector vUp) {
-			if (vTo == null || vUp == null) {
+			if (vTo == null || vUp == null)
 				throw new IllegalArgumentException("Direction vectors cannot be null");
-			}
-			if (vTo.equals(vUp)) {
-				throw new IllegalArgumentException("Direction vectors cannot be the same");
-			}
-			if (!(vTo.dotProduct(vUp) == 0)) {
+			if (!(vTo.dotProduct(vUp) == 0))
 				throw new IllegalArgumentException("Direction vectors must be orthogonal");
-			}
 
 			camera.vTo = vTo.normalize();
 			camera.vUp = vUp.normalize();
@@ -171,9 +164,9 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the width or height is non-positive
 		 */
 		public Builder setVpSize(double width, double height) {
-			if (width <= 0 || height <= 0) {
+			if (width <= 0 || height <= 0)
 				throw new IllegalArgumentException("View plane dimensions must be positive");
-			}
+
 			camera.viewPlaneWidth = width;
 			camera.viewPlaneHeight = height;
 			return this;
@@ -187,9 +180,9 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the distance is non-positive
 		 */
 		public Builder setVpDistance(double distance) {
-			if (distance <= 0) {
+			if (distance <= 0)
 				throw new IllegalArgumentException("View plane distance must be positive");
-			}
+
 			camera.viewPlaneDistance = distance;
 			return this;
 		}
@@ -202,9 +195,9 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the provided image writer is null
 		 */
 		public Builder setImageWriter(ImageWriter imageWriter) {// stage5
-			if (imageWriter == null) {
+			if (imageWriter == null)
 				throw new IllegalArgumentException("Image writer cannot be null");
-			}
+
 			camera.imageWriter = imageWriter;
 			return this;
 		}
@@ -218,9 +211,9 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the provided ray tracer base is null
 		 */
 		public Builder setRayTracer(RayTracerBase rayTracer) {// stage5
-			if (rayTracer == null) {
+			if (rayTracer == null)
 				throw new IllegalArgumentException("Ray tracer base cannot be null");
-			}
+
 			camera.rayTracer = rayTracer;
 			return this;
 		}
@@ -233,24 +226,12 @@ public class Camera implements Cloneable {
 		 */
 		public Camera build() {
 			final String missingData = "Missing rendering data";
-			if (camera.position == null) {
+			if (camera.position == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "position");
-			}
-			if (camera.vTo == null) {
+			if (camera.vTo == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vTo");
-			}
-			if (camera.vUp == null) {
+			if (camera.vUp == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vUp");
-			}
-			if (camera.viewPlaneWidth == 0.0) {
-				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneWidth");
-			}
-			if (camera.viewPlaneHeight == 0.0) {
-				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneHeight");
-			}
-			if (camera.viewPlaneDistance == 0) {
-				throw new MissingResourceException(missingData, Camera.class.getName(), "viewPlaneDistance");
-			}
 			// if (camera.imageWriter == null) {// stage5
 			// throw new MissingResourceException(missingData, Camera.class.getName(),
 			// "imageWriter");
@@ -261,34 +242,24 @@ public class Camera implements Cloneable {
 			// }
 
 			// Validate the values of the fields
-			if (camera.viewPlaneWidth <= 0)
+			if (alignZero(camera.viewPlaneWidth) <= 0)
 				throw new IllegalStateException("Width must be positive");
-
 			if (camera.viewPlaneHeight <= 0)
 				throw new IllegalStateException("Height must be positive");
-
 			if (camera.viewPlaneDistance <= 0)
 				throw new IllegalStateException("Distance must be positive");
 
-			if (camera.vTo.equals(camera.vUp))
-				throw new IllegalArgumentException("Direction vectors cannot be the same");
-
-			if (camera.vTo.dotProduct(camera.vUp) != 0)
+			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
 				throw new IllegalArgumentException("Direction vectors must be perpendicular");
 
 			// Calculate the right vector
 			if (camera.vRight == null)
 				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
-			return (Camera) camera.clone();
-		}
-	}
-
-	@Override
-	public Camera clone() {
-		try {
-			return (Camera) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError(); // Can't happen
+			try {
+				return (Camera) camera.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new AssertionError(); // Can't happen
+			}
 		}
 	}
 
@@ -367,15 +338,6 @@ public class Camera implements Cloneable {
 	 */
 	private RayTracerBase rayTracer;
 
-	// stage5
-//	/**
-//	 * Renders the image using the camera's image writer and ray tracer.
-//	 *
-//	 * @throws UnsupportedOperationException if called
-//	 */
-//	public void renderImage() {
-//	    throw new UnsupportedOperationException("Rendering image is not supported at this stage");
-//	}
 	// stage5
 	/**
 	 * This method prints a grid pattern onto the image, with specified intervals

@@ -52,6 +52,7 @@ public class Ray {
 	public Point getPoint(double t) {
 		return Util.isZero(t) ? head : head.add(direction.scale(t));
 	}
+
 	/**
 	 * Finds the closest point to the start of the ray from a collection of points.
 	 * 
@@ -89,6 +90,5 @@ public class Ray {
 	public String toString() {
 		return "Ray:" + head + "->" + direction;
 	}
-	
 
 }

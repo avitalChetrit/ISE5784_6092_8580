@@ -4,7 +4,7 @@ package geometries;
  * Abstract class RadialGeometry implements the Geometry interface and
  * represents a geometric body with a radius.  
  */
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
 
 	/**
 	 * Radius of the geometric body
