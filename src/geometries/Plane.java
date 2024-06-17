@@ -71,7 +71,7 @@ public class Plane extends Geometry {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		// Calculate the denominator of the division for finding the parameter t
 		double denominator = this.normal.dotProduct(ray.getDirection());
 		// If the denominator is close to zero, the ray is parallel to the plane

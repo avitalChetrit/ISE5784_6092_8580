@@ -146,7 +146,7 @@ public class Camera implements Cloneable {
 		public Builder setDirection(Vector vTo, Vector vUp) {
 			if (vTo == null || vUp == null)
 				throw new IllegalArgumentException("Direction vectors cannot be null");
-			if (!(vTo.dotProduct(vUp) == 0))
+			if (!isZero(vTo.dotProduct(vUp)))
 				throw new IllegalArgumentException("Direction vectors must be orthogonal");
 
 			camera.vTo = vTo.normalize();
@@ -164,7 +164,7 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the width or height is non-positive
 		 */
 		public Builder setVpSize(double width, double height) {
-			if (width <= 0 || height <= 0)
+			if (alignZero(width) <= 0 || alignZero(height) <= 0)
 				throw new IllegalArgumentException("View plane dimensions must be positive");
 
 			camera.viewPlaneWidth = width;
@@ -180,7 +180,7 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the distance is non-positive
 		 */
 		public Builder setVpDistance(double distance) {
-			if (distance <= 0)
+			if (alignZero(distance) <= 0)
 				throw new IllegalArgumentException("View plane distance must be positive");
 
 			camera.viewPlaneDistance = distance;
@@ -232,26 +232,15 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vTo");
 			if (camera.vUp == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vUp");
-			// if (camera.imageWriter == null) {// stage5
-			// throw new MissingResourceException(missingData, Camera.class.getName(),
-			// "imageWriter");
-			// }
-			// if (camera.rayTracer == null) {// stage5
-			// throw new MissingResourceException(missingData, Camera.class.getName(),
-			// "rayTracer");
-			// }
-
 			// Validate the values of the fields
 			if (alignZero(camera.viewPlaneWidth) <= 0)
 				throw new IllegalStateException("Width must be positive");
-			if (camera.viewPlaneHeight <= 0)
+			if (alignZero(camera.viewPlaneHeight) <= 0)
 				throw new IllegalStateException("Height must be positive");
-			if (camera.viewPlaneDistance <= 0)
+			if (alignZero(camera.viewPlaneDistance) <= 0)
 				throw new IllegalStateException("Distance must be positive");
-
 			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
 				throw new IllegalArgumentException("Direction vectors must be perpendicular");
-
 			// Calculate the right vector
 			if (camera.vRight == null)
 				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
@@ -350,7 +339,7 @@ public class Camera implements Cloneable {
 	 * @throws IllegalArgumentException if the interval is not greater than 0.
 	 */
 	public Camera printGrid(int interval, Color color) {
-		if (interval <= 0) {
+		if (alignZero(interval) <= 0) {
 			throw new IllegalArgumentException("Interval must be greater than 0");
 		}
 

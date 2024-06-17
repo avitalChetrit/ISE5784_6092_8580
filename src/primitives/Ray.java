@@ -78,6 +78,30 @@ public class Ray {
 		// Return the closest point
 		return closestPoint;
 	}
+	/**
+     * Finds the closest GeoPoint to the start of the ray from a collection of GeoPoints.
+     * 
+     * @param geoPoints The collection of GeoPoints.
+     * @return The closest GeoPoint to the start of the ray.
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
+        // Initialize variables to store the closest GeoPoint and its distance
+        GeoPoint closestGeoPoint = null;
+        double closestDistance = Double.POSITIVE_INFINITY;
+
+        // Iterate through the list of GeoPoints
+        for (GeoPoint geoPoint : geoPoints) {
+            // Calculate the distance between the origin of the ray and the current GeoPoint
+            double distance = head.distance(geoPoint.point);
+            // Check if the current GeoPoint is closer than the previous closest GeoPoint
+            if (distance < closestDistance) {
+                closestGeoPoint = geoPoint;
+                closestDistance = distance;
+            }
+        }
+
+        // Return the closest GeoPoint
+        return closestGeoPoint;
 
 	@Override
 	public boolean equals(Object obj) {

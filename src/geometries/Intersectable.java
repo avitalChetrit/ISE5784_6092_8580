@@ -5,6 +5,7 @@ import primitives.Ray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Abstract class Intersectable represents a geometry object that can be
@@ -19,8 +20,10 @@ public abstract class Intersectable {
 	 * @return A list of intersection points between the object and the ray. If no
 	 *         intersections are found, an empty list is returned.
 	 */
-	public abstract List<Point> findIntersections(Ray ray);
-
+	public List<Point> findIntersections(Ray ray) {
+		 var geoList = findGeoIntersections(ray);
+		 return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
+		}
 	/**
 	 * Inner static class GeoPoint representing a geometric intersection point with
 	 * associated geometry.
@@ -47,31 +50,21 @@ public abstract class Intersectable {
 			this.point = point;
 		}
 
-		/**
-		 * Override of the equals method to check equality of GeoPoints.
-		 *
-		 * @param o The object to compare with.
-		 * @return true if both objects are equal, false otherwise.
-		 */
+		// Override equals method
 		@Override
-		public boolean equals(Object o) {
-			if (this == o)
+		public boolean equals(Object obj) {
+			if (this == obj)
 				return true;
-			if (o == null || getClass() != o.getClass())
+			if(!(obj instanceof GeoPoint geoPoint))
 				return false;
-			GeoPoint geoPoint = (GeoPoint) o;
-			return geometry.equals(geoPoint.geometry) && point.equals(geoPoint.point);
-		}
+			return Objects.equals(geometry,geoPoint.geometry)&&Objects.equals(point,geoPoint.point);
 
-		/**
-		 * Override of the toString method for GeoPoint.
-		 *
-		 * @return A string representation of the GeoPoint.
-		 */
+		}
 		@Override
 		public String toString() {
 			return "GeoPoint{" + "geometry=" + geometry + ", point=" + point + '}';
 		}
+		
 	}
 
 	/**
@@ -95,9 +88,7 @@ public abstract class Intersectable {
 	 * @return A list of GeoPoints representing intersection points between the
 	 *         object and the ray.
 	 */
-	protected final List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {// לתקן
-		// Placeholder implementation, replace with actual logic in subclasses
-		return null; // Return an empty list as placeholder
-	}
+	protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray) ;// לתקן
+	
 
 }
