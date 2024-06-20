@@ -20,7 +20,7 @@ public abstract class Intersectable {
 	 * @return A list of intersection points between the object and the ray. If no
 	 *         intersections are found, an empty list is returned.
 	 */
-	public List<Point> findIntersections(Ray ray) {
+	public final List<Point> findIntersections(Ray ray) {
 		 var geoList = findGeoIntersections(ray);
 		 return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
 		}

@@ -3,8 +3,6 @@ package geometries;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import geometries.Intersectable.GeoPoint;
 import primitives.Point;
 import primitives.Ray;
 
@@ -46,17 +44,21 @@ public class Geometries extends Intersectable {
 
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		List<GeoPoint> intersections = null;
-		for (Intersectable geometry : geometries) {
-			var geometryIntersections = geometry.findIntersections(ray);
-			if (geometryIntersections != null) {
-				if (intersections == null)
-					intersections = new LinkedList<>(geometryIntersections);
-				else
-					intersections.addAll(geometryIntersections);
-			}
-		}
-		return intersections;
+	    List<GeoPoint> intersections = null;
+
+	    for (Intersectable geometry : this.geometries) {
+	    	 List<GeoPoint> intersections1 = geometry.findGeoIntersectionsHelper(ray);
+	    	 if(intersections1!=null) {
+	    		 if (intersections==null)
+	    			 intersections=new LinkedList<>();
+	    		 intersections.addAll(intersections1);
+	    	 }
+	    }
+	    			 
+	    if(intersections==null)
+	    	return null;
+	    return intersections;
+
 	}
 
 }

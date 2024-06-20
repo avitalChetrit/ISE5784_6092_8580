@@ -71,29 +71,35 @@ public class Plane extends Geometry {
 	}
 
 	@Override
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		// Calculate the denominator of the division for finding the parameter t
-		double denominator = this.normal.dotProduct(ray.getDirection());
-		// If the denominator is close to zero, the ray is parallel to the plane
-		if (Util.isZero(denominator))
-			return null; // Ray is parallel to the plane
+	protected List<Intersectable.GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+	    // Calculate the denominator of the division for finding the parameter t
+	    double denominator = this.normal.dotProduct(ray.getDirection());
+	    // If the denominator is close to zero, the ray is parallel to the plane
+	    if (Util.isZero(denominator))
+	        return null; // Ray is parallel to the plane
 
-		// Calculate the numerator of the division for finding the parameter t
-		Vector p0MinusQ0;
-		try {
-			p0MinusQ0 = point.subtract(ray.getHead());
-		} catch (IllegalArgumentException ignore) {
-			return null;
-		}
+	    // Calculate the numerator of the division for finding the parameter t
+	    Vector p0MinusQ0;
+	    try {
+	        p0MinusQ0 = point.subtract(ray.getHead());
+	    } catch (IllegalArgumentException ignore) {
+	        return null;
+	    }
 
-		double numerator = this.normal.dotProduct(p0MinusQ0);
-		// Calculate the parameter t
-		double t = Util.alignZero(numerator / denominator);
+	    double numerator = this.normal.dotProduct(p0MinusQ0);
+	    // Calculate the parameter t
+	    double t = Util.alignZero(numerator / denominator);
 
-		// If t is negative, the intersection point is behind the ray's start point
-		// Calculate the intersection point
-		// Add the intersection point to the list
-		return t < 0 ? null : List.of(ray.getPoint(t));
+	    // If t is negative, the intersection point is behind the ray's start point
+	    if (t < 0)
+	        return null;
+
+	    // Calculate the intersection point
+	    Point intersectionPoint = ray.getPoint(t);
+
+	    // Return a list with a single GeoPoint containing this plane and the intersection point
+	    return List.of(new Intersectable.GeoPoint(this, intersectionPoint));
 	}
+
 
 }
