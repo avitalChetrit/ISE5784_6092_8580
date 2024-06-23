@@ -391,7 +391,7 @@ public class Camera implements Cloneable {
 		return this;
 
 	}
-	
+
 	/**
 	 * Casts a ray through a specific pixel in the image, computes the color of the
 	 * pixel based on the ray-tracing algorithm, and writes the color to the
