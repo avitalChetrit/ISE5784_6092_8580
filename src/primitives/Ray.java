@@ -13,8 +13,10 @@ public class Ray {
 	private final Point head;
 	/** vector direction */
 	private final Vector direction;
-	 /** A constant delta value used for numerical approximations or small adjustments */
-    private static final double DELTA = 0.1;
+	/**
+	 * A constant delta value used for numerical approximations or small adjustments
+	 */
+	private static final double DELTA = 0.1;
 
 	/**
 	 * ray constructor
@@ -26,20 +28,21 @@ public class Ray {
 		head = point;
 		direction = vector.normalize(); // Ensure vector is normalized
 	}
-	 /**
-     * ray constructor with offset point
-     * 
-     * @param point  in ray
-     * @param vector in ray
-     * @param normal on plane
-     */
-    public Ray(Point point, Vector direction, Vector normal) {
-    	this.direction=direction.normalize();
-    	double nv=normal.dotProduct(this.direction);
-    	Vector dltVector=normal.scale(nv<0?-DELTA:DELTA);
-    	head=point.add(dltVector);
-       
-    }
+
+	/**
+	 * ray constructor with offset point
+	 * 
+	 * @param point     in ray
+	 * @param direction in ray
+	 * @param normal    on plane
+	 */
+	public Ray(Point point, Vector direction, Vector normal) {
+		this.direction = direction.normalize();
+		double nv = normal.dotProduct(this.direction);
+		Vector dltVector = normal.scale(nv < 0 ? -DELTA : DELTA);
+		head = point.add(dltVector);
+
+	}
 
 	/**
 	 * Returns the head point of the vector.
@@ -89,10 +92,10 @@ public class Ray {
 	 * @return The closest GeoPoint to the start of the ray.
 	 */
 	public GeoPoint findClosestGeoPoint(List<GeoPoint> intersections) {
-        if (intersections == null || intersections.isEmpty()) {
-            return null;
-        }
-	
+		if (intersections == null || intersections.isEmpty()) {
+			return null;
+		}
+
 		// Initialize variables to store the closest GeoPoint and its distance
 		GeoPoint closestGeoPoint = null;
 		double closestDistance = Double.POSITIVE_INFINITY;

@@ -228,10 +228,17 @@ public class Camera implements Cloneable {
 			final String missingData = "Missing rendering data";
 			if (camera.position == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "position");
+
 			if (camera.vTo == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vTo");
 			if (camera.vUp == null)
 				throw new MissingResourceException(missingData, Camera.class.getName(), "vUp");
+			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
+				throw new IllegalArgumentException("Direction vectors must be perpendicular");
+			// Calculate the right vector
+			if (camera.vRight == null)
+				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+
 			// Validate the values of the fields
 			if (alignZero(camera.viewPlaneWidth) <= 0)
 				throw new IllegalStateException("Width must be positive");
@@ -239,11 +246,14 @@ public class Camera implements Cloneable {
 				throw new IllegalStateException("Height must be positive");
 			if (alignZero(camera.viewPlaneDistance) <= 0)
 				throw new IllegalStateException("Distance must be positive");
-			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
-				throw new IllegalArgumentException("Direction vectors must be perpendicular");
-			// Calculate the right vector
-			if (camera.vRight == null)
-				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+
+			if (this.camera.imageWriter == null) {
+				throw new IllegalStateException("imageWriter can not be null");
+			}
+			if (this.camera.rayTracer == null) {
+				throw new IllegalStateException("rayTracer can not be null");
+			}
+
 			try {
 				return (Camera) camera.clone();
 			} catch (CloneNotSupportedException e) {
@@ -342,15 +352,17 @@ public class Camera implements Cloneable {
 		if (alignZero(interval) <= 0) {
 			throw new IllegalArgumentException("Interval must be greater than 0");
 		}
+		int nX = imageWriter.getNx();
+		int nY = imageWriter.getNy();
 
 		// Loop through the image and draw the grid lines
-		for (int i = 0; i < imageWriter.getNx(); i += interval) {
-			for (int j = 0; j < imageWriter.getNy(); j++) {
+		for (int i = 0; i < nX; i += interval) {
+			for (int j = 0; j < nY; j++) {
 				imageWriter.writePixel(i, j, color); // Set the color of the grid line
 			}
 		}
-		for (int j = 0; j < imageWriter.getNy(); j += interval) {
-			for (int i = 0; i < imageWriter.getNx(); i++) {
+		for (int j = 0; j < nY; j += interval) {
+			for (int i = 0; i < nX; i++) {
 				imageWriter.writePixel(i, j, color); // Set the color of the grid line
 			}
 

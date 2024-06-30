@@ -61,14 +61,11 @@ public class Sphere extends RadialGeometry {
 
 		double t1 = tm - th;
 
-		if (alignZero(t1) <= 0) {
-			// Only one intersection point
-			return List.of(new Intersectable.GeoPoint(this, ray.getPoint(t2)));
-		} else {
-			// Two intersection points
-			return List.of(new Intersectable.GeoPoint(this, ray.getPoint(t1)),
-					new Intersectable.GeoPoint(this, ray.getPoint(t2)));
-		}
+		return alignZero(t1) <= 0
+				// Only one intersection point
+				? List.of(new GeoPoint(this, ray.getPoint(t2)))
+				// Two intersection points
+				: List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
 	}
 
 }

@@ -11,7 +11,7 @@ public abstract class Light {
 	 * The intensity (color) of the light source. This field is protected to allow
 	 * access within subclasses.
 	 */
-	protected Color intensity;
+	protected final Color intensity;
 
 	/**
 	 * Constructs a new Light with the given intensity.

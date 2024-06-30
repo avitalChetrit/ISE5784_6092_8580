@@ -3,7 +3,6 @@ package scene;
 import primitives.Color;
 import lighting.AmbientLight;
 import geometries.Geometries;
-import lighting.Light;
 import lighting.LightSource;
 
 import java.util.LinkedList;

@@ -14,7 +14,7 @@ public class DirectionalLight extends Light implements LightSource {
 	 * used to denote the direction of light, movement, or any other directional
 	 * quantity.
 	 */
-	private Vector direction;
+	private final Vector direction;
 
 	/**
 	 * Constructs a directional light with the given intensity and direction.

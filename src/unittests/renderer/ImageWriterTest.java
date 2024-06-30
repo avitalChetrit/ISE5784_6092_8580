@@ -3,7 +3,6 @@ package unittests.renderer;
 import primitives.Color;
 import renderer.ImageWriter;
 import org.junit.jupiter.api.Test;
-import static java.awt.Color.*;
 
 /**
  * A class to test the functionality of the {@link ImageWriter} class.

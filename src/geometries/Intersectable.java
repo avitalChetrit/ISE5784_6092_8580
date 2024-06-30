@@ -3,9 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Abstract class Intersectable represents a geometry object that can be
@@ -56,9 +54,8 @@ public abstract class Intersectable {
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
-			if (!(obj instanceof GeoPoint geoPoint))
-				return false;
-			return Objects.equals(geometry, geoPoint.geometry) && Objects.equals(point, geoPoint.point);
+			return obj instanceof GeoPoint geoPoint //
+					&& geometry == geoPoint.geometry && point.equals(geoPoint.point);
 
 		}
 

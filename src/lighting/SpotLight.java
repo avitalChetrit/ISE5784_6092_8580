@@ -13,7 +13,7 @@ public class SpotLight extends PointLight {
 	/**
 	 * the direction vector.
 	 */
-	private Vector direction;
+	private final Vector direction;
 	/**
 	 * the narrow beam value.
 	 */
@@ -62,9 +62,9 @@ public class SpotLight extends PointLight {
 	@Override
 	public Color getIntensity(Point point) {
 		double cos = alignZero(direction.dotProduct(getL(point)));
-		return narrowBeam != 1
-				? super.getIntensity(point).scale(Math.pow(Math.max(0, direction.dotProduct(getL(point))), narrowBeam))
-				: super.getIntensity(point).scale(Math.max(0, direction.dotProduct(getL(point))));
+		return cos <= 0 ? Color.BLACK //
+				: super.getIntensity(point).scale(narrowBeam == 1 ? cos //
+						: Math.pow(cos, narrowBeam));
 	}
 
 	/**
