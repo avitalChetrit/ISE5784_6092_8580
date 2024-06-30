@@ -58,24 +58,24 @@ public class ShadowTests {
 	@Test
 	public void sphereTriangleMove1() {
 		sphereTriangleHelper("shadowSphereTriangleMove1", //
-				new Triangle(new Point(-60, -30, -200), new Point(-30, -60, -200), new Point(-58, -58, -204)), //
-				new Point(-80, -80, 150));
+				new Triangle(new Point(-62, -32, 0), new Point(-32, -62, 0), new Point(-60, -60, -4)), //
+				new Point(-100, -100, 200));
 	}
 
 	/** Sphere-Triangle shading - move triangle upper-righter */
 	@Test
 	public void sphereTriangleMove2() {
 		sphereTriangleHelper("shadowSphereTriangleMove2", //
-				new Triangle(new Point(-70, -40, -200), new Point(-40, -70, -200), new Point(-68, -68, -204)), //
-				new Point(-90, -90, 100));
+				new Triangle(new Point(-49, -19, 0), new Point(-19, -49, 0), new Point(-47, -47, -4)), //
+				new Point(-100, -100, 200));
 	}
 
 	/** Sphere-Triangle shading - move spot closer */
 	@Test
 	public void sphereTriangleSpot1() {
 		sphereTriangleHelper("shadowSphereTriangleSpot1", //
-				new Triangle(new Point(-70, -40, -200), new Point(-40, -70, -200), new Point(-68, -68, -204)), //
-				new Point(-80, -80, 50));
+				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
+				new Point(-88, -88, 120));
 	}
 
 	/** Sphere-Triangle shading - move spot even more close */
