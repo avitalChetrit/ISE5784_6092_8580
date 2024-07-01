@@ -82,8 +82,8 @@ public class ShadowTests {
 	@Test
 	public void sphereTriangleSpot2() {
 		sphereTriangleHelper("shadowSphereTriangleSpot2", //
-				new Triangle(new Point(-70, -40, -200), new Point(-40, -70, -200), new Point(-68, -68, -204)), //
-				new Point(-90, -90, 20));
+				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
+				new Point(-76, -76, 70));
 	}
 
 	/**
