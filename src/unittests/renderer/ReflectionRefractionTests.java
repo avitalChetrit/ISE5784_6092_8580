@@ -5,11 +5,15 @@ package unittests.renderer;
 
 import static java.awt.Color.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
+import lighting.DirectionalLight;
+import lighting.PointLight;
 import lighting.SpotLight;
 import primitives.*;
 import renderer.*;
@@ -85,4 +89,32 @@ public class ReflectionRefractionTests {
 		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200)
 				.setImageWriter(new ImageWriter("refractionShadow", 600, 600)).build().renderImage().writeToImage();
 	}
+
+	@Test
+	public void everything() {
+
+		scene.setAmbientLight(new AmbientLight(new Color(BLUE), new Double3(0.20)));
+		scene.geometries.add( //
+				new Triangle(new Point(-150, -150, -115), new Point(150, -150, -135), new Point(75, 75, -150)) //
+						.setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(60)), //
+				new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150)) //
+						.setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(60).setKR(new Double3(0.8))), //
+				new Sphere(new Point(-60, 70, 40), 30d).setEmission(new Color(600, 0, 600)) //
+						.setMaterial(new Material().setKD(0.2).setKS(0.2).setShininess(30).setKT(0.9)),
+				new Sphere(new Point(50, -20, -100), 30d).setEmission(new Color(50, 300, 400)) //
+						.setMaterial(new Material().setKD(0.2).setKS(0.2).setShininess(30)));
+		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+
+		scene.lights.add(new PointLight(new Color(100, 200, 200), new Point(60, 50, 100)) //
+				.setKL(4E-5).setKQ(2E-7));
+		scene.lights.add(new PointLight(new Color(YELLOW).reduce(2), new Point(-10, 50, -10)).setKL(0.00003)
+				.setKC(1.00001).setKQ(0.000001));
+		scene.lights.add(new DirectionalLight(new Color(255, 0, 0), new Vector(-5, -5, -5)));
+
+		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200)
+				.setImageWriter(new ImageWriter("everything", 600, 600)).build().renderImage().writeToImage();
+
+	}
+	/** Produce a picture of several spheres lighted by 2 spot lights */
+
 }

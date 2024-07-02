@@ -56,7 +56,7 @@ public class Camera implements Cloneable {
 	 * Private constructor
 	 *
 	 */
-	private Camera() {
+	public Camera() {
 	}
 
 	/**
