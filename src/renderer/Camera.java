@@ -202,16 +202,6 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
-		/**
-		 * sets the superSampling flag of the Camera.
-		 *
-		 * @param superSampling the SuperSampling flag and amount of rays in beam
-		 * @return this Camera object
-		 */
-		public Camera setSuperSampling(int superSampling) {
-			this.superSampling = superSampling;
-			return this;
-		}
 
 		/**
 		 * Sets the ray tracer base used by the camera to trace rays and render the
