@@ -5,8 +5,6 @@ package unittests.renderer;
 
 import static java.awt.Color.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
