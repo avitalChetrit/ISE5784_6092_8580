@@ -100,8 +100,12 @@ public class Camera implements Cloneable {
 		 * Represents a builder for constructing Camera objects. This builder class
 		 * allows for the creation of Camera objects with a fluent interface.
 		 */
-
 		private final Camera camera;
+
+		/**
+		 * Initial the superSampling
+		 */
+		private int superSampling = 0;
 
 		/**
 		 * Private constructor for Builder.
@@ -115,7 +119,6 @@ public class Camera implements Cloneable {
 		 * 
 		 * @param camera to initialize the Builder with
 		 */
-
 		private Builder(Camera camera) {
 			this.camera = camera;
 		}
@@ -215,6 +218,17 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("Ray tracer base cannot be null");
 
 			camera.rayTracer = rayTracer;
+			return this;
+		}
+
+		/**
+		 * sets the superSampling flag of the Camera.
+		 *
+		 * @param superSampling the SuperSampling flag and amount of rays in beam
+		 * @return this Camera object
+		 */
+		public Builder setSuperSampling(int superSampling) {
+			this.superSampling = superSampling;
 			return this;
 		}
 

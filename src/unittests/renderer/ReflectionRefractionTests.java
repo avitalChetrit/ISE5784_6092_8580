@@ -89,15 +89,15 @@ public class ReflectionRefractionTests {
 		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200)
 				.setImageWriter(new ImageWriter("refractionShadow", 600, 600)).build().renderImage().writeToImage();
 	}
+
 	/**
-	 * Test method to create and render a scene with several geometries and light sources.
-	 * The scene includes:
-	 * - Two triangles with different materials
-	 * - Two spheres with different materials and emissions
-	 * - Multiple light sources including point lights and directional light
+	 * Test method to create and render a scene with several geometries and light
+	 * sources. The scene includes: - Two triangles with different materials - Two
+	 * spheres with different materials and emissions - Multiple light sources
+	 * including point lights and directional light
 	 * 
-	 * The camera is positioned and configured to render the scene from a specific viewpoint.
-	 * The rendered image is saved with the name "everything".
+	 * The camera is positioned and configured to render the scene from a specific
+	 * viewpoint. The rendered image is saved with the name "everything".
 	 */
 	@Test
 	public void everything() {

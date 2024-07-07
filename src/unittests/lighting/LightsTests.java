@@ -28,7 +28,7 @@ public class LightsTests {
 	/** First camera builder for some of tests */
 	private final Camera.Builder camera1 = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene1))
 			.setLocation(new Point(0, 0, 1000)).setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-			.setVpSize(150, 150).setVpDistance(1000);
+			.setVpSize(150, 150).setVpDistance(1000).setSuperSampling(1);
 	/** Second camera builder for some of tests */
 	private final Camera.Builder camera2 = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene2))
 			.setLocation(new Point(0, 0, 1000)).setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
