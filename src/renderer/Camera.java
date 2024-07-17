@@ -51,6 +51,29 @@ public class Camera implements Cloneable {
 	private double viewPlaneDistance = 0.0;
 
 	// Rest of the class implementation...
+	
+	 //number of threads to use in image rendering
+    private int threadsCount = -1;
+    // Indicates whether anti-aliasing is enabled for the camera
+    private boolean isAntiAliasing = false;
+    // used for thread progress reporting during rendering
+    private double printInterval = 0;
+    //first parameter for number of random ray to cast for random beam anti aliasing
+    private int n;
+    // first parameter for number of random ray to cast for random beam anti aliasing
+    private int m;
+
+    
+ // stage5
+ 	/**
+ 	 * The image writer used by this camera to write the rendered image.
+ 	 */
+ 	private ImageWriter imageWriter;
+ 	// stage5
+ 	/**
+ 	 * The ray tracer base used by this camera to trace rays and render the scene.
+ 	 */
+ 	private RayTracerBase rayTracer;
 
 	/**
 	 * Private constructor
@@ -102,11 +125,7 @@ public class Camera implements Cloneable {
 		 */
 		private final Camera camera;
 
-		/**
-		 * Initial the superSampling
-		 */
-		private int superSampling = 0;
-
+		
 		/**
 		 * Private constructor for Builder.
 		 */
@@ -187,6 +206,10 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("View plane distance must be positive");
 
 			camera.viewPlaneDistance = distance;
+			
+			 // calculates the center point of the image
+			//camera.centerPoint = camera.position.add(camera.vTo.scale(distance));
+
 			return this;
 		}
 
@@ -221,16 +244,66 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
-		/**
-		 * sets the superSampling flag of the Camera.
-		 *
-		 * @param superSampling the SuperSampling flag and amount of rays in beam
-		 * @return this Camera object
-		 */
-		public Builder setSuperSampling(int superSampling) {
-			this.superSampling = superSampling;
-			return this;
-		}
+		
+		 /*
+	     * set the adaptive flag.
+	     *
+	     * @param adaptive the adaptive flag to be set
+	     * @return the Camera object
+	     
+	    public Builder setAdaptive(boolean adaptive) {
+	        camera.adaptive = adaptive;
+	        return this;
+	    }*/
+		
+	    
+	    /**
+	     * Set multithreading functionality for accelerating the rendering speed.
+	     * Initialize the number of threads.
+	     * The default value is 0 (no threads).
+	     * The recommended value for the multithreading is 3.
+	     *
+	     * @param threadsCount the threads amount
+	     * @return This Camera object
+	     */
+	    public Builder setMultithreading(int threadsCount) {
+	        if (threadsCount < 0)
+	            throw new IllegalArgumentException("Threads parameter must be 0 or higher");
+	        if (threadsCount != 0)
+	            camera.threadsCount = threadsCount;
+	        return this;
+	    }
+	    
+	    /**
+	     * Sets the anti-aliasing option for the camera.
+	     *
+	     * @param antiAliasing {@code true} to enable anti-aliasing, {@code false} otherwise.
+	     * @return The camera object.
+	     */
+	    public Builder setAntiAliasing(boolean antiAliasing) {
+	        camera.isAntiAliasing = antiAliasing;
+	        return this;
+	    }
+	    /**
+	     * Sets the number of random rays to cast for random beam anti-aliasing.
+	     *
+	     * @param num The number of random rays.
+	     * @return The camera object.
+	     */
+	    public Builder setN(int num) {
+	        camera.n = num;
+	        return this;
+	    }
+	    /**
+	     * Sets the number of random rays to cast for random beam anti-aliasing.
+	     *
+	     * @param num The number of random rays.
+	     * @return The camera object.
+	     */
+	    public Builder setM(int num) {
+	        camera.m = num;
+	        return this;
+	    }
 
 		/**
 		 * Builds the Camera object.
@@ -267,6 +340,17 @@ public class Camera implements Cloneable {
 			if (this.camera.rayTracer == null) {
 				throw new IllegalStateException("rayTracer can not be null");
 			}
+			
+			/*
+			 // Validate the values of the fields
+			if (alignZero(camera.threadsCount) < 0)
+				throw new IllegalStateException("threadsCount must be positive");
+			if (alignZero(camera.superSampling) < 0)
+				throw new IllegalStateException("superSampling must be positive");
+			if (alignZero(camera.viewPlaneDistance) <= 0)
+				throw new IllegalStateException("Distance must be positive");
+			  */
+			
 
 			try {
 				return (Camera) camera.clone();
@@ -340,16 +424,6 @@ public class Camera implements Cloneable {
 		return viewPlaneDistance;
 	}
 
-	// stage5
-	/**
-	 * The image writer used by this camera to write the rendered image.
-	 */
-	private ImageWriter imageWriter;
-	// stage5
-	/**
-	 * The ray tracer base used by this camera to trace rays and render the scene.
-	 */
-	private RayTracerBase rayTracer;
 
 	// stage5
 	/**
