@@ -54,6 +54,7 @@ public class ImprovmentsTests {
     	/*private final Camera.Builder cameraBuilder = Camera.getBuilder()
     			.setRayTracer(new SimpleRayTracer(new Scene("Test"))).setImageWriter(new ImageWriter("Test", 1, 1))
     			.setLocation(Point.ZERO).setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(10);
+        
         // Camera camera = new Camera(new Point(0, -150, 800), new Vector(0, 0, -1), new Vector(0, 1, 0))
         //      .setVPSize(200, 200).setVPDistance(1000);*/
 
@@ -68,7 +69,7 @@ public class ImprovmentsTests {
 
         scene.geometries.add(
 
-                new Sphere(12d, new Point(0, -70, -295)).setEmission(new Color(WHITE))
+                new Sphere(new Point(0, -70, -295), 12d).setEmission(new Color(WHITE))
                         .setMaterial(new Material().setKd(0.7).setKs(0.3).setShininess(30)),
                 new Sphere(12d, new Point(0, -70, -196)).setEmission(new Color(BLUE)) //
                         .setMaterial(new Material().setKd(0.2).setKs(0.7).setShininess(30)),
