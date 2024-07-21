@@ -34,6 +34,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * and desired precision.
 	 */
 	private static final double MIN_CALC_COLOR_K = 0.001;
+
+	/**
+	 * The initial coefficient for transparency or reflection calculations. This
+	 * constant is used as the starting value for the accumulated coefficient in
+	 * recursive color calculations.
+	 */
 	private static final Double3 INITIAL_K = Double3.ONE;
 
 	/**
@@ -44,7 +50,18 @@ public class SimpleRayTracer extends RayTracerBase {
 	public SimpleRayTracer(Scene scene) {
 		super(scene);
 	}
-
+	   @Override
+	    public Color traceRays(List<Ray> rays) {
+	        Color currentPixelColor = Color.BLACK;
+	        for(Ray ray :rays)
+	            currentPixelColor = currentPixelColor.add(traceRay(ray));
+	        return  currentPixelColor.reduce(rays.size());
+//	        GeoPoint closestGeoPoint = findClosestIntersection(ray);
+//	        if (closestGeoPoint == null)
+//	            return scene.background;
+//	        Color currentPixelColor = calcColor(closestGeoPoint, ray);
+//	        return currentPixelColor;
+	    }
 	/**
 	 * Traces a ray in the scene and returns the color of the closest intersection
 	 * point.
@@ -53,7 +70,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color of the closest intersection point, or the background color
 	 *         if no intersections are found.
 	 */
-
 	@Override
 	public Color traceRay(Ray ray) {
 		GeoPoint closestPoint = findClosestIntersection(ray);
@@ -81,14 +97,13 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * local lighting effects and potentially global effects such as transparency or
 	 * reflection.
 	 *
-	 * @param intersection The geometric point at which to calculate the color.
-	 * @param ray          The ray that intersected with the geometry at the
-	 *                     intersection point.
-	 * @param level        The current recursion level for handling transparency or
-	 *                     reflection effects.
-	 * @param k            The accumulated coefficient (e.g., transparency or
-	 *                     reflection coefficient) up to the current recursion
-	 *                     level.
+	 * @param gp    The geometric point at which to calculate the color.
+	 * @param ray   The ray that intersected with the geometry at the intersection
+	 *              point.
+	 * @param level The current recursion level for handling transparency or
+	 *              reflection effects.
+	 * @param k     The accumulated coefficient (e.g., transparency or reflection
+	 *              coefficient) up to the current recursion level.
 	 * @return The calculated color at the intersection point, considering local
 	 *         lighting effects and global effects up to the specified recursion
 	 *         level.
@@ -96,7 +111,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
 		Color color = calcLocalEffects(gp, ray, k);
 		return level == 1 ? color : color.add(calcGlobalEffects(gp, ray, level, k));
-
 	}
 
 	/**
@@ -104,8 +118,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * The reflection ray moves in the direction opposite to the normal vector at
 	 * the intersection point.
 	 *
-	 * @param gp  The geometric point of intersection.
-	 * @param ray The incoming ray that intersected with the geometry.
+	 * @param gp The geometric point of intersection.
+	 * @param v  The direction vector of the incoming ray.
+	 * @param n  The normal vector at the intersection point.
 	 * @return The reflected ray originating from the intersection point.
 	 */
 	private Ray constructReflectedRay(GeoPoint gp, Vector v, Vector n) {
@@ -122,11 +137,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * The refraction ray is determined by Snell's law, considering the refractive
 	 * indices of the materials involved.
 	 *
-	 * @param gp    The geometric point of intersection.
-	 * @param ray   The incoming ray that intersected with the geometry.
-	 * @param kR    Reflection coefficient.
-	 * @param level Recursion level.
-	 * @param k     Traversal coefficient.
+	 * @param gp The geometric point of intersection.
+	 * @param v  The direction vector of the incoming ray.
+	 * @param n  The normal vector at the intersection point.
 	 * @return The refracted ray originating from the intersection point.
 	 */
 	private Ray constructRefractedRay(GeoPoint gp, Vector v, Vector n) {
@@ -159,12 +172,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * coefficient.
 	 *
 	 * @param ray   The ray to trace for the global effect.
+	 * @param kx    The coefficient for the specific effect being calculated (kR for
+	 *              reflection, kT for refraction).
 	 * @param level The current recursion level for handling transparency or
 	 *              reflection effects.
 	 * @param k     The accumulated coefficient (e.g., reflection coefficient kR or
 	 *              transparency coefficient kT).
-	 * @param kx    The coefficient for the specific effect being calculated (kR for
-	 *              reflection, kT for refraction).
 	 * @return The calculated color representing the global effect for the given ray
 	 *         and coefficient.
 	 */
@@ -177,7 +190,6 @@ public class SimpleRayTracer extends RayTracerBase {
 		return gp == null ? scene.background // If no intersection found, return background color
 				// Recursively calculate color with scaled coefficient
 				: calcColor(gp, ray, level - 1, kkx).scale(kx);
-
 	}
 
 	/**
@@ -199,8 +211,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	 *
 	 * @param gp  The geometric point on which to calculate the local effects.
 	 * @param ray The ray used to intersect with the geometry.
-	 * @return The color resulting from local lighting effects, or null if there is
-	 *         no interaction (nv == 0).
+	 * @param k   The accumulated coefficient up to the current recursion level.
+	 * @return The color resulting from local lighting effects, or the emission
+	 *         color if there is no interaction.
 	 */
 	private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
 		Vector n = gp.geometry.getNormal(gp.point);
@@ -225,6 +238,17 @@ public class SimpleRayTracer extends RayTracerBase {
 		return color;
 	}
 
+	/**
+	 * Calculates the transparency coefficient for a given geometry point, light
+	 * source, light direction vector, and normal vector.
+	 *
+	 * @param gp The geometric point at which to calculate transparency.
+	 * @param ls The light source affecting the geometric point.
+	 * @param l  The direction vector from the light source to the geometric point.
+	 * @param n  The normal vector at the geometric point.
+	 * @return The transparency coefficient for the given geometry point and light
+	 *         source.
+	 */
 	private Double3 transparency(GeoPoint gp, LightSource ls, Vector l, Vector n) {
 		Vector lDir = l.scale(-1);
 		Ray lR = new Ray(gp.point, lDir, n);
@@ -278,5 +302,5 @@ public class SimpleRayTracer extends RayTracerBase {
 		double minusVR = -alignZero(v.dotProduct(reflectVector));
 		return minusVR <= 0 ? Double3.ZERO : material.kS.scale(pow(minusVR, material.shininess));
 	}
-
+	
 }

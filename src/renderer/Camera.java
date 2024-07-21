@@ -1,5 +1,7 @@
 package renderer;
-
+import geometries.Plane;
+import java.util.ArrayList;
+import java.util.List;
 import primitives.*;
 import java.util.MissingResourceException;
 import static primitives.Util.*;
@@ -50,7 +52,47 @@ public class Camera implements Cloneable {
 	 */
 	private double viewPlaneDistance = 0.0;
 
-	// Rest of the class implementation...
+    //-----Improvements-----
+    //Anti-Aliasing
+    //private static int ANTI_ALIASING_FACTOR = 1;
+    public enum SUPER_SAMPLING_TYPE {NONE, REGULAR, ADAPTIVE}
+    private SUPER_SAMPLING_TYPE superSamplingType = SUPER_SAMPLING_TYPE.ADAPTIVE; // type of the super-sampling (eg. NONE,RANDOM, GRID)
+    private int superSamplingGridSize = 9; // grid size for regular super-sampling (e.g. 9 for 9x9 grid)
+    private int adaptiveSuperSamplingMaxRecursionDepth = 3; // constant max depth for adaptive super-sampling
+    //Focus
+//  private boolean depthOfFieldFlag = false;
+//  private double focalDistance = 2;
+//  private double apertureSize = 0.01;
+//  private static int NUM_OF_APERTURE_POINTS = 2;
+//ON/OFF button default is off
+//  private boolean depthButton = false;
+//  //focal length
+//  private double focalLength = 2;
+//  private double apertureSize = 0.01;
+//  private static final int NUMBER_OF_APERTURE_POINTS = 10;
+  //Aperture properties
+  private int APERTURE_NUMBER_OF_POINTS = 9; //(e.g. 9 for 9x9 grid)
+  private double apertureSize = 0;
+  private Point[] aperturePoints;
+  private double focalDistance = 2;
+  private Plane FOCAL_PLANE;
+  //multi-threading
+  private boolean multiThreading = false;
+  private double printInterval;
+  private double threadsCount = 3;
+  //----------
+  //endregion
+    
+ // stage5
+ 	/**
+ 	 * The image writer used by this camera to write the rendered image.
+ 	 */
+ 	private ImageWriter imageWriter;
+ 	// stage5
+ 	/**
+ 	 * The ray tracer base used by this camera to trace rays and render the scene.
+ 	 */
+ 	private RayTracerBase rayTracer;
 
 	/**
 	 * Private constructor
@@ -91,6 +133,189 @@ public class Camera implements Cloneable {
 		Vector Vij = pij.subtract(position);
 		return new Ray(position, Vij.normalize());
 	}
+//  public List<Ray> constructRays(int nX, int nY, int j, int i) {
+//  List<Ray> rays = new ArrayList<>(ANTI_ALIASING_FACTOR * ANTI_ALIASING_FACTOR);
+//  Point pixelCenter = getPixelCenter(nX, nY, j, i);
+//  double rY = (height / nY) / ANTI_ALIASING_FACTOR;
+//  double rX = (width / nX) / ANTI_ALIASING_FACTOR;
+//  double x, y;
+//
+//  for (int rowNumber = 0; rowNumber < ANTI_ALIASING_FACTOR; rowNumber++) {
+//      for (int colNumber = 0; colNumber < ANTI_ALIASING_FACTOR; colNumber++) {
+//          y = -(rowNumber - (ANTI_ALIASING_FACTOR - 1d) / 2) * rY;
+//          x = (colNumber - (ANTI_ALIASING_FACTOR - 1d) / 2) * rX;
+//          Point pIJ = pixelCenter;
+//          if (!isZero(y)) pIJ = pIJ.add(vUp.scale(y));
+//          if (!isZero(x)) pIJ = pIJ.add(vRight.scale(x));
+//          rays.add(new Ray(centerPoint, pIJ.subtract(centerPoint)));
+//      }
+//  }
+//  return rays;
+//}
+//  /**
+//  * Constructs a ray through a pixel from the camera
+//  *
+//  * @param nX The number of pixels in the x direction
+//  * @param nY The number of pixels in the y direction
+//  * @param j  The pixel's x coordinate
+//  * @param i  The pixel's y coordinate
+//  *
+//  * @return The ray through the pixel
+//  */
+// public Ray constructRayThroughPixel(int nX, int nY, int j, int i) {
+//     Point pc = centerPoint.add(vTo.scale(distance)); // center point of the view plane
+//     double pixelWidth = width / nX; // width of a pixel
+//     double pixelHeight = height / nY; // height of a pixel
+//     double pcX = (nX - 1) / 2.0; // center pixel value in x direction
+//     double pcY = (nY - 1) / 2.0; // center pixel value in y direction
+//     double rightDistance = (j - pcX) * pixelWidth; // x offset of j from the center pixel
+//     double upDistance = -1 * (i - pcY) * pixelHeight; // y offset of i from the center pixel
+//
+//     Point pij = pc; // start at the center of the view plane
+//
+//     // we need to check if the distance is zero, because we can't scale a vector by
+//     // zero
+//     if (!isZero(rightDistance)) {
+//         // if the distance to move right is not zero, move right
+//         pij = pij.add(vRight.scale(rightDistance));
+//     }
+//
+//     if (!isZero(upDistance)) {
+//         // if the distance to move up is not zero, move up
+//         pij = pij.add(vUp.scale(upDistance));
+//     }
+//
+//     // construct a ray from the camera origin in the direction of the pixel at (j,i)
+//     return new Ray(centerPoint, pij.subtract(centerPoint));
+// }
+//
+//
+	 /**
+     * Construct a grid of rays from a center point, a width and height, and a grid
+     * size
+     *
+     * @param topLeftRayPoint      The top left point of the grid
+     * @param raySpacingHorizontal The horizontal spacing between ray points
+     * @param raySpacingVertical   The vertical spacing between ray points
+     * @param gridSize             the size of the grid
+     */
+    private List<Ray> constructGridOfRays(Point topLeftRayPoint, double raySpacingHorizontal, double raySpacingVertical,
+                                          int gridSize) {
+        Ray ray;
+        List<Ray> rays = new ArrayList<>(gridSize*gridSize);
+        // create the grid of rays
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+                Point rayPoint = topLeftRayPoint;
+                // move the ray down
+                if (row > 0) {
+                    rayPoint = rayPoint.add(vUp.scale(-row * raySpacingVertical));
+                }
+                // move the ray right
+                if (col > 0) {
+                    rayPoint = rayPoint.add(vRight.scale(col * raySpacingHorizontal));
+                }
+                // create the ray
+                ray = new Ray(position, rayPoint.subtract(position));
+                // add the ray to the list
+                rays.add(ray);
+            }
+        }
+        return rays;
+    }
+    /**
+     * Calculates the color of a pixel using super-sampling
+     *
+     * @param mainRay     the main ray to trace around
+     * @param pixelWidth  the width of the pixel
+     * @param pixelHeight the height of the pixel
+     * @return color of the pixel
+     */
+    private Color calcSupersamplingColor(Ray mainRay, double pixelWidth, double pixelHeight) {
+        // locate the point of the top left ray to start constructing the grid from
+        Point centerOfPixel = mainRay.getPoint(viewPlaneDistance);
+        // amount to move to get from one super-sampling ray location to the next
+        double raySpacingVertical = pixelHeight / (superSamplingGridSize + 1);
+        double raySpacingHorizontal = pixelWidth / (superSamplingGridSize + 1);
+        Point topLeftRayPoint = centerOfPixel //
+                .add(vRight.scale(-pixelWidth / 2 - raySpacingHorizontal)) //
+                .add(vUp.scale(pixelHeight / 2 - raySpacingVertical));
+        List<Ray> rays = constructGridOfRays(topLeftRayPoint, raySpacingHorizontal, raySpacingVertical,
+                superSamplingGridSize);
+        Color result = Color.BLACK;
+        for (Ray ray : rays) {
+            result = result.add(rayTracer.traceRay(ray));
+        }
+        // divide the color by the number of rays to get the average color
+        int numRays = (int) superSamplingGridSize * superSamplingGridSize;
+        return result.reduce(numRays);
+    }
+    /**
+     * Calculates the color of a pixel using adaptive super-sampling
+     *
+     * @param centerRay   the ray to trace around
+     * @param pixelWidth  the width of the pixel
+     * @param pixelHeight the height of the pixel
+     * @param level       the level of the adaptive super-sampling (if level is 0,
+     *                    return)
+     * @return color of the pixel
+     */
+    private Color calcAdaptiveSupersamplingColor(Ray centerRay, double pixelWidth, double pixelHeight, int level) {
+        // spacing between rays vertically
+        double halfPixelHeight = pixelHeight / 2;
+        // spacing between rays horizontally
+        double halfPixelWidth = pixelWidth / 2;
+        // move 1/4 left and 1/4 up from the center ray
+        Point topLeftRayPoint = centerRay.getPoint(viewPlaneDistance) //
+                .add(vRight.scale(-(halfPixelWidth / 2))) //
+                .add(vUp.scale(halfPixelHeight / 2));
+        // gridSize is always 2 since the grid is always a 2x2 grid of rays in
+        // adaptive super-sampling
+        List<Ray> rays = constructGridOfRays(topLeftRayPoint, halfPixelWidth, halfPixelHeight, 2);
+        // get the colors of the rays
+        List<Color> colors = rays.stream().map(ray -> rayTracer.traceRay(ray)).toList();
+        // if recursion level is 1, return the average color of the rays
+        if (level == 1) {
+            return colors.get(0).add(colors.get(1), colors.get(2), colors.get(3)).reduce(4);
+        }
+        // check if the colors are all the similar enough to be considered the same
+        if (colors.get(0).similar(colors.get(1)) //
+                && colors.get(0).similar(colors.get(2)) //
+                && colors.get(0).similar(colors.get(3))) {
+            // if they are, return any one of them
+            return colors.get(0);
+        }
+        // otherwise average the colors of the four parts of the pixel
+        return calcAdaptiveSupersamplingColor(rays.get(0), halfPixelWidth, halfPixelHeight, level - 1) //
+                .add(calcAdaptiveSupersamplingColor(rays.get(1), halfPixelWidth, halfPixelHeight, level - 1), //
+                        calcAdaptiveSupersamplingColor(rays.get(2), halfPixelWidth, halfPixelHeight, level - 1), //
+                        calcAdaptiveSupersamplingColor(rays.get(3), halfPixelWidth, halfPixelHeight, level - 1)) //
+                .reduce(4);
+    }
+    /**
+     * the function that goes through every point in the array and calculate the average color.
+     *
+     * @param ray the original ray to construct the surrounding beam.
+     * @return the average color of the beam.
+     */
+    private Color averagedBeamColor(Ray ray) {
+        // Initializing the averageColor to black and the apertureColor to null.
+        Color averageColor = Color.BLACK, apertureColor;
+        // The number of points in the aperture.
+        int numOfPoints = this.aperturePoints.length;
+        // A ray that is used to trace the ray from the aperture point to the focal point.
+        Ray apertureRay;
+        // Finding the intersection point of the ray and the focal plane.
+        Point focalPoint = this.FOCAL_PLANE.findGeoIntersections(ray).get(0).point;
+        // A for each loop that goes through every point in the array and calculate the average color.
+        for (Point aperturePoint : this.aperturePoints) {
+            apertureRay = new Ray(aperturePoint, focalPoint.subtract(aperturePoint));
+            apertureColor = rayTracer.traceRay(apertureRay);
+            // Adding the color of the ray to the average color.
+            averageColor = averageColor.add(apertureColor);
+        }
+        return averageColor.reduce(numOfPoints);
+    }
 
 	/**
 	 * Builder class for Camera, implementing the Builder Pattern.
@@ -100,9 +325,9 @@ public class Camera implements Cloneable {
 		 * Represents a builder for constructing Camera objects. This builder class
 		 * allows for the creation of Camera objects with a fluent interface.
 		 */
-
 		private final Camera camera;
 
+		
 		/**
 		 * Private constructor for Builder.
 		 */
@@ -115,7 +340,6 @@ public class Camera implements Cloneable {
 		 * 
 		 * @param camera to initialize the Builder with
 		 */
-
 		private Builder(Camera camera) {
 			this.camera = camera;
 		}
@@ -184,6 +408,10 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("View plane distance must be positive");
 
 			camera.viewPlaneDistance = distance;
+			
+			 // calculates the center point of the image
+			//camera.centerPoint = camera.position.add(camera.vTo.scale(distance));
+
 			return this;
 		}
 
@@ -202,7 +430,6 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
-
 		/**
 		 * Sets the ray tracer base used by the camera to trace rays and render the
 		 * scene.
@@ -218,6 +445,36 @@ public class Camera implements Cloneable {
 			camera.rayTracer = rayTracer;
 			return this;
 		}
+
+		
+		 /*
+	     * set the adaptive flag.
+	     *
+	     * @param adaptive the adaptive flag to be set
+	     * @return the Camera object
+	     
+	    public Builder setAdaptive(boolean adaptive) {
+	        camera.adaptive = adaptive;
+	        return this;
+	    }*/
+		
+	    
+	    /**
+	     * Set multithreading functionality for accelerating the rendering speed.
+	     * Initialize the number of threads.
+	     * The default value is 0 (no threads).
+	     * The recommended value for the multithreading is 3.
+	     *
+	     * @param threadsCount the threads amount
+	     * @return This Camera object
+	     */
+	    public Builder setMultithreading(int threadsCount) {
+	        if (threadsCount < 0)
+	            throw new IllegalArgumentException("Threads parameter must be 0 or higher");
+	        if (threadsCount != 0)
+	            camera.threadsCount = threadsCount;
+	        return this;
+	    }
 
 		/**
 		 * Builds the Camera object.
@@ -254,6 +511,17 @@ public class Camera implements Cloneable {
 			if (this.camera.rayTracer == null) {
 				throw new IllegalStateException("rayTracer can not be null");
 			}
+			
+			/*
+			 // Validate the values of the fields
+			if (alignZero(camera.threadsCount) < 0)
+				throw new IllegalStateException("threadsCount must be positive");
+			if (alignZero(camera.superSampling) < 0)
+				throw new IllegalStateException("superSampling must be positive");
+			if (alignZero(camera.viewPlaneDistance) <= 0)
+				throw new IllegalStateException("Distance must be positive");
+			  */
+			
 
 			try {
 				return (Camera) camera.clone();
@@ -327,99 +595,243 @@ public class Camera implements Cloneable {
 		return viewPlaneDistance;
 	}
 
-	// stage5
-	/**
-	 * The image writer used by this camera to write the rendered image.
-	 */
-	private ImageWriter imageWriter;
-	// stage5
-	/**
-	 * The ray tracer base used by this camera to trace rays and render the scene.
-	 */
-	private RayTracerBase rayTracer;
 
 	// stage5
-	/**
-	 * This method prints a grid pattern onto the image, with specified intervals
-	 * between grid lines and color for the grid lines.
-	 *
-	 * @param interval The interval between grid lines. Must be greater than 0.
-	 * @param color    The color of the grid lines.
-	 * @return The current state of the camera, for further use within this class or
-	 *         in closely related classes.
-	 * @throws IllegalArgumentException if the interval is not greater than 0.
-	 */
-	public Camera printGrid(int interval, Color color) {
-		if (alignZero(interval) <= 0) {
-			throw new IllegalArgumentException("Interval must be greater than 0");
-		}
-		int nX = imageWriter.getNx();
+	
+	 /**
+     * Prints a grid to the image
+     *
+     * @param interval size of squares in the grid
+     * @param color    color for the grid
+     *///שלב 8
+    public Camera printGrid(int interval, Color color) {
+        if (imageWriter == null)
+            throw new MissingResourceException("Image creation details are not initialized", "Camera", "Writer info");
+        int nX = imageWriter.getNx();
 		int nY = imageWriter.getNy();
 
-		// Loop through the image and draw the grid lines
-		for (int i = 0; i < nX; i += interval) {
-			for (int j = 0; j < nY; j++) {
-				imageWriter.writePixel(i, j, color); // Set the color of the grid line
-			}
-		}
-		for (int j = 0; j < nY; j += interval) {
-			for (int i = 0; i < nX; i++) {
-				imageWriter.writePixel(i, j, color); // Set the color of the grid line
-			}
-
-		}
-		return this;
-	}
-
+  for (int i = 0; i < nX; i+=interval) { // row
+            for (int j = 0; j < nY; j+=interval) { // column
+                //grid: 800/50 = 16, 500/50 = 10
+                imageWriter.writePixel(i, j, color);
+            }
+        }
+        return this;
+    }
+    /**
+     * Creates image - sends to method inside ImageWriter class
+     */
+    public void writeToImage() {
+        if (imageWriter == null)
+            throw new MissingResourceException("Image creation details are not initialized", "Camera", "Writer info");
+        //call image writer
+        imageWriter.writeToImage();
+    }
 	// stage5
 	/**
 	 * Writes the image to a file using the appropriate method of the image writer.
 	 */
-	public void writeToImage() {
-		// Check if image writer is initialized
-		if (imageWriter == null) {
-			throw new IllegalStateException("Image writer is not initialized");
-		}
 
-		// Call the appropriate method of the image writer to write the image
-		imageWriter.writeToImage();
-	}
+	  /**
+     * Renders an image
+     *///  להחזיר לקודם?שלב 8
+    public Camera renderImage() {
+        //info: coordinates of the camera != null
+        if ((vRight == null) || (vUp == null) || (vTo == null) || (position == null))
+            throw new MissingResourceException("Camera coordinates are not initialized", "Camera", "coordinates");
+        //info: view plane variables != null (doubles != null)
+        //info: final image creation
+        if ((imageWriter == null) || (rayTracer == null))
+            throw new MissingResourceException("Image creation details are not initialized", "Camera", "Writer info");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        if (multiThreading){
+            Pixel.initialize(nY, nX, printInterval);
+            while (threadsCount-- > 0) {
+                new Thread(() -> {
+                    for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                        castRay(nX, nY, pixel.col, pixel.row);
+                    }
+                }).start();
+            }
+            Pixel.waitToFinish();
+        }
+        else {
+            Pixel.initialize(nY, nX, printInterval);
+            for (int i = 0; i < nY; ++i)
+                for (int j = 0; j < nX; ++j) {
+                    castRay(nX, nY, j, i);
+                    Pixel.pixelDone();
+                    Pixel.printPixel();
+                }
+        }
+        return this;
+    }
 
-	// stage5
-	/**
-	 * This method performs image rendering by casting rays of light for each pixel
-	 * in the image and computing their color. It utilizes the image dimensions
-	 * provided by the imageWriter object to determine the appropriate number of
-	 * rays for each pixel, then invokes the castRay method for each pixel.
-	 * 
-	 * @return The current state of the camera, for further use within this class or
-	 *         in closely related classes.
-	 */
-	public Camera renderImage() {
-		int nX = imageWriter.getNx();
-		int nY = imageWriter.getNy();
-		for (int i = 0; i < nX; ++i)
-			for (int j = 0; j < nY; ++j)
-				castRay(nX, nY, j, i);
-		return this;
-
-	}
-
-	/**
-	 * Casts a ray through a specific pixel in the image, computes the color of the
-	 * pixel based on the ray-tracing algorithm, and writes the color to the
-	 * corresponding pixel in the image.
-	 *
-	 * @param nX     The width of the image.
-	 * @param nY     The height of the image.
-	 * @param column The column index of the pixel.
-	 * @param row    The row index of the pixel.
-	 */
-	private void castRay(int nX, int nY, int column, int row) {
-		Ray ray = constructRay(nX, nY, column, row);
-		Color color = rayTracer.traceRay(ray);
-		imageWriter.writePixel(column, row, color);
-
-	}
-
+	  /**
+     * Constructs a ray through a pixel from the camera and write its color to the
+     * image
+     *
+     * @param numColumns The number of pixels in the x direction
+     * @param numRows    The number of pixels in the y direction
+     * @param col        The pixel's x coordinate
+     * @param row        The pixel's y coordinate
+     *///שלב 8
+    public void castRay(int numColumns, int numRows, int col, int row) {
+        Color color;
+        // height and width of the pixel
+        double pixelWidth = viewPlaneWidth / numColumns;
+        double pixelHeight = viewPlaneHeight / numRows;
+        Ray ray = constructRay(numColumns, numRows, col, row);
+        if (superSamplingType == SUPER_SAMPLING_TYPE.ADAPTIVE) {
+            color = calcAdaptiveSupersamplingColor(ray, pixelWidth, pixelHeight,
+                    adaptiveSuperSamplingMaxRecursionDepth);
+        } else if (superSamplingType == SUPER_SAMPLING_TYPE.REGULAR) {
+            color = calcSupersamplingColor(ray, pixelWidth, pixelHeight);
+        } else {
+            color = rayTracer.traceRay(ray);
+        }
+        if (!isZero(this.apertureSize)) {
+            color = color.add(averagedBeamColor(ray));
+            color = color.reduce(2);
+        }
+        imageWriter.writePixel(col, row, color);
+    }
+//  /**
+//  * set anti-aliasing factor.
+//  * final number of rays will be (factor * factor)
+//  *
+//  * @param antiAliasingFactor num of rays for anti aliasing
+//  * @return this Camera
+//  */
+// public Camera setAntiAliasingFactor(int antiAliasingFactor) {
+//     if (antiAliasingFactor <= 0)
+//         throw new IllegalArgumentException("anti aliasing factor must be positive integer");
+//     ANTI_ALIASING_FACTOR = antiAliasingFactor;
+//     return this;
+// }
+ /**
+  * Set the super-sampling to NONE, REGULAR or ADAPTIVE
+  *
+  * @param type SUPER_SAMPLING_TYPE type of the super-sampling (NONE, REGULAR, ADAPTIVE)
+  * @return the current camera
+  */
+ public Camera setSuperSampling(SUPER_SAMPLING_TYPE type) {
+     this.superSamplingType = type;
+     return this;
+ }
+ /**
+  * Set the grid size of the super-sampling
+  *
+  * @param gridSize grid size of the super-sampling (e.g. 9 for 9x9 grid)
+  * @return the current camera
+  */
+ public Camera setSuperSamplingGridSize(int gridSize) {
+     this.superSamplingGridSize = gridSize;
+     return this;
+ }
+ /**
+  * Set the max recursion depth for the adaptive super-sampling
+  *
+  * @param maxRecursionDepth max recursion depth for the adaptive super-sampling
+  * @return the current camera
+  */
+ public Camera setAdaptiveSuperSamplingMaxRecursionDepth(int maxRecursionDepth) {
+     this.adaptiveSuperSamplingMaxRecursionDepth = maxRecursionDepth;
+     return this;
+ }
+ //    public Camera setDepthOfField(boolean flag) {
+//     depthOfFieldFlag = flag;
+//     return this;
+// }
+//
+// public Camera setDepthOfField(boolean flag, double focalDistance, double apertureSize) {
+//     this.depthOfFieldFlag = flag;
+//     this.focalDistance = focalDistance;
+//     this.apertureSize = apertureSize;
+//     return this;
+// }
+// public Camera setFocalLength(double focalLength) {
+//     this.focalLength = focalLength;
+//     return this;
+// }
+//
+// public Camera setApertureSize(double apertureSize) {
+//     this.apertureSize = apertureSize;
+//     return this;
+// }
+// public void setDepthButton(boolean button, double apertureSize, double focalLength) {
+//     this.depthButton = button;
+//     this.apertureSize = apertureSize;
+//     this.focalLength = focalLength;
+// }
+// /***
+//  * on/off button for depth of field
+//  * @param depthButton on/off
+//  */
+// public void setDepthButton(boolean depthButton) {
+//     this.depthButton = depthButton;
+// }
+ public Camera setFocalDistance(double focalDistance) {
+     this.focalDistance = focalDistance;
+     this.FOCAL_PLANE = new Plane(this.position.add(this.vTo.scale(this.focalDistance)), this.vTo);
+     return this;
+ }
+ /**
+  * setting the aperture size as the given parameter, and initialize the points array.
+  *
+  * @param size the given parameter.
+  * @return the camera itself for farther initialization.
+  */
+ public Camera setApertureSize(double size) {
+     this.apertureSize = size;
+     /////initializing the points of the aperture.
+     if (size != 0) initializeAperturePoint();
+     return this;
+ }
+ /**
+  * the function that initialize the aperture size and the points that it represents.
+  */
+ private void initializeAperturePoint() {
+     //the number of points in a row
+     int pointsInRow = (int) Math.sqrt(this.APERTURE_NUMBER_OF_POINTS);
+     //the array of point saved as an array
+     this.aperturePoints = new Point[pointsInRow * pointsInRow];
+     //calculating the initial values.
+     double pointsDistance = (this.apertureSize * 2) / pointsInRow;
+     //calculate the initial point to be the point with coordinates outside the aperture in the down left point,
+     // so we won`t have to deal with illegal vectors.
+     Point initialPoint = this.position
+             .add(this.vUp.scale(-this.apertureSize - pointsDistance / 2)
+             .add(this.vRight.scale(-this.apertureSize - pointsDistance / 2)));
+     //initializing the points array
+     for (int i = 1; i <= pointsInRow; i++) {
+         for (int j = 1; j <= pointsInRow; j++) {
+             this.aperturePoints[(i - 1) + (j - 1) * pointsInRow] = initialPoint
+                     .add(this.vUp.scale(i * pointsDistance).add(this.vRight.scale(j * pointsDistance)));
+         }
+     }
+ }
+ /**
+  * setter for whether you want to do multi threading
+  * on image(x set and not zero) or not(x set to zero)
+  *
+  * @param threads number of threads
+  * @return camera
+  */
+ public Camera setMultithreading(double threads) {
+     multiThreading = threads != 0;
+     threadsCount = threads;
+     return this;
+ }
+ /**
+  * setter for printInterval
+  *
+  * @param interval The interval between prints in seconds
+  * @return camera
+  */
+ public Camera setDebugPrint(double interval) {
+     printInterval = interval;
+     return this;
+ }
 }

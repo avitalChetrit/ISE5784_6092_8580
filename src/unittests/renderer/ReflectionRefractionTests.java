@@ -2,7 +2,6 @@
  * 
  */
 package unittests.renderer;
-
 import static java.awt.Color.*;
 import org.junit.jupiter.api.Test;
 import geometries.Sphere;
@@ -22,7 +21,7 @@ import scene.Scene;
  * @author dzilb
  */
 public class ReflectionRefractionTests {
-	/** Scene for the tests */
+/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
@@ -86,6 +85,15 @@ public class ReflectionRefractionTests {
 				.setImageWriter(new ImageWriter("refractionShadow", 600, 600)).build().renderImage().writeToImage();
 	}
 
+	/**
+	 * Test method to create and render a scene with several geometries and light
+	 * sources. The scene includes: - Two triangles with different materials - Two
+	 * spheres with different materials and emissions - Multiple light sources
+	 * including point lights and directional light
+	 * 
+	 * The camera is positioned and configured to render the scene from a specific
+	 * viewpoint. The rendered image is saved with the name "everything".
+	 */
 	@Test
 	public void everything() {
 

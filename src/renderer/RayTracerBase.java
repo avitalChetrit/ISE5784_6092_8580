@@ -1,5 +1,7 @@
 package renderer;
 
+import java.util.List;
+
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -27,4 +29,10 @@ public abstract class RayTracerBase {
 	 * @return The color computed for the traced ray.
 	 */
 	public abstract Color traceRay(Ray ray);
+	   /**
+     * Tracing a Ray method - improvement anti-aliasing
+     * @param rays given list of rays
+     * @return Color that we see from the rays' intersection with a geometry
+     */
+    public abstract Color traceRays(List<Ray> rays);
 }
