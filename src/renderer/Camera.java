@@ -475,6 +475,85 @@ public class Camera implements Cloneable {
 	            camera.threadsCount = threadsCount;
 	        return this;
 	    }
+	    /**
+	     * setter for printInterval
+	     *
+	     * @param interval The interval between prints in seconds
+	     * @return camera
+	     */
+	    public  Builder setDebugPrint(double interval) {
+	    	camera. printInterval = interval;
+	    	return this;
+	       
+	    }
+	    /**
+	     * setter for whether you want to do multi threading
+	     * on image(x set and not zero) or not(x set to zero)
+	     *
+	     * @param threads number of threads
+	     * @return camera
+	     */
+	    public  Builder setMultithreading(double threads) {
+	        camera.multiThreading = threads != 0;
+	        camera.threadsCount = threads;
+	        return this;
+	    }
+	    /**
+	     * setting the aperture size as the given parameter, and initialize the points array.
+	     *
+	     * @param size the given parameter.
+	     * @return the camera itself for farther initialization.
+	     */
+	    public  Builder setApertureSize(double size) {
+	        camera.apertureSize = size;
+	        /////initializing the points of the aperture.
+	        if (size != 0) 
+	        	camera.initializeAperturePoint();
+	        return this;
+	    }
+	    public  Builder setFocalDistance(double focalDistance) {
+	    	camera.focalDistance = focalDistance;
+	    	camera.FOCAL_PLANE = new Plane(camera.position.add(camera.vTo.scale(camera.focalDistance)), camera.vTo);
+	        return this;
+	    }
+	    /**
+	     * Moves camera to certain location and points to a single point
+	     *
+	     * @param location the camera's new location
+	     * @param to       the point the camera points to
+	     * @return Returns moved camera
+	     */
+	    public  Builder moveCamera(Point location, Point to) {
+	        Vector vec;
+	        try {
+	            vec = to.subtract(location);
+	        } catch (IllegalArgumentException ignore) {
+	            throw new IllegalArgumentException("The camera cannot point at its starting location");
+	        }
+	        camera.position = location;
+	        camera.vTo = vec.normalize();
+	        //in order to determine Vup, we will find the intersection vector of two planes, the plane that Vto is represented
+	        //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
+
+	        //if the Vto is already on the Y axis, we will use the Z axis instead
+	        if (camera.vTo.equals(new Vector(0,1,0)) ||camera.vTo.equals(new Vector(0,1,0).scale(-1))) {
+	        	camera.vUp = (camera.vTo.crossProduct(new Vector(0,0,1))).crossProduct(camera.vTo).normalize();
+	        } else {
+	        	camera.vUp = (camera.vTo.crossProduct(new Vector(0,1,0))).crossProduct(camera.vTo).normalize();
+	        }
+	        camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+	        return this;
+	    }
+	    /**
+	     * Set the super-sampling to NONE, REGULAR or ADAPTIVE
+	     *
+	     * @param type SUPER_SAMPLING_TYPE type of the super-sampling (NONE, REGULAR, ADAPTIVE)
+	     * @return the current camera
+	     */
+	    public  Builder setSuperSampling(SUPER_SAMPLING_TYPE type) {
+	        camera.superSamplingType = type;
+	        return this;
+	    }
 
 		/**
 		 * Builds the Camera object.
@@ -528,7 +607,9 @@ public class Camera implements Cloneable {
 			} catch (CloneNotSupportedException e) {
 				throw new AssertionError(); // Can't happen
 			}
+			
 		}
+		
 	}
 
 	/**
@@ -710,16 +791,7 @@ public class Camera implements Cloneable {
 //     ANTI_ALIASING_FACTOR = antiAliasingFactor;
 //     return this;
 // }
- /**
-  * Set the super-sampling to NONE, REGULAR or ADAPTIVE
-  *
-  * @param type SUPER_SAMPLING_TYPE type of the super-sampling (NONE, REGULAR, ADAPTIVE)
-  * @return the current camera
-  */
- public Camera setSuperSampling(SUPER_SAMPLING_TYPE type) {
-     this.superSamplingType = type;
-     return this;
- }
+
  /**
   * Set the grid size of the super-sampling
   *
@@ -772,23 +844,8 @@ public class Camera implements Cloneable {
 // public void setDepthButton(boolean depthButton) {
 //     this.depthButton = depthButton;
 // }
- public Camera setFocalDistance(double focalDistance) {
-     this.focalDistance = focalDistance;
-     this.FOCAL_PLANE = new Plane(this.position.add(this.vTo.scale(this.focalDistance)), this.vTo);
-     return this;
- }
- /**
-  * setting the aperture size as the given parameter, and initialize the points array.
-  *
-  * @param size the given parameter.
-  * @return the camera itself for farther initialization.
-  */
- public Camera setApertureSize(double size) {
-     this.apertureSize = size;
-     /////initializing the points of the aperture.
-     if (size != 0) initializeAperturePoint();
-     return this;
- }
+ 
+ 
  /**
   * the function that initialize the aperture size and the points that it represents.
   */
@@ -812,26 +869,8 @@ public class Camera implements Cloneable {
          }
      }
  }
- /**
-  * setter for whether you want to do multi threading
-  * on image(x set and not zero) or not(x set to zero)
-  *
-  * @param threads number of threads
-  * @return camera
-  */
- public Camera setMultithreading(double threads) {
-     multiThreading = threads != 0;
-     threadsCount = threads;
-     return this;
- }
- /**
-  * setter for printInterval
-  *
-  * @param interval The interval between prints in seconds
-  * @return camera
-  */
- public Camera setDebugPrint(double interval) {
-     printInterval = interval;
-     return this;
- }
+
+ 
+ 
+
 }

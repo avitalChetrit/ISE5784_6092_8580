@@ -147,6 +147,21 @@ public class improvmentTest {
                                         .setKT(0.99).setKR(0.4)
                         )
 
+//                      ,new Sphere(10d,new Point(20,20,-20))
+//                      .setEmission(new Color(GREEN))
+//                      .setMaterial(new Material().setKd(0.25).setKs(0.25).setKr(0.2).setKt(0.999))
+
+//              ,new Polygon(new Point(-150, -150, -135), new Point(150, -150, -135),
+//                      new Point(75, 75, -115), new Point(-75, 75, -115))
+//                      .setEmission(new Color(RED))
+//                      .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+//             ,new Sphere(40, new Point(30,30,-50))
+//                      .setEmission(new Color(120, 20, 200))
+//                      .setMaterial(new Material().setKr(new Double3(0.5, 0, 0.4)).setKt(0.62)) //reflective
+//              ,new Sphere(30,new Point(90,-50,-80))
+//                      .setEmission(new Color(RED))
+//                      .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
+//                              .setKt(new Double3(0.5, 0, 0))) //transparent
 
                 ,new Tube(10,new Ray(new Point(-80,-80,-80),new Vector(0,1,0)))
                         .setMaterial(new Material().setKD(0.2).setKS(0.2).setShininess(30).setKR(0.0002).setKT(0.45))
@@ -156,6 +171,12 @@ public class improvmentTest {
                 new PointLight(new Color(ORANGE), new Point(30, 70, -100))
                         .setKL(0.001).setKQ(0.0000002)
         );
+//      scene.lights.add(new SpotLight(new Color(ORANGE), new Point(30, 70, -100), new Vector(0,1,0))
+//      .setKl(0.001).setKq(0.0000002));
+//scene.lights.add(new SpotLight(new Color(700, 400, 400),
+//      new Point(30, 50, 0), new Vector(0, 0, -1)).setKl(4E-5).setKq(2E-7));
+//scene.lights.add(new SpotLight(new Color(orange),
+//      new Point(100, -10, 115), new Vector(-1, -1, -4)).setNarrowBeam(10).setKl(4E-4).setKq(2E-5));
 
         scene.lights.add(new SpotLight(new Color(orange),
                 new Point(0,-78,-40),new Vector(0,1,0)).setNarrowBeam(10).setKL(4E-4).setKQ(2E-5));
@@ -472,17 +493,14 @@ public class improvmentTest {
         scene.lights.add(new DirectionalLight(new Color(64,156,255), new Vector(0,-1,0)));
         //endregion
 //        scene.lights.add(new DirectionalLight(new Color(ORANGE), new Vector(0,-40,-40)));
-        Camera camera = new Camera(new Point(-3.6, -14.39,0), new Vector(0, 0, -1), new Vector(0, 1, 0));
-//-24.43,3273.3,308.49 - more of a top view
-        camera.moveCamera(new Point(80, 10, 300), new Point(0, -40, -40))
-                .setViewPlaneSize(700, 700).setViewPlaneDistance(700)
-                .setRayTracer(new RayTracerBasic(scene))
-                .setImageWriter(new ImageWriter("whiskeyCup", 1000, 1000))
-                .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.ADAPTIVE)
-                .setApertureSize(0.01).setFocalDistance(900)
-                .setMultithreading(4)
-                .renderImage();
-        camera.writeToImage();
+     
+        
+        cameraBuilder.setLocation(new Point(-3.6, -14.39,0)).moveCamera(new Point(80, 10, 300), new Point(0, -40, -40)).setVpDistance(700).setVpSize(700, 700).setRayTracer(new SimpleRayTracer(scene))
+		.setImageWriter(new ImageWriter("whiskeyCup", 1000, 1000))
+        .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.ADAPTIVE)
+        .setApertureSize(0.01).setFocalDistance(900)
+        .setMultithreading(4).build().renderImage().writeToImage();
+              
         //region camera movements
 //        //move right
 //        for(int i = 0; i < 5; i=i+1) {
