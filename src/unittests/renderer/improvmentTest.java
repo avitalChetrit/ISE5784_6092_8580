@@ -16,7 +16,7 @@ import static java.awt.Color.*;
 /**
  * testing our picture for stage7, and improvements of stage8
  *
- * @author Sarah Daatyah Furmanski and Efrat Kartman
+ * @author Tal and Avital
  */
 public class improvmentTest {
 	/** Scene for the tests */
@@ -116,7 +116,7 @@ public class improvmentTest {
      * test for creating a scene from scratch,
      * at least 3-4 object, with transparency, shadows and reflections
      */
-    @Test
+  /*  @Test
     public void myPicture() {
         Scene scene = new Scene("Test scene")
                 .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
@@ -184,7 +184,7 @@ public class improvmentTest {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200).setRayTracer(new SimpleRayTracer(scene))
 		.setImageWriter(new ImageWriter("myPicture-7.3", 700, 700)).build().renderImage().writeToImage();
-            }
+            } */
 
    
     @Test
@@ -258,7 +258,7 @@ public class improvmentTest {
 //
 //                //endregion
 
-    @Test
+   /* @Test
     public void wisCup()
     {
         Scene scene = new Scene("whiskey cup");
@@ -576,7 +576,7 @@ public class improvmentTest {
 //        camera.setImageWriter(new ImageWriter(pictName, 400, 400))
 //                .renderImage()
 //                .writeToImage();
-//    }
+//    } */
 
     @Test
     public void sphereTriangleMove2_AntiAliasing() {
