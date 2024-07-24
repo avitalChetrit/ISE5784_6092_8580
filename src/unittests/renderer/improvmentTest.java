@@ -258,7 +258,7 @@ public class improvmentTest {
 //
 //                //endregion
 
-   /* @Test
+    @Test
     public void wisCup()
     {
         Scene scene = new Scene("whiskey cup");
@@ -576,7 +576,7 @@ public class improvmentTest {
 //        camera.setImageWriter(new ImageWriter(pictName, 400, 400))
 //                .renderImage()
 //                .writeToImage();
-//    } */
+//    } 
 
     @Test
     public void sphereTriangleMove2_AntiAliasing() {

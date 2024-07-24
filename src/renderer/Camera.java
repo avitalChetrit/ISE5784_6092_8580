@@ -55,10 +55,24 @@ public class Camera implements Cloneable {
     //-----Improvements-----
     //Anti-Aliasing
     //private static int ANTI_ALIASING_FACTOR = 1;
-    public enum SUPER_SAMPLING_TYPE {NONE, REGULAR, ADAPTIVE}
-    private SUPER_SAMPLING_TYPE superSamplingType = SUPER_SAMPLING_TYPE.ADAPTIVE; // type of the super-sampling (eg. NONE,RANDOM, GRID)
-    private int superSamplingGridSize = 9; // grid size for regular super-sampling (e.g. 9 for 9x9 grid)
-    private int adaptiveSuperSamplingMaxRecursionDepth = 3; // constant max depth for adaptive super-sampling
+	/**
+	 * Enumeration representing different types of super-sampling techniques.
+	 */
+	public enum SUPER_SAMPLING_TYPE {NONE, REGULAR, ADAPTIVE}
+	/**
+	 * Represents the settings for super-sampling used in rendering.
+	 */
+	private SUPER_SAMPLING_TYPE superSamplingType = SUPER_SAMPLING_TYPE.ADAPTIVE; // type of the super-sampling (eg. NONE,RANDOM, GRID)
+	/**
+	 * Grid size for regular super-sampling grid.
+	 * Specifies the number of samples taken per pixel in both dimensions.
+	 */
+	private int superSamplingGridSize = 9; // grid size for regular super-sampling (e.g. 9 for 9x9 grid)
+	/**
+	 * Maximum recursion depth for adaptive super-sampling.
+	 * Determines how deeply adaptive super-sampling algorithm recurses to refine pixel samples.
+	 */
+	private int adaptiveSuperSamplingMaxRecursionDepth = 3; // constant max depth for adaptive super-sampling
     //Focus
 //  private boolean depthOfFieldFlag = false;
 //  private double focalDistance = 2;
@@ -71,15 +85,46 @@ public class Camera implements Cloneable {
 //  private double apertureSize = 0.01;
 //  private static final int NUMBER_OF_APERTURE_POINTS = 10;
   //Aperture properties
-  private int APERTURE_NUMBER_OF_POINTS = 9; //(e.g. 9 for 9x9 grid)
-  private double apertureSize = 0;
-  private Point[] aperturePoints;
-  private double focalDistance = 2;
-  private Plane FOCAL_PLANE;
-  //multi-threading
-  private boolean multiThreading = false;
-  private double printInterval;
-  private double threadsCount = 3;
+	/**
+	 * Represents the camera's settings and parameters for rendering and image capturing.
+	 */
+	private int APERTURE_NUMBER_OF_POINTS = 9; // Number of points in the aperture (e.g., 9 for a 9x9 grid).
+	/**
+	 * The size of the aperture used for depth of field effects.
+	 * Larger values simulate a larger aperture, resulting in a shallower depth of field.
+	 */
+	private double apertureSize = 0;
+	/**
+	 * Array of points defining the aperture shape.
+	 * These points determine the distribution and shape of the aperture opening.
+	 */
+	private Point[] aperturePoints;
+	/**
+	 * The distance from the camera where objects appear in sharp focus.
+	 * Determines the focal plane of the camera.
+	 */
+	private double focalDistance = 2;
+	/**
+	 * The plane in space that corresponds to the focal distance.
+	 * Objects at this distance will be in sharp focus when captured by the camera.
+	 */
+	private Plane FOCAL_PLANE;
+	/**
+	 * Flag indicating whether multi-threading is enabled for rendering.
+	 * When enabled, rendering tasks are distributed across multiple threads for improved performance.
+	 */
+	private boolean multiThreading = false;
+	/**
+	 * Interval at which progress is printed during rendering.
+	 * Determines how frequently rendering progress information is output.
+	 */
+	private double printInterval;
+	/**
+	 * Number of threads used for multi-threaded rendering.
+	 * Specifies the maximum number of threads that can concurrently render parts of the image.
+	 */
+	private double threadsCount = 3;
+
   //----------
   //endregion
     
@@ -190,15 +235,17 @@ public class Camera implements Cloneable {
 // }
 //
 //
-	 /**
-     * Construct a grid of rays from a center point, a width and height, and a grid
-     * size
-     *
-     * @param topLeftRayPoint      The top left point of the grid
-     * @param raySpacingHorizontal The horizontal spacing between ray points
-     * @param raySpacingVertical   The vertical spacing between ray points
-     * @param gridSize             the size of the grid
-     */
+
+	/**
+	 * Constructs a grid of rays starting from the given top-left point with specified
+	 * horizontal and vertical spacing.
+	 *
+	 * @param topLeftRayPoint The starting point (top-left corner) of the grid of rays.
+	 * @param raySpacingHorizontal The horizontal spacing between adjacent rays in the grid.
+	 * @param raySpacingVertical The vertical spacing between adjacent rays in the grid.
+	 * @param gridSize The number of rows and columns in the grid (gridSize x gridSize).
+	 * @return A list containing the constructed rays in row-major order.
+	 */
     private List<Ray> constructGridOfRays(Point topLeftRayPoint, double raySpacingHorizontal, double raySpacingVertical,
                                           int gridSize) {
         Ray ray;
@@ -511,6 +558,18 @@ public class Camera implements Cloneable {
 	        	camera.initializeAperturePoint();
 	        return this;
 	    }
+	    /**
+	     * Sets the focal distance of the camera and updates the corresponding focal plane.
+	     * 
+	     * <p>
+	     * This method updates the focal distance of the camera, which determines the distance
+	     * from the camera where objects will appear sharply in focus. It also recalculates 
+	     * the focal plane based on the new focal distance and camera orientation.
+	     * </p>
+	     *
+	     * @param focalDistance The new focal distance to set for the camera.
+	     * @return The Builder instance for method chaining.
+	     */
 	    public  Builder setFocalDistance(double focalDistance) {
 	    	camera.focalDistance = focalDistance;
 	    	camera.FOCAL_PLANE = new Plane(camera.position.add(camera.vTo.scale(camera.focalDistance)), camera.vTo);
@@ -689,12 +748,22 @@ public class Camera implements Cloneable {
 
 	// stage5
 	
-	 /**
-     * Prints a grid to the image
-     *
-     * @param interval size of squares in the grid
-     * @param color    color for the grid
-     *///שלב 8
+	/**
+	 * Renders the final image using ray tracing technique based on the camera's settings.
+	 * Throws exceptions if essential resources like camera coordinates or image creation details are not initialized.
+	 *
+	 * <p>
+	 * This method performs ray tracing to generate an image based on the camera's configuration and view plane settings.
+	 * If multithreading is enabled, it distributes the rendering task across multiple threads to improve performance.
+	 * Each pixel in the image corresponds to a ray cast into the scene to determine its color based on scene objects
+	 * and lighting conditions.
+	 * </p>
+	 *
+	 * @return The Camera object instance after rendering the image, allowing method chaining.
+	 * @throws MissingResourceException If camera coordinates (position, vRight, vUp, vTo) or
+	 *         image creation details (imageWriter or rayTracer) are not initialized.
+	 */
+	//שלב 8
     public Camera printGrid(int interval, Color color) {
         if (imageWriter == null)
             throw new MissingResourceException("Image creation details are not initialized", "Camera", "Writer info");

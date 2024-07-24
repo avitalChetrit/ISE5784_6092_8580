@@ -262,12 +262,13 @@ public class newImprovment {
 
         cameraBuilder
                 .setLocation(new Point(100, 100, 30))
+                .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
                 .setVpDistance(80)
                 .setVpSize(80, 80)
                 .setImageWriter(new ImageWriter("mp1", 500, 500))
                 .setRayTracer(new SimpleRayTracer(scene))
-                .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
-               // .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.REGULAR)
+                .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.NONE)
+                .setSuperSamplingGridSize(400)
                 //.setApertureSize(0.001)
                 .setFocalDistance(100)
                 .setMultithreading(4)
@@ -277,8 +278,7 @@ public class newImprovment {
     }
 
 }
-//.setSuperSampling(Camera.SUPER_SAMPLING_TYPE.REGULAR)
-//.setApertureSize(0.01)*/
+
       
 
 
