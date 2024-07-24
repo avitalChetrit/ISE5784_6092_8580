@@ -15,16 +15,66 @@ import renderer.SimpleRayTracer;
 import scene.Scene;
 import static java.awt.Color.*;
 
+/**
+ * Test suite class for various renderer tests.
+ * 
+ * This class integrates multiple test classes and includes a comprehensive 
+ * scene setup with various geometrical shapes and lighting to validate the 
+ * rendering capabilities.
+ * 
+ * <p>The suite includes the following test classes:
+ * <ul>
+ *   <li>{@link CameraIntegrationTests}</li>
+ *   <li>{@link CameraTests}</li>
+ *   <li>{@link ImageWriterTest}</li>
+ *   <li>{@link improvmentTest}</li>
+ *   <li>{@link ReflectionRefractionTests}</li>
+ *   <li>{@link RenderTests}</li>
+ *   <li>{@link ShadowTests}</li>
+ * </ul>
+ * 
+ * <p>The test scene includes spheres with different emissions, planes, and 
+ * various light sources (ambient, point, directional, spot). The camera is 
+ * configured to capture the scene with specific settings for position, 
+ * direction, super-sampling, and multithreading.
+ * 
+ * <p>This test is primarily focused on improving and validating the renderer's 
+ * performance and quality.
+ * 
+ * @see CameraIntegrationTests
+ * @see CameraTests
+ * @see ImageWriterTest
+ * @see improvmentTest
+ * @see ReflectionRefractionTests;
+ * @see RenderTests
+ * @see ShadowTests
+ */
 @Suite
-@SelectClasses({ CameraIntegrationTests.class, CameraTests.class, ImageWriterTest.class, improvmentTest.class,
-		ReflectionRefractionTests.class, RenderTests.class, ShadowTests.class })
-
+@SelectClasses({ 
+    CameraIntegrationTests.class, 
+    CameraTests.class, 
+    ImageWriterTest.class, 
+    improvmentTest.class,
+    ReflectionRefractionTests.class, 
+    RenderTests.class, 
+    ShadowTests.class 
+})
 public class newImprovment {
+	/**
+     * The scene to be rendered, configured with various geometrical shapes and lighting.
+     */
 	private final Scene scene = new Scene("mp1").setBackground(new Color(245, 245, 220));
 
+	 /**
+     * The camera builder for configuring the camera settings.
+     */
     private final Camera.Builder cameraBuilder = Camera.getBuilder().setDirection(new Vector(-8, -8, -3), new Vector(-100, -100, 533.3333333333333))
             .setRayTracer(new SimpleRayTracer(scene)).setMultithreading(3).setSuperSampling(null);
 
+    /**
+     * Test method for rendering a complex scene with various geometrical shapes 
+     * and light sources to validate the rendering capabilities and performance.
+     */
     @Test
     public void mpTest() {
         Color strongGreen= new Color(0, 100, 0);
@@ -278,8 +328,3 @@ public class newImprovment {
     }
 
 }
-
-      
-
-
-
