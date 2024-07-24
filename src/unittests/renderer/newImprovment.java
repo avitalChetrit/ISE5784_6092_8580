@@ -265,13 +265,21 @@ public class newImprovment {
                 .setVpDistance(80)
                 .setVpSize(80, 80)
                 .setImageWriter(new ImageWriter("mp1", 500, 500))
+                .setRayTracer(new SimpleRayTracer(scene))
+                .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
+               // .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.REGULAR)
+                //.setApertureSize(0.001)
+                .setFocalDistance(100)
+                .setMultithreading(4)
                 .build()
                 .renderImage()
                 .writeToImage();
     }
 
 }
-
+//.setSuperSampling(Camera.SUPER_SAMPLING_TYPE.REGULAR)
+//.setApertureSize(0.01)*/
+      
 
 
 

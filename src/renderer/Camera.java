@@ -554,6 +554,16 @@ public class Camera implements Cloneable {
 	        camera.superSamplingType = type;
 	        return this;
 	    }
+	    /**
+	     * Set the grid size of the super-sampling
+	     *
+	     * @param gridSize grid size of the super-sampling (e.g. 9 for 9x9 grid)
+	     * @return the current camera
+	     */
+	    public Builder setSuperSamplingGridSize(int gridSize) {
+	        camera.superSamplingGridSize = gridSize;
+	        return this;
+	    }
 
 		/**
 		 * Builds the Camera object.
@@ -792,16 +802,7 @@ public class Camera implements Cloneable {
 //     return this;
 // }
 
- /**
-  * Set the grid size of the super-sampling
-  *
-  * @param gridSize grid size of the super-sampling (e.g. 9 for 9x9 grid)
-  * @return the current camera
-  */
- public Camera setSuperSamplingGridSize(int gridSize) {
-     this.superSamplingGridSize = gridSize;
-     return this;
- }
+ 
  /**
   * Set the max recursion depth for the adaptive super-sampling
   *

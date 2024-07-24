@@ -116,7 +116,7 @@ public class improvmentTest {
      * test for creating a scene from scratch,
      * at least 3-4 object, with transparency, shadows and reflections
      */
-  /*  @Test
+   @Test
     public void myPicture() {
         Scene scene = new Scene("Test scene")
                 .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
@@ -184,7 +184,7 @@ public class improvmentTest {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200).setRayTracer(new SimpleRayTracer(scene))
 		.setImageWriter(new ImageWriter("myPicture-7.3", 700, 700)).build().renderImage().writeToImage();
-            } */
+            } 
 
    
     @Test
