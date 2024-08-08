@@ -163,6 +163,42 @@ public class SimpleRayTracer extends RayTracerBase {
 		Material material = gp.geometry.getMaterial();
 		Vector v = ray.getDirection();
 		Vector n = gp.geometry.getNormal(gp.point);
+		//stage9
+        Color diffSamplingSum = Color.BLACK;
+        Color glossSamplingSum = Color.BLACK;
+        //If diffusive glass
+        if (material.kDg != 0) {
+            //super sample the refracted ray
+            List<Ray> diffusedSampling = Sampling.superSample(refractedRay, material.kDg, normal);
+            //for each sampling ray calculate the global effect
+            for (var secondaryRay : diffusedSampling) {
+                diffSamplingSum = diffSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT));
+            }
+            //take the average of the calculation for all sample rays
+            diffSamplingSum = diffSamplingSum.reduce(diffusedSampling.size());
+        }
+        //If glossy surface
+        if (material.kSg != 0) {
+            //super sample the reflected ray
+            List<Ray> glossySampling = Sampling.superSample(constructRefractedRay, material.kSg, normal);
+            //for each sampling ray calculate the global effect
+            for (var secondaryRay : glossySampling) {
+                glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, material.kR, level, k));
+            }
+            //take the average of the calculation for all sample rays
+            glossSamplingSum = glossSamplingSum.reduce(glossySampling.size());
+        }
+        //If diffusive and glossy return both of the results above
+        if (material.kDg != 0 && material.kSg != 0) {
+            return glossSamplingSum
+                    .add(diffSamplingSum);
+        }
+        //else return the matching result
+        else if (material.kDg + material.kSg > 0) {
+            return material.kDg != 0 ? calcGlobalEffect(constructRefractedRay(gp, v, n),material.kR, level, k).add(diffSamplingSum) :
+            	calcGlobalEffect(constructRefractedRay(gp, v, n),, material.kT, level, k).add(glossSamplingSum);
+        }
+    
 		return calcGlobalEffect(constructRefractedRay(gp, v, n), material.kT, level, k)
 				.add(calcGlobalEffect(constructReflectedRay(gp, v, n), material.kR, level, k));
 	}

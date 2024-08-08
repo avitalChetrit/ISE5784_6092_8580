@@ -92,5 +92,37 @@ public class Polygon extends Geometry {
 		// Auto-generated method stub
 		return null;
 	}
+	 @Override
+	    public int[][] calcBoundary() {
+	        double minX = Double.POSITIVE_INFINITY;
+	        double maxX = Double.NEGATIVE_INFINITY;
+	        double minY = Double.POSITIVE_INFINITY;
+	        double maxY = Double.NEGATIVE_INFINITY;
+	        double minZ = Double.POSITIVE_INFINITY;
+	        double maxZ = Double.NEGATIVE_INFINITY;
+	        double x;
+	        double y;
+	        double z;
+	        for (var point : vertices) {
+	            x = point.xyz.d1;
+	            y = point.xyz.d2;
+	            z = point.xyz.d3;
+	            if (x < minX)
+	                minX = x;
+	            if (x > maxX)
+	                maxX = x;
+	            if (y < minY)
+	                minY = y;
+	            if (y > maxY)
+	                maxY = y;
+	            if (z < minZ)
+	                minZ = z;
+	            if (z > maxZ)
+	                maxZ = z;
+	        }
+	        return new int[][]{{(int) Math.floor(minX), (int) Math.ceil(maxX)},
+	                {(int) Math.floor(minY), (int) Math.ceil(maxY)},
+	                {(int) Math.floor(minZ), (int) Math.ceil(maxZ)}};
+	    }
 
 }
