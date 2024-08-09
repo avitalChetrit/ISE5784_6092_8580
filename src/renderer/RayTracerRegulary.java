@@ -5,7 +5,7 @@ import geometries.Polygon;
 import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
-
+import primitives.Point;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -537,9 +537,9 @@ public class RayTracerRegulary extends RayTracerBase {
      * @return the intersection point
      */
     private Point firstIntersection(Ray ray) {
-        double x = ray.getHead().getX();
-        double y = ray.getHead).getY();
-        double z = ray.getHead.getZ();
+        double x = ray.getHead().xyz.d1;
+        double y = ray.getHead().xyz.d2;
+        double z = ray.getHead().xyz.d3;
         Point head = ray.getHead();
 
         int[][] boundary = scene.geometries.boundary;
@@ -579,9 +579,9 @@ public class RayTracerRegulary extends RayTracerBase {
      */
     private int[] VoxelByPoint(Point p, int[][] boundary) {
 
-        int xCoordinate = (int) ((p.getX() - boundary[0][0]) / scene.getXEdgeVoxel());
-        int yCoordinate = (int) ((p.getY() - boundary[1][0]) / scene.getYEdgeVoxel());
-        int zCoordinate = (int) ((p.getZ() - boundary[2][0]) / scene.getZEdgeVoxel());
+        int xCoordinate = (int) ((p.xyz.d1 - boundary[0][0]) / scene.getXEdgeVoxel());
+        int yCoordinate = (int) ((p.xyz.d2 - boundary[1][0]) / scene.getYEdgeVoxel());
+        int zCoordinate = (int) ((p.xyz.d3 - boundary[2][0]) / scene.getZEdgeVoxel());
 
         return new int[]{xCoordinate, yCoordinate, zCoordinate};
     }
@@ -640,9 +640,9 @@ public class RayTracerRegulary extends RayTracerBase {
         double yMin = boundary[1][0] + (index[1]) * scene.getYEdgeVoxel();
         double zMin = boundary[2][0] + (index[2]) * scene.getZEdgeVoxel();
 
-        return intersection.getX() >= xMin && intersection.getX() <= xMax
-                && intersection.getY() >= yMin && intersection.getY() <= yMax
-                && intersection.getZ() >= zMin && intersection.getZ() <= zMax;
+        return intersection.xyz.d1 >= xMin && intersection.xyz.d1 <= xMax
+                && intersection.xyz.d2 >= yMin && intersection.xyz.d2 <= yMax
+                && intersection.xyz.d3 >= zMin && intersection.xyz.d3 <= zMax;
     }
 
     /**
@@ -653,22 +653,22 @@ public class RayTracerRegulary extends RayTracerBase {
      * @return the fixed point
      */
     private Point fixPoint(Point p, int[][] boundary) {
-        if (isZero((p.getX() - boundary[0][0]))) {
+        if (isZero((p.xyz.d1 - boundary[0][0]))) {
             p = p.add(new Vector(1, 0, 0).scale(EPSILON));
         }
-        if (isZero((p.getX() - boundary[0][1]))) {
+        if (isZero((p.xyz.d1) - boundary[0][1]))) {
             p = p.add(new Vector(1, 0, 0).scale(-EPSILON));
         }
-        if (isZero((p.getY() - boundary[1][0]))) {
+        if (isZero((p.xyz.d2 - boundary[1][0]))) {
             p = p.add(new Vector(0, 1, 0).scale(EPSILON));
         }
-        if (isZero((p.getY() - boundary[1][1]))) {
+        if (isZero((p.xyz.d2 - boundary[1][1]))) {
             p = p.add(new Vector(0, 1, 0).scale(-EPSILON));
         }
-        if (isZero((p.getZ() - boundary[2][0]))) {
+        if (isZero((p.xyz.d3 - boundary[2][0]))) {
             p = p.add(new Vector(0, 0, 1).scale(EPSILON));
         }
-        if (isZero((p.getZ() - boundary[2][1]))) {
+        if (isZero((p.xyz.d3 - boundary[2][1]))) {
             p = p.add(new Vector(0, 0, 1).scale(-EPSILON));
         }
         return p;

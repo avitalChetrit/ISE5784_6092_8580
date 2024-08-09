@@ -132,10 +132,10 @@ public class Vector extends Point {
      * @return the orthogonal vector
      */
     public static Vector createOrthogonal(Vector vec) {
-        if (vec.getX() != 1) {//if y and z are not equal to zero
-            return new Vector(0, -1 * vec.getZ(), vec.getY()).normalize();
+        if (vec.xyz.d1 != 1) {//if y and z are not equal to zero
+            return new Vector(0, -1 * vec.xyz.d3, vec.xyz.d2).normalize();
         } else {
-            return Vector.Y;
+            return new Vector(0,1,0);
         }
     }
 }

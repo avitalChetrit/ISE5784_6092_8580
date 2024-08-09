@@ -5,7 +5,7 @@ package primitives;
  */
 public class Point {
 	/** Coordinate values of the point */
-	protected final Double3 xyz;
+	public final Double3 xyz;
 
 	/** Zero triad (0,0,0) */
 	public static final Point ZERO = new Point(0, 0, 0);
