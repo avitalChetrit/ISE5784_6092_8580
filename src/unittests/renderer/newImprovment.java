@@ -1,7 +1,4 @@
 package unittests.renderer;
-
-import org.junit.platform.suite.api.SelectClasses;
-import org.junit.platform.suite.api.Suite;
 import geometries.*;
 import lighting.AmbientLight;
 import lighting.DirectionalLight;
@@ -13,17 +10,14 @@ import renderer.Camera;
 import renderer.ImageWriter;
 import renderer.SimpleRayTracer;
 import scene.Scene;
+
 import static java.awt.Color.*;
 
-@Suite
-@SelectClasses({ CameraIntegrationTests.class, CameraTests.class, ImageWriterTest.class, improvmentTest.class,
-		ReflectionRefractionTests.class, RenderTests.class, ShadowTests.class })
-
 public class newImprovment {
-	private final Scene scene = new Scene("mp1").setBackground(new Color(245, 245, 220));
+    private final Scene scene = new Scene("mp1").setBackground(new Color(245, 245, 220));
 
     private final Camera.Builder cameraBuilder = Camera.getBuilder().setDirection(new Vector(-8, -8, -3), new Vector(-100, -100, 533.3333333333333))
-            .setRayTracer(new SimpleRayTracer(scene)).setMultithreading(3).setSuperSampling(null);
+            .setRayTracer(new SimpleRayTracer(scene));
 
     @Test
     public void mpTest() {
@@ -35,8 +29,6 @@ public class newImprovment {
         scene.lights.add(
                 new PointLight(new Color(255, 240, 245), new Point(-79, -20, 40))
                         .setKL(0.04).setKQ(2E-5));
-        //.setLengthOfTheSide(2).setSoftShadowsRays(20)
-        
         scene.lights.add(new DirectionalLight(new Color(WHITE), new Vector(-80, -80, 30)));
         scene.lights.add(
                 new SpotLight(
@@ -46,7 +38,7 @@ public class newImprovment {
                 new SpotLight(
                         new Color(700, 400, 400), new Point(50, 0, -10), new Vector(-30, 0, 25))
                         .setKL(0.1).setKQ(0.0001));
-        Material material = new Material().setKD(0.3).setKS(0.5).setShininess(50).setKR(0.3);
+        Material material = new Material().setKD(0.3).setKS(0.5).setShininess(50).setKR(0.3).setKdg(0.3).setKsg(0.5);
 
         scene.geometries.add(
                 /**-------משטח2-------**/
@@ -261,25 +253,18 @@ public class newImprovment {
         );
 
         cameraBuilder
-                .setLocation(new Point(100, 100, 30))
-                .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
-                .setVpDistance(80)
-                .setVpSize(80, 80)
-                .setImageWriter(new ImageWriter("mp1", 500, 500))
-                .setRayTracer(new SimpleRayTracer(scene))
-                .setSuperSampling(Camera.SUPER_SAMPLING_TYPE.NONE)
-                .setSuperSamplingGridSize(400)
-                //.setApertureSize(0.001)
-                .setFocalDistance(100)
-                .setMultithreading(4)
-                .build()
-                .renderImage()
-                .writeToImage();
+        .setLocation(new Point(100, 100, 30))
+        .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
+        .setVpDistance(80)
+        .setVpSize(80, 80)
+        .setImageWriter(new ImageWriter("mp1", 500, 500))
+        .setRayTracer(new SimpleRayTracer(scene))
+      // .setAntiAliasingFactor(9)
+     //   .setUseAdaptive(true)
+        .setMultithreading(3)
+       .setDebugPrint(0.1)
+        .build()
+        .renderImage()
+        .writeToImage();
     }
-
 }
-
-      
-
-
-

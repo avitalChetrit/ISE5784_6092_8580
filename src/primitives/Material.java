@@ -105,7 +105,7 @@ public class Material {
      * @param kDg double parameter value
      * @return The object itself
      */
-    public Material setKdG(double kDg) {
+    public Material setKdg(double kDg) {
         this.kDg = kDg;
         return this;
     }
@@ -114,7 +114,7 @@ public class Material {
      * @param kSg double parameter value
      * @return The object itself
      */
-    public Material setKsG(double kSg) {
+    public Material setKsg(double kSg) {
         this.kSg = kSg;
         return this;
     }

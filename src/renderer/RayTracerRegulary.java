@@ -101,7 +101,7 @@ public class RayTracerRegulary extends RayTracerBase {
      */
     private Color calcLocalEffects(Intersectable.GeoPoint gp, Ray ray, Double3 k) {
         Color color = gp.geometry.getEmission();
-        Vector vector = ray.getDir();
+        Vector vector = ray.getDirection();
         Vector normal = gp.geometry.getNormal(gp.point);
         double nv = alignZero(normal.dotProduct(vector));
         if (nv == 0)
@@ -122,7 +122,7 @@ public class RayTracerRegulary extends RayTracerBase {
                 }
             }
         }
-        return color;
+       return color;
     }
 
     /**
@@ -138,7 +138,7 @@ public class RayTracerRegulary extends RayTracerBase {
     private Double3 calcSpecular(Material mat, Vector n, Vector l, double nl, Vector v) {
         Vector reflectedVector = l.subtract(n.scale(2 * nl));
         double max = Math.max(0, alignZero(v.scale(-1).dotProduct(reflectedVector)));
-        return mat.kS.scale(Math.pow(max, mat.nShininess));
+        return mat.kS.scale(Math.pow(max, mat.shininess));
     }
 
     /**
@@ -219,7 +219,7 @@ public class RayTracerRegulary extends RayTracerBase {
      * @return the calculated color
      */
     private Color calcGlobalEffects(Intersectable.GeoPoint gp, Ray ray, int level, Double3 k) {
-        Vector v = ray.getDir();
+        Vector v = ray.getDirection();
         Vector normal = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
 
@@ -338,17 +338,17 @@ public class RayTracerRegulary extends RayTracerBase {
         //finds the first intersection with the grid
         Point firstIntersection = firstIntersection(ray);
         if (firstIntersection == null) return null;
-        Vector dir = ray.getDir();
+        Vector dir = ray.getDirection();
         int[][] boundary = scene.geometries.boundary;
         //move the point a little, so it would be inside the grid
         Point fixedFirstIntersection = fixPoint(firstIntersection, boundary);
         //arrays for calculations
         int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
-        double[] directions = new double[]{dir.getX(), dir.getY(), dir.getZ()};
+        double[] directions = new double[]{dir.xyz.d1, dir.xyz.d2, dir.xyz.d3};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
         double[] tMax = new double[3];
-        double[] firstIntersectionCoordinates = new double[]{firstIntersection.getX(), firstIntersection.getY(), firstIntersection.getZ()};
+        double[] firstIntersectionCoordinates = new double[]{firstIntersection.xyz.d1, firstIntersection.xyz.d2, firstIntersection.xyz.d3};
         double[] tDelta = new double[3];
 
         for (int i = 0; i <= 2; i++) {
@@ -445,11 +445,11 @@ public class RayTracerRegulary extends RayTracerBase {
 
         //arrays for calculations
         int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
-        double[] directions = new double[]{dir.getX(), dir.getY(), dir.getZ()};
+        double[] directions = new double[]{dir.xyz.d1, dir.xyz.d2, dir.xyz.d3};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
         double[] tMax = new double[3];
-        double[] firstIntersectionCoordinates = new double[]{firstIntersection.getX(), firstIntersection.getY(), firstIntersection.getZ()};
+        double[] firstIntersectionCoordinates = new double[]{firstIntersection.xyz.d1, firstIntersection.xyz.d2, firstIntersection.xyz.d3};
         double[] tDelta = new double[3];
 
         for (int i = 0; i <= 2; i++) {
@@ -656,7 +656,7 @@ public class RayTracerRegulary extends RayTracerBase {
         if (isZero((p.xyz.d1 - boundary[0][0]))) {
             p = p.add(new Vector(1, 0, 0).scale(EPSILON));
         }
-        if (isZero((p.xyz.d1) - boundary[0][1]))) {
+        if (isZero((p.xyz.d1) - boundary[0][1])) {
             p = p.add(new Vector(1, 0, 0).scale(-EPSILON));
         }
         if (isZero((p.xyz.d2 - boundary[1][0]))) {

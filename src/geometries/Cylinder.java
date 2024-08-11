@@ -31,9 +31,9 @@ public class Cylinder extends Tube {
     public int[][] calcBoundary() {
         Point firstBaseCenter = axisRay.getHead();
         Point secondBaseCenter = axisRay.getPoint(height);
-        return new int[][]{minMax(firstBaseCenter.getX(),secondBaseCenter.getX()),
-                minMax(firstBaseCenter.getY(), secondBaseCenter.getY()),
-                minMax(firstBaseCenter.getZ(), secondBaseCenter.getZ())};
+        return new int[][]{minMax(firstBaseCenter.xyz.d1,secondBaseCenter.xyz.d1),
+                minMax(firstBaseCenter.xyz.d2, secondBaseCenter.xyz.d2),
+                minMax(firstBaseCenter.xyz.d3, secondBaseCenter.xyz.d3)};
     }
     private int[] minMax(double first,double second){
         return first < second? new int[]{(int)Math.floor(first-radius),(int)Math.ceil(second+radius)}:
