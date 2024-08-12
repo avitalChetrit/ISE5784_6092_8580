@@ -17,8 +17,8 @@ public class newImprovment {
     private final Scene scene = new Scene("mp1").setBackground(new Color(245, 245, 220));
 
     private final Camera.Builder cameraBuilder = Camera.getBuilder().setDirection(new Vector(-8, -8, -3), new Vector(-100, -100, 533.3333333333333))
-            .setRayTracer(new SimpleRayTracer(scene));
-
+            .setRayTracer(new SimpleRayTracer(scene)).setMultithreading(3);
+    //.setSuperSampling(null);
     @Test
     public void mpTest() {
         Color strongGreen= new Color(0, 100, 0);
@@ -38,10 +38,10 @@ public class newImprovment {
                 new SpotLight(
                         new Color(700, 400, 400), new Point(50, 0, -10), new Vector(-30, 0, 25))
                         .setKL(0.1).setKQ(0.0001));
-        Material material = new Material().setKD(0.3).setKS(0.5).setShininess(50).setKR(0.3).setKdg(0.3).setKsg(0.5);
+        Material material = new Material().setKD(0.3).setKS(0.5).setShininess(50).setKR(0.3);
 
         scene.geometries.add(
-                /**-------משטח2-------**/
+                /*-------משטח2-------*/
                 new Sphere(new Point(20, 0, 0), 5)
                         .setEmission(new Color(GREEN)).setMaterial(material).setEmission(emmisionGreen),
                 new Sphere(new Point(-20, 0, 0), 5)
@@ -75,7 +75,7 @@ public class newImprovment {
                 new Sphere(new Point(-20, -20, 0), 5)
                        .setEmission(new Color(GREEN)).setMaterial(material).setEmission(emmisionGreen),
 
-                /**-------משט1-------**/
+                /*-------משט1-------*/
                 new Sphere(new Point(0, 0, 10), 5)
                         .setEmission(strongGreen).setMaterial(material).setEmission(emmisionStrongGreen),
                 new Sphere(new Point(10, 0, 10), 5)
@@ -126,7 +126,7 @@ public class newImprovment {
                         .setEmission(strongGreen).setMaterial(material).setEmission(emmisionStrongGreen),
                 new Sphere(new Point(-20, -20, 10), 5)
                         .setEmission(strongGreen).setMaterial(material).setEmission(emmisionStrongGreen),
-                /**-------משטח3-------**/
+                /*-------משטח3-------*/
                 new Sphere(new Point(20, 0, -10), 5)
                         .setEmission(new Color(BLUE)).setMaterial(material).setEmission(emmisionBlue),
                 new Sphere(new Point(-20, 0, -10), 5)
@@ -160,7 +160,7 @@ public class newImprovment {
                 new Sphere(new Point(-20, -20, -10), 5)
                         .setEmission(new Color(BLUE)).setMaterial(material).setEmission(emmisionBlue),
 
-                /**-------משטח5-------**/
+                /*-------משטח5-------*/
                 new Sphere(new Point(20, 0, -20), 5)
                         .setEmission(new Color(127, 0, 255)).setMaterial(material).setEmission(new Color(115, 0, 240)),
                 new Sphere(new Point(-20, 0, -20), 5)
@@ -194,7 +194,7 @@ public class newImprovment {
                 new Sphere(new Point(-20, -20, -20), 5)
                         .setEmission(new Color(127, 0, 255)).setMaterial(material).setEmission(new Color(115, 0, 240)),
 
-                /**-------משטח7------**/
+                /*-------משטח7------*/
                 new Sphere(new Point(20, 0, -30), 5)
                         .setEmission(new Color(255, 127, 0)).setMaterial(material).setEmission(new Color(240, 115, 0)),
                 new Sphere(new Point(-20, 0, -30), 5)
@@ -252,19 +252,26 @@ public class newImprovment {
                         .setMaterial(new Material().setKD(0.4).setShininess(6).setKR(0.8))
         );
 
+      
         cameraBuilder
         .setLocation(new Point(100, 100, 30))
-        .moveCamera(new Point(9, 11, 40), new Point(0, -4, -4))
+       // .moveCamera(new Point(0.5, 0.1, 10), new Point(0, 2,2))
+      .setRayTracer(new SimpleRayTracer(scene))
+      //.setSuperSampling(Camera.SUPER_SAMPLING_TYPE.NONE)
+      //.setSuperSamplingGridSize(400)
+      //.setApertureSize(0.001)
+      //.setFocalDistance(100)
+      .setMultithreading(4)
         .setVpDistance(80)
         .setVpSize(80, 80)
         .setImageWriter(new ImageWriter("mp1", 500, 500))
-        .setRayTracer(new SimpleRayTracer(scene))
-      // .setAntiAliasingFactor(9)
-     //   .setUseAdaptive(true)
-        .setMultithreading(3)
-       .setDebugPrint(0.1)
         .build()
         .renderImage()
         .writeToImage();
     }
 }
+
+
+
+        
+       
