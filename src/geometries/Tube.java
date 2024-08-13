@@ -1,3 +1,4 @@
+
 package geometries;
 
 import java.util.List;
@@ -47,8 +48,5 @@ public class Tube extends RadialGeometry {
 		// Auto-generated method stub
 		return null;
 	}
-    @Override
-    public int[][] calcBoundary() {//there is no boundary to infinite geometric entity
-        return null;
-    }
+
 }

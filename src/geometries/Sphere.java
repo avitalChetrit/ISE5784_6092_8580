@@ -1,3 +1,4 @@
+
 package geometries;
 
 import primitives.Point;
@@ -67,14 +68,5 @@ public class Sphere extends RadialGeometry {
 				// Two intersection points
 				: List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
 	}
-	   @Override
-	    public int[][] calcBoundary() {
-	        double x = center.xyz.d1;
-	        double y = center.xyz.d2;;
-	        double z = center.xyz.d3;
 
-	        return new int[][]{{(int) Math.floor(x - radius), (int) Math.ceil(x + radius)},
-	                {(int) Math.floor(y - radius), (int) Math.ceil(y + radius)},
-	                {(int) Math.floor(z - radius), (int) Math.ceil(z + radius)}};
-	    }
 }

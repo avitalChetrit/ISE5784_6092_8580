@@ -1,5 +1,7 @@
 package primitives;
+
 import static primitives.Util.isZero;
+
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -127,21 +129,22 @@ public class Color {
 	/**
 	 * Scale the color by (1 / reduction factor)
 	 * 
-	 * @param k reduction factor
+	 * @param numRays reduction factor
 	 * @return new Color object which is the result of the operation
 	 */
-	public Color reduce(int k) {
-		if (k < 1)
+	public Color reduce(double numRays) {
+		if (numRays < 1)
 			throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
-		return new Color(rgb.reduce(k));
+		return new Color(rgb.reduce(numRays));
 	}
 
 	@Override
 	public String toString() {
 		return "rgb:" + rgb;
 	}
-	  public boolean similar(Color color) {
-	        Double3 diff = this.rgb.subtract(color.rgb);
-	        return isZero(diff.d1) && isZero(diff.d2) && isZero(diff.d3);
-	    }
+
+	public boolean similar(Color color) {
+		Double3 diff = this.rgb.subtract(color.rgb);
+		return isZero(diff.d1) && isZero(diff.d2) && isZero(diff.d3);
+	}
 }

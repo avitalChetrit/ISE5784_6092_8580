@@ -90,34 +90,34 @@ public class Material {
 		this.kT = kT;
 		return this;
 	}
-	/**
-     * diffusive glass coefficient
-     */
-    public double kDg = 0;
-    /**
-     * Glossy surface coefficient
-     */
-    public double kSg = 0;
 
-    /**
-     * Setter for the kDg field
-     *
-     * @param kDg double parameter value
-     * @return The object itself
-     */
-    public Material setKdg(double kDg) {
-        this.kDg = kDg;
-        return this;
-    }
-    /**
-     * Setter for the kSg field
-     * @param kSg double parameter value
-     * @return The object itself
-     */
-    public Material setKsg(double kSg) {
-        this.kSg = kSg;
-        return this;
-    }
+	/**
+	 * diffusive glass coefficient
+	 */
+	// public double kDg = 0;
+	/**
+	 * Glossy surface coefficient
+	 */
+//    public double kSg = 0;
+
+	/**
+	 * Setter for the kDg field
+	 *
+	 * @param kDg double parameter value
+	 * @return The object itself
+	 */
+	/*
+	 * public Material setKdg(double kDg) { this.kDg = kDg; return this; } /**
+	 * Setter for the kSg field
+	 * 
+	 * @param kSg double parameter value
+	 * 
+	 * @return The object itself
+	 */
+	/*
+	 * public Material setKsg(double kSg) { this.kSg = kSg; return this; }
+	 */
+
 	/**
 	 * Setter for the reflection coefficient.
 	 *

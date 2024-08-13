@@ -13,7 +13,7 @@ public class PointLight extends Light implements LightSource {
 	/**
 	 * The position of the light source in 3D space.
 	 */
-	private final Point position;
+	private Point position;
 	/**
 	 * Constant attenuation factor (kC) affecting the intensity of the light source.
 	 * This factor is independent of the distance from the light source.
@@ -41,6 +41,17 @@ public class PointLight extends Light implements LightSource {
 	public PointLight(Color intensity, Point position) {
 		super(intensity);
 		this.position = position;
+	}
+
+	/**
+	 * Sets the position of the point light source.
+	 *
+	 * @param position The new position of the point light source.
+	 * @return This PointLight object, allowing method chaining.
+	 */
+	public PointLight setPosition(Point position) {
+		this.position = position;
+		return this;
 	}
 
 	/**

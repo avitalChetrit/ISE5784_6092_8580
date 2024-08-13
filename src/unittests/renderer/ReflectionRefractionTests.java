@@ -2,6 +2,7 @@
  * 
  */
 package unittests.renderer;
+
 import static java.awt.Color.*;
 import org.junit.jupiter.api.Test;
 import geometries.Sphere;
@@ -21,7 +22,7 @@ import scene.Scene;
  * @author dzilb
  */
 public class ReflectionRefractionTests {
-/** Scene for the tests */
+	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()

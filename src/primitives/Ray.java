@@ -1,6 +1,8 @@
 package primitives;
 
 import geometries.Intersectable.GeoPoint;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,5 +128,24 @@ public class Ray {
 	@Override
 	public String toString() {
 		return "Ray:" + head + "->" + direction;
+	}
+
+	/// ???
+	/**
+	 * 
+	 * Generates a bundle of rays originating from points in a list and directed
+	 * towards a focus point.
+	 * 
+	 * @param focusPoint The point towards which all the rays will be directed.
+	 * @param points     The list of points from which the rays will originate.
+	 * @return A list of rays originating from the given points and directed towards
+	 *         the focus point.
+	 */
+	public static List<Ray> RayBundle(Point focusPoint, List<Point> points) {
+		List<Ray> rays = new ArrayList<>();
+		for (Point point : points) {
+			rays.add(new Ray(point, focusPoint.subtract(point)));
+		}
+		return rays;
 	}
 }

@@ -27,16 +27,4 @@ public class Cylinder extends Tube {
 	public Vector getNormal(Point point) {
 		return null; // if we want to use cylinder in our pictures
 	}
-    @Override
-    public int[][] calcBoundary() {
-        Point firstBaseCenter = axisRay.getHead();
-        Point secondBaseCenter = axisRay.getPoint(height);
-        return new int[][]{minMax(firstBaseCenter.xyz.d1,secondBaseCenter.xyz.d1),
-                minMax(firstBaseCenter.xyz.d2, secondBaseCenter.xyz.d2),
-                minMax(firstBaseCenter.xyz.d3, secondBaseCenter.xyz.d3)};
-    }
-    private int[] minMax(double first,double second){
-        return first < second? new int[]{(int)Math.floor(first-radius),(int)Math.ceil(second+radius)}:
-                new int[]{(int)Math.floor(second-radius),(int)Math.ceil(first+radius)};
-    }
 }

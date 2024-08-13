@@ -126,16 +126,15 @@ public class Vector extends Point {
 	public String toString() {
 		return "V" + xyz;
 	}
-	  /**
-     * create orthogonal vector
-     * @param vec the vector that we seek orthogonal vector to
-     * @return the orthogonal vector
-     */
-    public static Vector createOrthogonal(Vector vec) {
-        if (vec.xyz.d1 != 1) {//if y and z are not equal to zero
-            return new Vector(0, -1 * vec.xyz.d3, vec.xyz.d2).normalize();
-        } else {
-            return new Vector(0,1,0);
-        }
-    }
+	/**
+	 * create orthogonal vector
+	 * 
+	 * @param vec the vector that we seek orthogonal vector to
+	 * @return the orthogonal vector
+	 */
+	/*
+	 * public static Vector createOrthogonal(Vector vec) { if (vec.xyz.d1 != 1)
+	 * {//if y and z are not equal to zero return new Vector(0, -1 * vec.xyz.d3,
+	 * vec.xyz.d2).normalize(); } else { return new Vector(0,1,0); } }
+	 */
 }

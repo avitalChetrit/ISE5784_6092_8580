@@ -1,3 +1,4 @@
+
 package geometries;
 
 import primitives.Point;
@@ -101,8 +102,5 @@ public class Plane extends Geometry {
 		// intersection point
 		return List.of(new Intersectable.GeoPoint(this, intersectionPoint));
 	}
-	 @Override
-	    public int[][] calcBoundary() {//there is no boundary to infinite geometric entity
-	        return null;
-	    }
+
 }

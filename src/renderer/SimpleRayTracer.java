@@ -50,18 +50,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	public SimpleRayTracer(Scene scene) {
 		super(scene);
 	}
-	   @Override
-	    public Color traceRays(List<Ray> rays) {
-	        Color currentPixelColor = Color.BLACK;
-	        for(Ray ray :rays)
-	            currentPixelColor = currentPixelColor.add(traceRay(ray));
-	        return  currentPixelColor.reduce(rays.size());
-//	        GeoPoint closestGeoPoint = findClosestIntersection(ray);
-//	        if (closestGeoPoint == null)
-//	            return scene.background;
-//	        Color currentPixelColor = calcColor(closestGeoPoint, ray);
-//	        return currentPixelColor;
-	    }
+
 	/**
 	 * Traces a ray in the scene and returns the color of the closest intersection
 	 * point.
@@ -74,6 +63,24 @@ public class SimpleRayTracer extends RayTracerBase {
 	public Color traceRay(Ray ray) {
 		GeoPoint closestPoint = findClosestIntersection(ray);
 		return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
+	}
+
+	@Override
+	public Color traceRays(List<Ray> rays) {
+		Color currentPixelColor = Color.BLACK;
+		for (Ray ray : rays)
+			currentPixelColor = currentPixelColor.add(traceRay(ray));
+		return currentPixelColor.reduce(rays.size());
+	}
+
+///??
+	@Override
+	public Color computeFinalColor(List<Ray> rays) {
+		Color finalColor = Color.BLACK;
+		for (Ray ray : rays) {
+			finalColor = finalColor.add(traceRay(ray));
+		}
+		return finalColor.reduce(rays.size());
 	}
 
 	/**
@@ -163,44 +170,8 @@ public class SimpleRayTracer extends RayTracerBase {
 		Material material = gp.geometry.getMaterial();
 		Vector v = ray.getDirection();
 		Vector n = gp.geometry.getNormal(gp.point);
-		//stage9
-        Color diffSamplingSum = Color.BLACK;
-        Color glossSamplingSum = Color.BLACK;
-        //If diffusive glass
-        if (material.kDg != 0) {
-            //super sample the refracted ray
-            List<Ray> diffusedSampling = Sampling.superSample(constructRefractedRay(gp, v, n), material.kDg, n);
-            //for each sampling ray calculate the global effect
-            for (var secondaryRay : diffusedSampling) {
-                diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, material.kT, level, k));
-            }
-            //take the average of the calculation for all sample rays
-            diffSamplingSum = diffSamplingSum.reduce(diffusedSampling.size());
-        }
-        //If glossy surface
-        if (material.kSg != 0) {
-            //super sample the reflected ray
-            List<Ray> glossySampling = Sampling.superSample(constructRefractedRay(gp, v, n), material.kSg, n);
-            //for each sampling ray calculate the global effect
-            for (var secondaryRay : glossySampling) {
-                glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, material.kR, level, k));
-            }
-            //take the average of the calculation for all sample rays
-            glossSamplingSum = glossSamplingSum.reduce(glossySampling.size());
-        }
-        //If diffusive and glossy return both of the results above
-        if (material.kDg != 0 && material.kSg != 0) {
-            return glossSamplingSum
-                    .add(diffSamplingSum);
-        }
-        //else return the matching result
-        else if (material.kDg + material.kSg > 0) {
-            return material.kDg != 0 ? calcGlobalEffect(constructRefractedRay(gp, v, n),material.kR, level, k).add(diffSamplingSum) :
-            	calcGlobalEffect(constructRefractedRay(gp, v, n), material.kT, level, k).add(glossSamplingSum);
-        }
-    
 		return calcGlobalEffect(constructRefractedRay(gp, v, n), material.kT, level, k)
-			.add(calcGlobalEffect(constructReflectedRay(gp, v, n), material.kR, level, k));
+				.add(calcGlobalEffect(constructReflectedRay(gp, v, n), material.kR, level, k));
 	}
 
 	/**
@@ -338,5 +309,4 @@ public class SimpleRayTracer extends RayTracerBase {
 		double minusVR = -alignZero(v.dotProduct(reflectVector));
 		return minusVR <= 0 ? Double3.ZERO : material.kS.scale(pow(minusVR, material.shininess));
 	}
-	
 }
