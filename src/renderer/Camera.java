@@ -73,7 +73,7 @@ public class Camera implements Cloneable {
 	/**
 	 * Aperture area grid density
 	 */
-	private int gridDensity = 7;// 1;
+	private int gridDensity = 1;// 7;
 
 	/**
 	 * depthOfFieled points on the aperture plane

@@ -23,7 +23,7 @@ public class Material {
 	public Double3 kR = Double3.ZERO;
 
 	/** The shininess exponent of the material */
-	public int shininess = 0;
+	public double shininess = 0;
 
 	/**
 	 * Setter for the diffuse coefficient.
@@ -143,11 +143,11 @@ public class Material {
 	/**
 	 * Setter for the shininess exponent.
 	 * 
-	 * @param shininess The shininess exponent to set.
+	 * @param sHININESS2 The shininess exponent to set.
 	 * @return This Material object.
 	 */
-	public Material setShininess(int shininess) {
-		this.shininess = shininess;
+	public Material setShininess(double sHININESS2) {
+		this.shininess = sHININESS2;
 		return this;
 	}
 }
