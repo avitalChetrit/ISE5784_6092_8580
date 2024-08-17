@@ -1,3 +1,4 @@
+
 package unittests.renderer;
 
 import geometries.*;
@@ -92,6 +93,7 @@ public class MyTest {
             new Triangle(new Point(200, 200, 400), new Point(300, 300, 200), new Point(100, 300, 200))
                 .setEmission(new Color(150, 150, 255)) // Light Blue Triangle
                 .setMaterial(new Material().setKD(0.6).setKS(0.4).setShininess(50))
+         
         );
 
         // Add light source

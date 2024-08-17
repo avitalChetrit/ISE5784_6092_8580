@@ -64,7 +64,7 @@ public class Camera implements Cloneable {
 	private double apertureRadius = 0;
 
 	/** DoF active */
-	boolean depthOfFieledActive = false;
+	boolean depthOfFieledActive = true;
 	/** Focal length */
 	private double focalLength = 0;
 
