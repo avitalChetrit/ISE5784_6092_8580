@@ -187,17 +187,35 @@ public class Camera implements Cloneable {
 			this.camera.apertureRadius = apertureRadius;
 			return this;
 		}
-
+		/**
+		 * Sets the grid density for the camera.
+		 *
+		 * <p>The grid density determines the number of grid lines or divisions that will be used
+		 * in the camera's view plane for rendering purposes. This setting can be useful for various
+		 * applications, such as aiding in alignment, visualization, or creating grid-based effects
+		 * in the rendered image.</p>
+		 *
+		 * @param gridDensity The number of grid lines or divisions along each dimension of the camera's
+		 *                    view plane. Must be a positive integer. Higher values increase the density
+		 *                    of the grid, providing more detailed subdivisions.
+		 * @return The current instance of the {@code Builder} class, allowing for method chaining.
+		 */
 		public Builder setgridDensity(int gridDensity) {
 			this.camera.gridDensity = gridDensity;
 			return this;
 		}
 
 		/**
-		 * Sets the focal length for the camera.
+		 * Sets the focal length of the camera.
 		 *
-		 * @param focalLength the focal length to set
-		 * @return the Builder instance
+		 * <p>The focal length is a critical parameter that affects the perspective and depth of field
+		 * in the rendered image. Increasing the focal length will zoom in on the scene, while decreasing
+		 * it will provide a wider view. This setting is essential for controlling the amount of perspective
+		 * distortion and achieving the desired focus effect in the final rendered image.</p>
+		 *
+		 * @param focalLength The focal length of the camera, in millimeters. This value must be greater than zero.
+		 *                    The focal length determines how much the camera will zoom in or out on the scene.
+		 * @return The current instance of the {@code Builder} class, allowing for method chaining.
 		 */
 		public Builder setFocalLength(double focalLength) {
 			this.camera.focalLength = focalLength;
@@ -205,10 +223,18 @@ public class Camera implements Cloneable {
 		}
 
 		/**
-		 * Enables or disables the depth of field effect for the camera.
+		 * Activates or deactivates the depth of field effect for the camera.
 		 *
-		 * @param depthOfFieledActive true to enable depth of field, false to disable
-		 * @return the Builder instance
+		 * <p>Enabling the depth of field effect allows for a more realistic representation of focus
+		 * in the rendered image. When activated, objects at different distances from the camera will
+		 * appear with varying degrees of sharpness based on their distance from the focal point. 
+		 * Objects closer to or farther from the focal point will appear blurred according to their
+		 * distance from the focal plane.</p>
+		 *
+		 * @param doFActive {@code true} to activate the depth of field effect, making the image
+		 *                   focus on objects at different distances with a corresponding blur effect;
+		 *                   {@code false} to deactivate it, rendering the scene with uniform sharpness.
+		 * @return The current instance of the {@code Builder} class, allowing for method chaining.
 		 */
 		public Builder depthOfFieledActive(boolean doFActive) {
 

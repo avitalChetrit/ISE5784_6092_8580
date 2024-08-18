@@ -142,7 +142,18 @@ public class Color {
 	public String toString() {
 		return "rgb:" + rgb;
 	}
-
+	/**
+	 * Checks if this color is similar to another color.
+	 *
+	 * <p>This method determines if the color values of this instance are nearly identical
+	 * to those of the given color. It does so by comparing the RGB components of both colors
+	 * and checking if the differences are effectively zero. This is useful for scenarios where
+	 * exact color matches are less critical, and a tolerance for minor differences is acceptable.</p>
+	 *
+	 * @param color The {@code Color} instance to compare with. It must not be {@code null}.
+	 * @return {@code true} if the RGB components of this color and the given color are similar
+	 *         (i.e., their differences are zero within a tolerance); {@code false} otherwise.
+	 */
 	public boolean similar(Color color) {
 		Double3 diff = this.rgb.subtract(color.rgb);
 		return isZero(diff.d1) && isZero(diff.d2) && isZero(diff.d3);
