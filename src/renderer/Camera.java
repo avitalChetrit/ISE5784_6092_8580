@@ -79,6 +79,10 @@ public class Camera implements Cloneable {
 	 * depthOfFieled points on the aperture plane
 	 */
 	public List<Point> depthOfFieledPoints = null;
+	
+	//minip2
+    private boolean multiThreading = false;
+    private boolean superSempling = false;
 
 	/**
 	 * Private constructor
@@ -369,6 +373,30 @@ public class Camera implements Cloneable {
 			camera.rayTracer = rayTracer;
 			return this;
 		}
+		
+		//minip2
+		  /**
+         * Enables or disables multithreading.
+         *
+         * @param multiThreading true to enable multithreading, false to disable.
+         * @return the current Builder instance for method chaining.
+         */
+        public Builder setMultiThreading(boolean multiThreading) {
+            this.camera.multiThreading = multiThreading;
+            return this;
+        }
+
+        /**
+         * Enables or disables super sampling.
+         *
+         * @param superSempling true to enable super sampling, false to disable.
+         * @return the current Builder instance for method chaining.
+         */
+        public Builder setSuperSempling(boolean superSempling) {
+            this.camera.superSempling = superSempling;
+            return this;
+        }
+
 
 		/**
 		 * Builds the Camera object.
@@ -568,6 +596,69 @@ public class Camera implements Cloneable {
 				}
 			}
 		}
+		
+		 /*if (!multiThreading) {
+	            if (antiAliasingRays == 1) {
+	                if (!superSempling) {
+	                    //Basic image without enhancements in camera.
+	                    for (int i = 0; i < nx; i++) {
+	                        for (int j = 0; j < ny; j++) {
+	                            castRay(nx, ny, i, j);
+	                        }
+	                    }
+	                }
+	                //There can't be super sampling without anti-aliasing, because only one beam is sent.
+
+	            } else {    //with anti-aliasing
+	                if (!superSempling) {
+	                    //without super sempling and multi threading
+	                    for (int i = 0; i < nx; i++) {
+	                        for (int j = 0; j < ny; j++) {
+	                            List<Ray> rays = this.constructRays(nx, ny, i, j);
+	                            Color color = average(rays);
+	                            this.imageWriter.writePixel(i, j, color);
+	                        }
+	                    }
+	                } else {  //with super sempling
+	                    for (int i = 0; i < nx; i++) {
+	                        for (int j = 0; j < ny; j++) {
+	                            // construct a ray through the current pixel
+	                            List<Ray> rays = this.constructRays(nx, ny, i, j);
+	                            // get the  color of the point from trace ray
+	                            Color color = this.rayTracer.adaptiveTraceRays(rays);
+	                            imageWriter.writePixel(i, j, color);
+	                        }
+	                    }
+	                }
+	            }
+	        } else {     //with multi threading
+	            if (antiAliasingRays == 1) {  //without super sempling
+	                IntStream.range(0, ny).parallel()
+	                        .forEach(i -> IntStream.range(0, nx).parallel()
+	                                .forEach(j -> castRay(nx, ny, i, j)));
+	            } else {  //with anti-aliasing
+	                if (!superSempling) {
+	                    IntStream.range(0, ny).parallel()
+	                            .forEach(i -> IntStream.range(0, nx).parallel()
+	                                    .forEach(j -> {
+	                                        List<Ray> rays = this.constructRays(nx, ny, i, j);
+	                                        Color color = average(rays);
+	                                        this.imageWriter.writePixel(i, j, color);
+	                                    }));
+	                } else { //all of the enhancements in camera.
+	                    IntStream.range(0, ny).parallel()
+	                            .forEach(i -> IntStream.range(0, nx).parallel()
+	                                    .forEach(j -> {
+	                                        List<Ray> rays = this.constructRays(nx, ny, i, j);
+	                                        // get the  color of the point from trace ray
+	                                        Color color = this.rayTracer.adaptiveTraceRays(rays);
+	                                        // write the pixel color to the image
+	                                        imageWriter.writePixel(i, j, color);
+	                                    }));
+	                }
+	            }
+	        }*/
+		 
 		return this;
 
 	}
