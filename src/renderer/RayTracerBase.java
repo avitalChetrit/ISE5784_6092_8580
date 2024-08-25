@@ -37,6 +37,16 @@ public abstract class RayTracerBase {
 	 * @return Color that we see from the rays' intersection with a geometry
 	 */
 	public abstract Color traceRays(List<Ray> rays);
+	
+	//stage 9-
+    /**
+     * Performs adaptive ray tracing on a given list of rays and returns the calculated color.
+     *
+     * @param rays A list of objects to trace for color calculation.
+     * @return The resulting color from the adaptive super sampling process.
+     */
+    public abstract Color adaptiveTraceRays(List<Ray> rays);
+    
 
 ///???
 	/**

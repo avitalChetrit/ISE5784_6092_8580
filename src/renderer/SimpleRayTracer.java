@@ -51,14 +51,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		super(scene);
 	}
 
-	/**
-	 * Traces a ray in the scene and returns the color of the closest intersection
-	 * point.
-	 *
-	 * @param ray The ray to trace.
-	 * @return The color of the closest intersection point, or the background color
-	 *         if no intersections are found.
-	 */
+	
 	@Override
 	public Color traceRay(Ray ray) {
 		GeoPoint closestPoint = findClosestIntersection(ray);
@@ -222,6 +215,38 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color resulting from local lighting effects, or the emission
 	 *         color if there is no interaction.
 	 */
+	//stage 9-
+	/*private Color calcLocalEffects(GeoPoint geoPoint, Ray ray, Double3 k) {
+        Vector n = geoPoint.geometry.getNormal(geoPoint.point);
+        Vector v = ray.getDirection();
+        Color color = geoPoint.geometry.getEmission();
+        Color tempColor = Color.BLACK;
+        double nv = alignZero(n.dotProduct(v));
+        if (nv == 0) return color;
+
+        for (LightSource lightSource : scene.lights) {
+          //  List<Vector> vectors = (softShadowsRays == 0) ? List.of(lightSource.getL(geoPoint.point))
+            //        : lightSource.getLBeam(geoPoint.point);
+            List<Vector> vectors =List.of(lightSource.getL(geoPoint.point));
+
+            Material material = geoPoint.geometry.getMaterial();
+            for (Vector l : vectors) {
+                double nl = alignZero(n.dotProduct(l));
+                if (nl * nv > 0) {
+                    Double3 ktr = transparency(geoPoint, lightSource, l, n);
+                    if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
+                        Color iL = lightSource.getIntensity(geoPoint.point).scale(ktr);
+                        tempColor = tempColor.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+                    }
+                }
+            }
+            int reduceBy = vectors.size();
+            color = color.add((softShadowsRays == 0) ? tempColor :
+                    tempColor.reduce(reduceBy > 0 ? reduceBy : 1));
+        }
+        return color;
+
+    } */
 	private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
 		Vector n = gp.geometry.getNormal(gp.point);
 		Vector v = ray.getDirection();
@@ -309,4 +334,116 @@ public class SimpleRayTracer extends RayTracerBase {
 		double minusVR = -alignZero(v.dotProduct(reflectVector));
 		return minusVR <= 0 ? Double3.ZERO : material.kS.scale(pow(minusVR, material.shininess));
 	}
+
+	 @Override
+	    public Color adaptiveTraceRays(List<Ray> rays) {
+	        int numOfSampleRays = (int) sqrt(rays.size());
+	        int topRightIndex = (numOfSampleRays - 1) * numOfSampleRays + (numOfSampleRays - 1);
+	        int topLeftIndex = (numOfSampleRays - 1) * numOfSampleRays;
+	        int bottomLeftIndex = 0;
+	        int bottomRightIndex = (numOfSampleRays - 1);
+
+	        return adaptiveSuperSampling(
+	                rays, 3, topRightIndex, topLeftIndex, bottomLeftIndex, bottomRightIndex, numOfSampleRays);
+	    }
+
+	
+	 /**
+     * Performs adaptive supersampling to compute the color of a pixel based on rays.
+     * This method calculates the color of a pixel using a set of rays, performing recursive
+     * adaptive supersampling to refine the color calculation based on differences between
+     * the center and corner rays.
+     *
+     * @param rays              List of rays used for sampling the pixel.
+     * @param levelOfAdaptive The current level of adaptive sampling.
+     * @param topRightIndex    The index of the top-right corner ray.
+     * @param topLeftIndex     The index of the top-left corner ray.
+     * @param bottomLeftIndex  The index of the bottom-left corner ray.
+     * @param bottomRightIndex The index of the bottom-right corner ray.
+     * @param numOfSampleRays   The number of rays used for sampling.
+     * @return The computed color for the pixel.
+     */
+    public Color adaptiveSuperSampling(List<Ray> rays, int levelOfAdaptive,
+                                       int topRightIndex, int topLeftIndex, int bottomLeftIndex, int bottomRightIndex,
+                                       int numOfSampleRays) {
+        int numOfAdaptiveRays = 5;
+
+        Ray centerRay = rays.get(rays.size() - 1);
+        Color centerColor = traceRay(centerRay);
+        Ray topRightCorner = rays.get(topRightIndex);
+        Color topRightColor = traceRay(topRightCorner);
+        Ray topLeftCorner = rays.get(topLeftIndex);
+        Color topLeftColor = traceRay(topLeftCorner);
+        Ray bottomLeftCorner = rays.get(bottomLeftIndex);
+        Color bottomLeftColor = traceRay(bottomLeftCorner);
+        Ray bottomRightCorner = rays.get(bottomRightIndex);
+        Color bottomRightColor = traceRay(bottomRightCorner);
+
+        if (levelOfAdaptive == 0) {
+            //Calculate the average color of the corners and the center
+            centerColor = centerColor.add(topRightColor, topLeftColor, bottomLeftColor, bottomRightColor);
+            return centerColor.reduce(numOfAdaptiveRays);
+        }
+
+        //If the corner color is the same as the center color, returns the center color
+        if (topRightColor.equals(centerColor) &&
+                topLeftColor.equals(centerColor) &&
+                bottomLeftColor.equals(centerColor) &&
+                bottomRightColor.equals(centerColor)) {
+            return centerColor;
+        } else {
+            //for each color that is different from the center, the recursion goes down to the depth of the pixel and sums up
+            // the colors until it gets the same color as the center color,
+            if (!topRightColor.equals(centerColor)) {
+                Color color=adaptiveSuperSampling(
+                        rays,
+                        levelOfAdaptive - 1,
+                        topRightIndex - (numOfSampleRays + 1),
+                        topLeftIndex,
+                        bottomLeftIndex,
+                        bottomRightIndex,
+                        numOfSampleRays);
+                topRightColor = topRightColor.add(color).reduce(2);
+            }
+            if (!topLeftColor.equals(centerColor)) {
+                Color color=adaptiveSuperSampling(
+                        rays,
+                        levelOfAdaptive - 1,
+                        topRightIndex,
+                        topLeftIndex - (numOfSampleRays - 1),
+                        bottomLeftIndex,
+                        bottomRightIndex,
+                        numOfSampleRays);
+                topLeftColor = topLeftColor.add(color).reduce(2);
+            }
+            if (!bottomLeftColor.equals(centerColor)) {
+                Color color=adaptiveSuperSampling(
+                        rays,
+                        levelOfAdaptive - 1,
+                        topRightIndex,
+                        topLeftIndex,
+                        bottomLeftIndex + (numOfSampleRays + 1),
+                        bottomRightIndex,
+                        numOfSampleRays);
+                bottomLeftColor = bottomLeftColor.add(color).reduce(2);
+            }
+            if (!bottomRightColor.equals(centerColor)) {
+                Color color=adaptiveSuperSampling(
+                        rays,
+                        levelOfAdaptive - 1,
+                        topRightIndex,
+                        topLeftIndex,
+                        bottomLeftIndex,
+                        bottomRightIndex + (numOfSampleRays - 1),
+                        numOfSampleRays);
+               // bottomRightColor = bottomRightColor.add();
+                bottomRightColor = bottomRightColor.add(color).reduce(2);
+            }
+
+            //Calculate and return the average color
+            centerColor = centerColor.add(topRightColor, topLeftColor, bottomLeftColor, bottomRightColor);
+            return centerColor.reduce(numOfAdaptiveRays);
+        }
+    }
+
 }

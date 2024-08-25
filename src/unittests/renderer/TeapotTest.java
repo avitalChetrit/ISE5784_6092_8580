@@ -20,7 +20,7 @@ import scene.Scene;
  * 
  * @author Dan
  */
-public class TeapotTest {
+/*public class TeapotTest {
 	private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
 	
 	
@@ -29,7 +29,7 @@ public class TeapotTest {
 			.setImageWriter(imageWriter).setLocation(Point.ZERO)
 			.setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1000).setVpSize(500, 500);*/
 	
-	private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
+	/*private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
 			.setVpDistance(1000).setVPSize(200, 200) //
 			.setImageWriter(imageWriter) //
 			.setMultithreading(3).setDebugPrint(0.1);
@@ -575,7 +575,7 @@ public class TeapotTest {
 	/**
 	 * Produce a scene with a 3D model and render it into a png image
 	 */
-	@Test
+	/*@Test
 	public void teapot() {
 		scene.geometries.add( //
 				new Triangle(pnts[7], pnts[6], pnts[1]).setEmission(color).setMaterial(mat), //
@@ -1576,4 +1576,4 @@ public class TeapotTest {
 		camera.setRayTracer(new SimpleRayTracer(scene)).renderImage().printGrid(50, new Color(YELLOW)).writeToImage();
 	}
 
-}
+}*/

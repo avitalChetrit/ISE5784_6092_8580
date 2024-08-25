@@ -564,7 +564,7 @@ public class Camera implements Cloneable {
 		imageWriter.writeToImage();
 	}
 
-	// stage5
+	// stage5, and 9
 	/**
 	 * This method performs image rendering by casting rays of light for each pixel
 	 * in the image and computing their color. It utilizes the image dimensions
@@ -574,8 +574,33 @@ public class Camera implements Cloneable {
 	 * @return The current state of the camera, for further use within this class or
 	 *         in closely related classes.
 	 */
-
 	public Camera renderImage() {
+		int nX = this.imageWriter.getNx();
+		int nY = this.imageWriter.getNy();
+
+		if (this.gridDensity!=1) {
+		this.depthOfFieledPoints = Camera.generatePoints(gridDensity, apertureRadius, position, vUp, vRight);
+		for (int i = 0; i < nX; i++) {
+			for (int j = 0; j < nY; j++) {
+				var focalPoint = constructRay(this.imageWriter.getNx(), this.imageWriter.getNy(), j, i)
+						.getPoint(focalLength);
+				imageWriter.writePixel(j, i,
+						rayTracer.computeFinalColor(Ray.RayBundle(focalPoint, depthOfFieledPoints)));
+			}
+		}
+	} else {
+		//בלי שיפורים
+			for (int i = 0; i < nX; i++) {
+				for (int j = 0; j < nY; j++) {
+					this.castRay(j, i);
+				}
+			}
+	}
+	
+	return this;
+}
+
+	/*public Camera renderImage() {
 		int x = this.imageWriter.getNx();
 		int y = this.imageWriter.getNy();
 
@@ -597,7 +622,7 @@ public class Camera implements Cloneable {
 			}
 		}
 		
-		 /*if (!multiThreading) {
+		 //if (!multiThreading) {
 	            if (antiAliasingRays == 1) {
 	                if (!superSempling) {
 	                    //Basic image without enhancements in camera.
@@ -657,11 +682,11 @@ public class Camera implements Cloneable {
 	                                    }));
 	                }
 	            }
-	        }*/
+	        }//
 		 
 		return this;
 
-	}
+	}*/
 
 	/**
 	 * Casts a ray through the center of a pixel and colors the pixel using the ray
@@ -678,7 +703,53 @@ public class Camera implements Cloneable {
 		// it.
 		this.imageWriter.writePixel(j, i, rayTracer.traceRay(ray));
 
+	//stage 9-
 	}
+	 /**
+     * Finds the location of the central point of a specified pixel.
+     * @param numXPixels the number of pixels along the horizontal axis (width) of the screen.
+     * @param numYPixels the number of pixels along the vertical axis (height) of the screen.
+     * @param i          the x coordinate of the pixel
+     * @param j          the y coordinate of the pixel
+     * @return the location of the central point of the specified pixel
+     */
+    private Point findPixelLocation(int numXPixels, int numYPixels, int i, int j) {
+        // Calculate the size of each pixel along the X and Y axes
+        double pixelHeight = viewPlaneHeight / numYPixels;
+        double pixelWidth = viewPlaneWidth / numXPixels;
+
+        // Calculate the offset of the pixel from the center of the screen
+        double offsetY = -(j - (numYPixels - 1d) / 2) * pixelHeight;
+        double offsetX = (i - (numXPixels - 1d) / 2) * pixelWidth;
+
+        // Compute the point at the center of the screen based on the camera's view direction
+        Point pixelPoint = position.add(vTo.scale(viewPlaneDistance));
+
+        // Adjust the center point by the calculated offsets to get the exact pixel location
+        if (offsetY != 0) pixelPoint = pixelPoint.add(vUp.scale(offsetY));
+        if (offsetX != 0) pixelPoint = pixelPoint.add(vRight.scale(offsetX));
+
+        return pixelPoint;
+    }
+    
+    //stage 9-
+    /**
+     * Calculates the average color of a list of rays.
+     *
+     * @param rays the list of rays
+     * @return the average color of the rays
+     */
+    private Color average(List<Ray> rays) {
+        Color colorOfPixel = Color.BLACK;
+        for (Ray ray : rays) {
+            Color colorOfRay = this.rayTracer.traceRay(ray);
+            colorOfPixel = colorOfPixel.add(colorOfRay);
+        }
+        return colorOfPixel.reduce(rays.size());
+    }
+
+
+
 
 	/**
 	 * Casts a ray through a specific pixel in the image, computes the color of the
