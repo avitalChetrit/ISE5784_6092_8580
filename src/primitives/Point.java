@@ -100,30 +100,28 @@ public class Point {
 		return "P" + xyz;
 	}
 	/// ???
-	/**
-	 * Generates a list of points randomly distributed within a circular area.
-	 * 
-	 * @param gridDensity The number of points to generate.
-	 * @param radius      The radius of the circular area.
-	 * @param center      The center point of the circular area.
-	 * @param up          A vector representing the up direction for the circular
-	 *                    area.
-	 * @param right       A vector representing the right direction for the circular
-	 *                    area.
-	 * @return A list of points randomly distributed within the circular area.
-	 */
+	 /**
+	    * Generates points within the target area based on the given parameters.
+	    *
+	    * @param gridDensity The number of points to generate.
+	    * @param radius 	The radius within which to generate points.
+	    * @param center 	The center point of the target area.
+	    * @param up The 	up vector defining the orientation of the target area.
+	    * @param right 	The right vector defining the orientation of the target area.
+	    */
+		public static List<Point> generatePoints(int gridDensity, double radius, Point center, Vector up, Vector right) {
+			List<Point> points  = new ArrayList<>();
 
-	/*
-	 * public static List<Point> generatePoints(int gridDensity, double radius,
-	 * Point center, Vector up, Vector right) { List<Point> points = new
-	 * ArrayList<>();
-	 * 
-	 * for (int i = 0; i < gridDensity; i++) { double angle = 2 * Math.PI *
-	 * Math.random(); double r = radius * Math.sqrt(Math.random()); double offsetX =
-	 * r * Math.cos(angle); double offsetY = r * Math.sin(angle);
-	 * 
-	 * Point point = center.add(right.scale(offsetX)).add(up.scale(offsetY));
-	 * points.add(point); } return points; }
-	 */
+			for (int i = 0; i < gridDensity; i++) {
+				double angle = 2 * Math.PI * Math.random();
+				double r = radius * Math.sqrt(Math.random());
+				double offsetX = r * Math.cos(angle);
+				double offsetY = r * Math.sin(angle);
+
+				Point point = center.add(right.scale(offsetX)).add(up.scale(offsetY));
+				points.add(point);
+			}
+			return points;
+		}
 
 }

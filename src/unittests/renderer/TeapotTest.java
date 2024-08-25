@@ -4,14 +4,19 @@ import static java.awt.Color.YELLOW;
 
 import org.junit.jupiter.api.Test;
 
+//import geometries.BVH;
+import geometries.Sphere;
 import geometries.Triangle;
+import lighting.DirectionalLight;
 import lighting.PointLight;
+import lighting.SpotLight;
 import primitives.Color;
 import primitives.Material;
 import primitives.Point;
 import primitives.Vector;
 import renderer.Camera;
 import renderer.ImageWriter;
+import renderer.RayTracerBase;
 import renderer.SimpleRayTracer;
 import scene.Scene;
 
@@ -20,25 +25,40 @@ import scene.Scene;
  * 
  * @author Dan
  */
-/*public class TeapotTest {
+public class TeapotTest {
+	
+	/**
+     * An instance of ImageWriter used to write the rendered image.
+     */
 	private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
-	
-	
-	/** Camera builder of the tests 
-	private final Camera.Builder camerab = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene))
-			.setImageWriter(imageWriter).setLocation(Point.ZERO)
-			.setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1000).setVpSize(500, 500);*/
-	
-	/*private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
-			.setVpDistance(1000).setVPSize(200, 200) //
-			.setImageWriter(imageWriter) //
-			.setMultithreading(3).setDebugPrint(0.1);
 
+	 /**
+     * The scene object that holds all the elements to be rendered.
+     */
 	private final Scene scene = new Scene("Test scene");
+	/**
+     * A builder for creating and configuring a Camera object with specified
+     * location, direction, viewport size, and other parameters.
+     */
+	final Camera.Builder cameraBuilder = Camera.getBuilder().setLocation(new Point(0, 0, -1000))
+			.setDirection(new Vector(0, 0, 1), new Vector(0, 1, 0)).setVpSize(200, 200).setVpDistance(1000)
+			.setFocalSize(20, 1600, 1).setRayTracer(new SimpleRayTracer(scene))
+			.setMultiThreading(2).setDebugPrint(0.1).setSuperSempling(true).setGridDensity(1)
+			.setImageWriter(imageWriter);
 
+	/**
+     * A color used for the teapot material.
+     */
 	private static final Color color = new Color(200, 0, 0);
+	
+	/**
+     * The material properties of the teapot, including diffuse and specular
+     * coefficients and shininess.
+     */
 	private static final Material mat = new Material().setKD(0.5).setKS(0.5).setShininess(60);
-
+	/**
+	 * Generate the picture
+	 */
 	private static Point[] pnts = new Point[] { null, //
 			new Point(40.6266, 28.3457, -1.10804), //
 			new Point(40.0714, 30.4443, -1.10804), //
@@ -575,7 +595,7 @@ import scene.Scene;
 	/**
 	 * Produce a scene with a 3D model and render it into a png image
 	 */
-	/*@Test
+	@Test
 	public void teapot() {
 		scene.geometries.add( //
 				new Triangle(pnts[7], pnts[6], pnts[1]).setEmission(color).setMaterial(mat), //
@@ -1569,11 +1589,36 @@ import scene.Scene;
 				new Triangle(pnts[469], pnts[468], pnts[528]).setEmission(color).setMaterial(mat), //
 				new Triangle(pnts[528], pnts[529], pnts[469]).setEmission(color).setMaterial(mat), //
 				new Triangle(pnts[470], pnts[469], pnts[529]).setEmission(color).setMaterial(mat), //
-				new Triangle(pnts[529], pnts[530], pnts[470]).setEmission(color).setMaterial(mat) //
-		);
-		scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)).setKQ(0.000001));
+				new Triangle(pnts[529], pnts[530], pnts[470]).setEmission(color).setMaterial(mat), //
+				new Sphere(new Point(-100, -150, 1300), 75).setEmission(new Color(215, 0, 64)) // Closest Sphere
+						.setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30))
 
-		camera.setRayTracer(new SimpleRayTracer(scene)).renderImage().printGrid(50, new Color(YELLOW)).writeToImage();
+		);
+
+		scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)).setKQ(0.000001));
+		scene.lights.add(new SpotLight(new Color(34, 45, 90), new Point(-16.7761, -33.1798, 40.2743), new Vector(-1,0,0)).setKC(1)
+			.setKL(0.0001).setKQ(0.000005));
+		scene.lights.add(new DirectionalLight(new Color(0, 255, 100), new Vector(0, 80, 1)));
+		 SpotLight light = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, -50, 25), new Vector(0, 2, -1))
+	                .setKC(0).setKL(0.01).setKQ(0.05);
+	        SpotLight light2 = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, 50, 25), new Vector(0, -2, -1))
+	                .setKC(0).setKL(0.01).setKQ(0.05);
+
+	        DirectionalLight directionalLight1 = new DirectionalLight(new Color(100, 100, 100), new Vector(0, 0, -1));
+	        DirectionalLight directionalLight2 = new DirectionalLight(new Color(100, 100, 100), new Vector(1, 0, 0));
+	        DirectionalLight directionalLight3 = new DirectionalLight(new Color(100, 100, 100), new Vector(-1, 0, 0));
+	        PointLight pointLight = new PointLight(new Color(255, 255, 255), new Point(200, 50, -100));
+
+	        scene.lights.add(directionalLight1);
+	        scene.lights.add(directionalLight2);
+	        scene.lights.add(directionalLight3);
+	        scene.lights.add(pointLight);
+	        scene.lights.add(light);
+	        scene.lights.add(light2);
+
+
+		cameraBuilder.setRayTracer(new SimpleRayTracer(scene)).build().renderImage().printGrid(50, new Color(YELLOW))
+				.writeToImage();
 	}
 
-}*/
+}

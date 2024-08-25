@@ -81,9 +81,18 @@ public class Camera implements Cloneable {
 	public List<Point> depthOfFieledPoints = null;
 	
 	//minip2
-    private boolean multiThreading = false;
-    private boolean superSempling = false;
-
+  //  private boolean multiThreading = false;
+    private boolean superSempling = true;
+ // Additions for minip2:
+ 	/** The number of threads used for rendering. */
+ 	private int threadsCount =0;
+ 	
+ 	/** The interval for printing progress during rendering, in seconds. */
+ 	private double printInterval = 0;
+ 	
+ 	/** The number of spare threads to be maintained during rendering. */
+ 	private final int SPARE_THREADS = 2;
+ 	//
 	/**
 	 * Private constructor
 	 *
@@ -381,10 +390,37 @@ public class Camera implements Cloneable {
          * @param multiThreading true to enable multithreading, false to disable.
          * @return the current Builder instance for method chaining.
          */
-        public Builder setMultiThreading(boolean multiThreading) {
+       /* public Builder setMultiThreading(boolean multiThreading) {
             this.camera.multiThreading = multiThreading;
             return this;
-        }
+        }*/
+        /**
+		 * amount of threads setter for multi-threading
+		 * 
+		 * @param threads number of threads to run at the same time
+		 * @return camera (builder)
+		 */
+		public Builder setMultiThreading(int threads) {
+			if (threads < -2)
+				throw new IllegalArgumentException("Multithreading must be -2 or higher");
+			if (threads >= -1)
+				this.camera.threadsCount = threads;
+			else { // == -2
+				int cores = Runtime.getRuntime().availableProcessors() - this.camera.SPARE_THREADS;
+				this.camera.threadsCount = cores <= 2 ? 1 : cores;
+			}
+			return this;
+		}
+		/**
+		 * interval setter for debug print
+		 * 
+		 * @param interval the print interval
+		 * @return camera (builder)
+		 */
+		public Builder setDebugPrint(double interval) {
+			this.camera.printInterval = interval;
+			return this;
+		}
 
         /**
          * Enables or disables super sampling.
