@@ -82,7 +82,13 @@ public class Camera implements Cloneable {
 	
 	//minip2
   //  private boolean multiThreading = false;
-    private boolean superSempling = true;
+	/**
+	 * Flag to enable or disable super sampling.
+	 * <p>
+	 * {@code true} to enable, {@code false} to disable. Default is {@code false}.
+	 * </p>
+	 */
+    private boolean superSempling = false;
  // Additions for minip2:
  	/** The number of threads used for rendering. */
  	private int threadsCount =0;

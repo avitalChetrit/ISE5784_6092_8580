@@ -100,15 +100,16 @@ public class Point {
 		return "P" + xyz;
 	}
 	/// ???
-	 /**
-	    * Generates points within the target area based on the given parameters.
-	    *
-	    * @param gridDensity The number of points to generate.
-	    * @param radius 	The radius within which to generate points.
-	    * @param center 	The center point of the target area.
-	    * @param up The 	up vector defining the orientation of the target area.
-	    * @param right 	The right vector defining the orientation of the target area.
-	    */
+	/**
+	 * Generates a list of points distributed randomly within a circle.
+	 * 
+	 * @param gridDensity The number of points to generate.
+	 * @param radius The radius of the circle within which points are distributed.
+	 * @param center The center point of the circle.
+	 * @param up A vector representing the upward direction from the center.
+	 * @param right A vector representing the rightward direction from the center.
+	 * @return A list of {@link Point} objects randomly distributed within the circle.
+	 */
 		public static List<Point> generatePoints(int gridDensity, double radius, Point center, Vector up, Vector right) {
 			List<Point> points  = new ArrayList<>();
 

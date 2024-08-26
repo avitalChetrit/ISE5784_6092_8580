@@ -215,38 +215,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color resulting from local lighting effects, or the emission
 	 *         color if there is no interaction.
 	 */
-	//stage 9-
-	/*private Color calcLocalEffects(GeoPoint geoPoint, Ray ray, Double3 k) {
-        Vector n = geoPoint.geometry.getNormal(geoPoint.point);
-        Vector v = ray.getDirection();
-        Color color = geoPoint.geometry.getEmission();
-        Color tempColor = Color.BLACK;
-        double nv = alignZero(n.dotProduct(v));
-        if (nv == 0) return color;
-
-        for (LightSource lightSource : scene.lights) {
-          //  List<Vector> vectors = (softShadowsRays == 0) ? List.of(lightSource.getL(geoPoint.point))
-            //        : lightSource.getLBeam(geoPoint.point);
-            List<Vector> vectors =List.of(lightSource.getL(geoPoint.point));
-
-            Material material = geoPoint.geometry.getMaterial();
-            for (Vector l : vectors) {
-                double nl = alignZero(n.dotProduct(l));
-                if (nl * nv > 0) {
-                    Double3 ktr = transparency(geoPoint, lightSource, l, n);
-                    if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
-                        Color iL = lightSource.getIntensity(geoPoint.point).scale(ktr);
-                        tempColor = tempColor.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
-                    }
-                }
-            }
-            int reduceBy = vectors.size();
-            color = color.add((softShadowsRays == 0) ? tempColor :
-                    tempColor.reduce(reduceBy > 0 ? reduceBy : 1));
-        }
-        return color;
-
-    } */
+	
 	private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
 		Vector n = gp.geometry.getNormal(gp.point);
 		Vector v = ray.getDirection();

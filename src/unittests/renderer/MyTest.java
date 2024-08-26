@@ -33,6 +33,8 @@ public class MyTest {
             .setVpSize(200, 200)
             .setVpDistance(850)
             .setFocalSize(20, 1600, 100)
+            .setSuperSempling(true)
+            .setMultiThreading(2)
             .setRayTracer(new SimpleRayTracer(scene));
 
         final Camera.Builder cameraBuilder1 = Camera.getBuilder()
@@ -41,6 +43,8 @@ public class MyTest {
             .setVpSize(200, 200)
             .setVpDistance(850)
             .setFocalSize(20, 1600, 1)
+            .setSuperSempling(true)
+            .setMultiThreading(2)
             .setRayTracer(new SimpleRayTracer(scene));
 
         AmbientLight ambientLight = new AmbientLight(new Color(30, 30, 30), 0.1);

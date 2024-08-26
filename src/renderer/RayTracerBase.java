@@ -49,19 +49,7 @@ public abstract class RayTracerBase {
     
 
 ///???
-	/**
-	 * Computes the final color by tracing a list of rays and averaging their
-	 * resulting colors.
-	 * 
-	 * @param rays The list of rays to be traced.
-	 * @return The averaged color resulting from tracing all the rays in the list.
-	 */
-	/*
-	 * public Color computeFinalColor(List<Ray> rays) { Color finalColor =
-	 * Color.BLACK; for (Ray ray : rays) { finalColor =
-	 * finalColor.add(traceRay(ray)); } return finalColor.scale(1.0/(rays.size()));
-	 * }
-	 */
+
 	public abstract Color computeFinalColor(List<Ray> rays);
 
 }
