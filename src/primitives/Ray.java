@@ -130,7 +130,7 @@ public class Ray {
 		return "Ray:" + head + "->" + direction;
 	}
 
-	/// ???
+	/// minip1
 	/**
 	 * 
 	 * Generates a bundle of rays originating from points in a list and directed

@@ -26,35 +26,34 @@ import scene.Scene;
  * @author Dan
  */
 public class TeapotTest {
-	
+
 	/**
-     * An instance of ImageWriter used to write the rendered image.
-     */
+	 * An instance of ImageWriter used to write the rendered image.
+	 */
 	private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
 
-	 /**
-     * The scene object that holds all the elements to be rendered.
-     */
+	/**
+	 * The scene object that holds all the elements to be rendered.
+	 */
 	private final Scene scene = new Scene("Test scene");
 	/**
-     * A builder for creating and configuring a Camera object with specified
-     * location, direction, viewport size, and other parameters.
-     */
+	 * A builder for creating and configuring a Camera object with specified
+	 * location, direction, viewport size, and other parameters.
+	 */
 	final Camera.Builder cameraBuilder = Camera.getBuilder().setLocation(new Point(0, 0, -1000))
 			.setDirection(new Vector(0, 0, 1), new Vector(0, 1, 0)).setVpSize(200, 200).setVpDistance(1000)
-			.setFocalSize(20, 1600, 1).setRayTracer(new SimpleRayTracer(scene))
-			.setMultiThreading(2).setDebugPrint(0.1).setSuperSempling(true).setGridDensity(1)
-			.setImageWriter(imageWriter);
+			.setFocalSize(20, 1600, 1).setRayTracer(new SimpleRayTracer(scene)).setMultiThreading(3).setDebugPrint(0.1)
+			.setSuperSempling(true).setGridDensity(1).setImageWriter(imageWriter);
 
 	/**
-     * A color used for the teapot material.
-     */
+	 * A color used for the teapot material.
+	 */
 	private static final Color color = new Color(200, 0, 0);
-	
+
 	/**
-     * The material properties of the teapot, including diffuse and specular
-     * coefficients and shininess.
-     */
+	 * The material properties of the teapot, including diffuse and specular
+	 * coefficients and shininess.
+	 */
 	private static final Material mat = new Material().setKD(0.5).setKS(0.5).setShininess(60);
 	/**
 	 * Generate the picture
@@ -1596,26 +1595,26 @@ public class TeapotTest {
 		);
 
 		scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)).setKQ(0.000001));
-		scene.lights.add(new SpotLight(new Color(34, 45, 90), new Point(-16.7761, -33.1798, 40.2743), new Vector(-1,0,0)).setKC(1)
-			.setKL(0.0001).setKQ(0.000005));
+		scene.lights
+				.add(new SpotLight(new Color(34, 45, 90), new Point(-16.7761, -33.1798, 40.2743), new Vector(-1, 0, 0))
+						.setKC(1).setKL(0.0001).setKQ(0.000005));
 		scene.lights.add(new DirectionalLight(new Color(0, 255, 100), new Vector(0, 80, 1)));
-		 SpotLight light = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, -50, 25), new Vector(0, 2, -1))
-	                .setKC(0).setKL(0.01).setKQ(0.05);
-	        SpotLight light2 = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, 50, 25), new Vector(0, -2, -1))
-	                .setKC(0).setKL(0.01).setKQ(0.05);
+		SpotLight light = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, -50, 25),
+				new Vector(0, 2, -1)).setKC(0).setKL(0.01).setKQ(0.05);
+		SpotLight light2 = (SpotLight) new SpotLight(new Color(255, 255, 255), new Point(0, 50, 25),
+				new Vector(0, -2, -1)).setKC(0).setKL(0.01).setKQ(0.05);
 
-	        DirectionalLight directionalLight1 = new DirectionalLight(new Color(100, 100, 100), new Vector(0, 0, -1));
-	        DirectionalLight directionalLight2 = new DirectionalLight(new Color(100, 100, 100), new Vector(1, 0, 0));
-	        DirectionalLight directionalLight3 = new DirectionalLight(new Color(100, 100, 100), new Vector(-1, 0, 0));
-	        PointLight pointLight = new PointLight(new Color(255, 255, 255), new Point(200, 50, -100));
+		DirectionalLight directionalLight1 = new DirectionalLight(new Color(100, 100, 100), new Vector(0, 0, -1));
+		DirectionalLight directionalLight2 = new DirectionalLight(new Color(100, 100, 100), new Vector(1, 0, 0));
+		DirectionalLight directionalLight3 = new DirectionalLight(new Color(100, 100, 100), new Vector(-1, 0, 0));
+		PointLight pointLight = new PointLight(new Color(255, 255, 255), new Point(200, 50, -100));
 
-	        scene.lights.add(directionalLight1);
-	        scene.lights.add(directionalLight2);
-	        scene.lights.add(directionalLight3);
-	        scene.lights.add(pointLight);
-	        scene.lights.add(light);
-	        scene.lights.add(light2);
-
+		scene.lights.add(directionalLight1);
+		scene.lights.add(directionalLight2);
+		scene.lights.add(directionalLight3);
+		scene.lights.add(pointLight);
+		scene.lights.add(light);
+		scene.lights.add(light2);
 
 		cameraBuilder.setRayTracer(new SimpleRayTracer(scene)).build().renderImage().printGrid(50, new Color(YELLOW))
 				.writeToImage();
