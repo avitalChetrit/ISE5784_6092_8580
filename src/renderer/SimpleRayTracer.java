@@ -305,6 +305,8 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color adaptiveTraceRays(List<Ray> rays) {
+		//the equality color of the pixel
+
 		int numOfSampleRays = (int) sqrt(rays.size());
 		int topRightIndex = (numOfSampleRays - 1) * numOfSampleRays + (numOfSampleRays - 1);
 		int topLeftIndex = (numOfSampleRays - 1) * numOfSampleRays;
@@ -332,6 +334,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	public Color adaptiveSuperSampling(List<Ray> rays, int levelOfAdaptive, int topRightIndex, int topLeftIndex,
 			int bottomLeftIndex, int bottomRightIndex, int numOfSampleRays) {
+		//the color of the pixel
 		int numOfAdaptiveRays = 5;
 
 		Ray centerRay = rays.get(rays.size() - 1);

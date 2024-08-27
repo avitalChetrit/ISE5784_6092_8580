@@ -23,10 +23,11 @@ public abstract class RayTracerBase {
 	}
 
 	/**
-	 * Abstract method to trace a ray and compute its color.
-	 * 
-	 * @param ray The ray to be traced.
-	 * @return The color computed for the traced ray.
+	 * Traces the given ray through the scene to determine the color at its intersection point.
+	 *
+	 * @param ray The ray to trace.
+	 * @return The color at the ray's intersection with the scene.
+	 * @throws NullPointerException If {@code ray} is {@code null}.
 	 */
 	public abstract Color traceRay(Ray ray);
 
@@ -47,7 +48,13 @@ public abstract class RayTracerBase {
 	 * @return The resulting color from the adaptive super sampling process.
 	 */
 	public abstract Color adaptiveTraceRays(List<Ray> rays);
-
+	/**
+	 * Computes the final color for a list of rays, typically used for calculating effects like depth of field or antialiasing.
+	 *
+	 * @param rays The list of rays to be processed.
+	 * @return The computed final color based on the provided rays.
+	 * @throws NullPointerException If {@code rays} is {@code null}.
+	 */
 	public abstract Color computeFinalColor(List<Ray> rays);
 
 }

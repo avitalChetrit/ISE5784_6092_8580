@@ -100,34 +100,6 @@ public class Point {
 		return "P" + xyz;
 	}
 
-	/// ???
-	/**
-	 * Generates a list of points distributed randomly within a circle.
-	 * 
-	 * @param gridDensity The number of points to generate.
-	 * @param radius      The radius of the circle within which points are
-	 *                    distributed.
-	 * @param center      The center point of the circle.
-	 * @param up          A vector representing the upward direction from the
-	 *                    center.
-	 * @param right       A vector representing the rightward direction from the
-	 *                    center.
-	 * @return A list of {@link Point} objects randomly distributed within the
-	 *         circle.
-	 */
-	public static List<Point> generatePoints(int gridDensity, double radius, Point center, Vector up, Vector right) {
-		List<Point> points = new ArrayList<>();
 
-		for (int i = 0; i < gridDensity; i++) {
-			double angle = 2 * Math.PI * Math.random();
-			double r = radius * Math.sqrt(Math.random());
-			double offsetX = r * Math.cos(angle);
-			double offsetY = r * Math.sin(angle);
-
-			Point point = center.add(right.scale(offsetX)).add(up.scale(offsetY));
-			points.add(point);
-		}
-		return points;
-	}
 
 }

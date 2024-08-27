@@ -65,7 +65,7 @@ public class Camera implements Cloneable {
 	private double apertureRadius = 0;
 
 	/** DoF active */
-	boolean depthOfFieledActive = true;
+	boolean depthOfFieledActive = false;
 	/** Focal length */
 	private double focalLength = 0;
 
@@ -413,17 +413,7 @@ public class Camera implements Cloneable {
 		}
 
 		// minip2
-		/**
-		 * Enables or disables multithreading.
-		 *
-		 * @param multiThreading true to enable multithreading, false to disable.
-		 * @return the current Builder instance for method chaining.
-		 */
 
-		/*
-		 * public Builder setMultiThreading(boolean multiThreading) {
-		 * this.camera.multiThreading = multiThreading; return this; }
-		 */
 		/**
 		 * amount of threads setter for multi-threading
 		 * 
@@ -640,7 +630,7 @@ public class Camera implements Cloneable {
 	 * @return The current state of the camera, for further use within this class or
 	 *         in closely related classes.
 	 */
-	/*
+	/*minip1
 	 * public Camera renderImage() { int nX = this.imageWriter.getNx(); int nY =
 	 * this.imageWriter.getNy();
 	 * 
@@ -672,14 +662,14 @@ public class Camera implements Cloneable {
 
 		pixelManager = new PixelManager(nY, nX, printInterval);
 
-		if (this.gridDensity != 1) {
+		if (this.gridDensity != 1) {//depth of fieled
 			this.depthOfFieledPoints = Camera.generatePoints(gridDensity, apertureRadius, position, vUp, vRight);
 		}
 
-		if (threadsCount == 0) { // Single-threaded rendering
+		if (threadsCount == 0) { // Single-threaded rendering-without minip2
 			for (int i = 0; i < nY; ++i) {
 				for (int j = 0; j < nX; ++j) {
-					if (this.gridDensity != 1) {
+					if (this.gridDensity != 1) {//only depth of fieled
 						// Try optimizing the focal point generation
 						var focalPoint = constructRay(nX, nY, j, i).getPoint(focalLength);
 						List<Ray> rayBundle = Ray.RayBundle(focalPoint, depthOfFieledPoints);
@@ -691,25 +681,25 @@ public class Camera implements Cloneable {
 
 						imageWriter.writePixel(j, i, rayTracer.computeFinalColor(rayBundle));
 						pixelManager.pixelDone();
-					} else {
+					} else {//without depth of fieled and without minip2
 						castRay(j, i);
 					}
 
 				}
 			}
-		} else { // Multi-threaded rendering
+		} else { // Multi-threaded rendering-minip2
 			var threads = new LinkedList<Thread>(); // list of threads
 			while (threadsCount-- > 0) // add appropriate number of threads
 				threads.add(new Thread(() -> { // add a thread with its code
 					PixelManager.Pixel pixel; // current pixel(row,col)
 					// allocate pixel(row,col) in loop until there are no more pixels
 					while ((pixel = pixelManager.nextPixel()) != null) {
-						if (this.gridDensity != 1) {
+						if (this.gridDensity != 1) {//depth of fieled +minip2(multiThreaing
 							var focalPoint = constructRay(nX, nY, pixel.col(), pixel.row()).getPoint(focalLength);
 							imageWriter.writePixel(pixel.col(), pixel.row(),
 									rayTracer.computeFinalColor(Ray.RayBundle(focalPoint, depthOfFieledPoints)));
 							pixelManager.pixelDone();
-						} else {
+						} else {//multi Threaing without depth of fieled
 							castRay(pixel.col(), pixel.row());
 						}
 
@@ -729,50 +719,7 @@ public class Camera implements Cloneable {
 
 	}
 
-	/*
-	 * public Camera renderImage() { int x = this.imageWriter.getNx(); int y =
-	 * this.imageWriter.getNy();
-	 * 
-	 * if (depthOfFieledActive) { this.depthOfFieledPoints =
-	 * Camera.generatePoints(gridDensity, apertureRadius, position, vUp, vRight);
-	 * for (int i = 0; i < x; i++) { for (int j = 0; j < y; j++) { var focalPoint =
-	 * constructRay(this.imageWriter.getNx(), this.imageWriter.getNy(), j, i)
-	 * .getPoint(focalLength); imageWriter.writePixel(j, i,
-	 * rayTracer.computeFinalColor(Ray.RayBundle(focalPoint, depthOfFieledPoints)));
-	 * } } } else { for (int i = 0; i < x; i++) { for (int j = 0; j < y; j++) {
-	 * this.castRay(j, i); } } }
-	 * 
-	 * //if (!multiThreading) { if (antiAliasingRays == 1) { if (!superSempling) {
-	 * //Basic image without enhancements in camera. for (int i = 0; i < nx; i++) {
-	 * for (int j = 0; j < ny; j++) { castRay(nx, ny, i, j); } } } //There can't be
-	 * super sampling without anti-aliasing, because only one beam is sent.
-	 * 
-	 * } else { //with anti-aliasing if (!superSempling) { //without super sempling
-	 * and multi threading for (int i = 0; i < nx; i++) { for (int j = 0; j < ny;
-	 * j++) { List<Ray> rays = this.constructRays(nx, ny, i, j); Color color =
-	 * average(rays); this.imageWriter.writePixel(i, j, color); } } } else { //with
-	 * super sempling for (int i = 0; i < nx; i++) { for (int j = 0; j < ny; j++) {
-	 * // construct a ray through the current pixel List<Ray> rays =
-	 * this.constructRays(nx, ny, i, j); // get the color of the point from trace
-	 * ray Color color = this.rayTracer.adaptiveTraceRays(rays);
-	 * imageWriter.writePixel(i, j, color); } } } } } else { //with multi threading
-	 * if (antiAliasingRays == 1) { //without super sempling IntStream.range(0,
-	 * ny).parallel() .forEach(i -> IntStream.range(0, nx).parallel() .forEach(j ->
-	 * castRay(nx, ny, i, j))); } else { //with anti-aliasing if (!superSempling) {
-	 * IntStream.range(0, ny).parallel() .forEach(i -> IntStream.range(0,
-	 * nx).parallel() .forEach(j -> { List<Ray> rays = this.constructRays(nx, ny, i,
-	 * j); Color color = average(rays); this.imageWriter.writePixel(i, j, color);
-	 * })); } else { //all of the enhancements in camera. IntStream.range(0,
-	 * ny).parallel() .forEach(i -> IntStream.range(0, nx).parallel() .forEach(j ->
-	 * { List<Ray> rays = this.constructRays(nx, ny, i, j); // get the color of the
-	 * point from trace ray Color color = this.rayTracer.adaptiveTraceRays(rays); //
-	 * write the pixel color to the image imageWriter.writePixel(i, j, color); }));
-	 * } } }//
-	 * 
-	 * return this;
-	 * 
-	 * }
-	 */
+	
 
 	/**
 	 * Casts a ray through the center of a pixel and colors the pixel using the ray
@@ -789,76 +736,8 @@ public class Camera implements Cloneable {
 		// it.
 		this.imageWriter.writePixel(j, i, rayTracer.traceRay(ray));
 
-		// stage 9-
 	}
 
-	/**
-	 * Finds the location of the central point of a specified pixel.
-	 * 
-	 * @param numXPixels the number of pixels along the horizontal axis (width) of
-	 *                   the screen.
-	 * @param numYPixels the number of pixels along the vertical axis (height) of
-	 *                   the screen.
-	 * @param i          the x coordinate of the pixel
-	 * @param j          the y coordinate of the pixel
-	 * @return the location of the central point of the specified pixel
-	 */
-	private Point findPixelLocation(int numXPixels, int numYPixels, int i, int j) {
-		// Calculate the size of each pixel along the X and Y axes
-		double pixelHeight = viewPlaneHeight / numYPixels;
-		double pixelWidth = viewPlaneWidth / numXPixels;
-
-		// Calculate the offset of the pixel from the center of the screen
-		double offsetY = -(j - (numYPixels - 1d) / 2) * pixelHeight;
-		double offsetX = (i - (numXPixels - 1d) / 2) * pixelWidth;
-
-		// Compute the point at the center of the screen based on the camera's view
-		// direction
-		Point pixelPoint = position.add(vTo.scale(viewPlaneDistance));
-
-		// Adjust the center point by the calculated offsets to get the exact pixel
-		// location
-		if (offsetY != 0)
-			pixelPoint = pixelPoint.add(vUp.scale(offsetY));
-		if (offsetX != 0)
-			pixelPoint = pixelPoint.add(vRight.scale(offsetX));
-
-		return pixelPoint;
-	}
-
-	// stage 9-
-	/**
-	 * Calculates the average color of a list of rays.
-	 *
-	 * @param rays the list of rays
-	 * @return the average color of the rays
-	 */
-	private Color average(List<Ray> rays) {
-		Color colorOfPixel = Color.BLACK;
-		for (Ray ray : rays) {
-			Color colorOfRay = this.rayTracer.traceRay(ray);
-			colorOfPixel = colorOfPixel.add(colorOfRay);
-		}
-		return colorOfPixel.reduce(rays.size());
-	}
-
-	/**
-	 * Casts a ray through a specific pixel in the image, computes the color of the
-	 * pixel based on the ray-tracing algorithm, and writes the color to the
-	 * corresponding pixel in the image.
-	 *
-	 * @param nX     The width of the image.
-	 * @param nY     The height of the image.
-	 * @param column The column index of the pixel.
-	 * @param row    The row index of the pixel.
-	 */
-	/*
-	 * private void castRay(int nX, int nY, int column, int row) { Ray ray =
-	 * constructRay(nX, nY, column, row); Color color = rayTracer.traceRay(ray);
-	 * imageWriter.writePixel(column, row, color);
-	 * 
-	 * }
-	 */
 	/**
 	 * Generates a list of points randomly distributed within a circular area.
 	 * 
