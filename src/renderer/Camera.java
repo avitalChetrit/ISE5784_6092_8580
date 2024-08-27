@@ -616,7 +616,7 @@ public class Camera implements Cloneable {
 	 * @return The current state of the camera, for further use within this class or
 	 *         in closely related classes.
 	 */
-	public Camera renderImage() {
+	/*public Camera renderImage() {
 		int nX = this.imageWriter.getNx();
 		int nY = this.imageWriter.getNy();
 
@@ -640,7 +640,80 @@ public class Camera implements Cloneable {
 	}
 	
 	return this;
-}
+}*/
+	
+	/**
+	 * Renders the image using the configured ray tracer and image writer.
+	 * 
+	 * @return the Camera instance
+	 */
+
+	public Camera renderImage() {
+        if (this.imageWriter == null)
+                throw new UnsupportedOperationException("Missing imageWriter");
+            if (this.rayTracer == null)
+                throw new UnsupportedOperationException("Missing rayTracerBase");
+        final int nX = imageWriter.getNx();
+        final int nY = imageWriter.getNy();
+
+        pixelManager = new PixelManager(nY, nX, printInterval);
+
+        if (this.gridDensity!=1) {
+            this.depthOfFieledPoints = Camera.generatePoints(gridDensity, apertureRadius, position, vUp, vRight);
+        }
+
+
+        if (threadsCount == 0) { // Single-threaded rendering
+            for (int i = 0; i < nY; ++i) {
+                for (int j = 0; j < nX; ++j) {
+                    if (this.gridDensity != 1) {
+                        // Try optimizing the focal point generation
+                        var focalPoint = constructRay(nX, nY, j, i).getPoint(focalLength);
+                        List<Ray> rayBundle = Ray.RayBundle(focalPoint, depthOfFieledPoints);
+
+                        // Possibly limit the number of rays if memory is an issue
+                        if (rayBundle.size() > MAX_RAYS) {
+                            rayBundle = rayBundle.subList(0, MAX_RAYS);
+                        }
+
+                        imageWriter.writePixel(j, i, rayTracer.computeFinalColor(rayBundle));
+                        pixelManager.pixelDone();
+                    } else {
+                        castRay(j, i);
+                    }
+                    
+                }
+            }
+        } else { // Multi-threaded rendering
+            var threads = new LinkedList<Thread>(); // list of threads
+            while (threadsCount-- > 0) // add appropriate number of threads
+                threads.add(new Thread(() -> { // add a thread with its code
+                    PixelManager.Pixel pixel; // current pixel(row,col)
+                    // allocate pixel(row,col) in loop until there are no more pixels
+                    while ((pixel = pixelManager.nextPixel()) != null) {
+                        if (this.gridDensity != 1) {
+                            var focalPoint = constructRay(nX, nY, pixel.col(), pixel.row()).getPoint(focalLength);
+                            imageWriter.writePixel(pixel.col(), pixel.row(), rayTracer.computeFinalColor(Ray.RayBundle(focalPoint, DoFPoints)));
+                            pixelManager.pixelDone();
+                        } else {
+                            castRay(pixel.col(), pixel.row());
+                        }
+                      
+                    }
+                }));
+            // start all the threads
+            for (var thread : threads)
+                thread.start();
+            // wait until all the threads have finished
+            try {
+                for (var thread : threads)
+                    thread.join();
+            } catch (InterruptedException ignore) {
+            }
+        }
+        return this;
+
+        }
 
 	/*public Camera renderImage() {
 		int x = this.imageWriter.getNx();
